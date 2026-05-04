@@ -3,6 +3,10 @@
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
 let hotspotsPano2 = [];
+/*  variable pour différencier clic du glissé */
+let pointerDownX = 0;
+let pointerDownY = 0;
+let pointerMoved = false;
 
 /* ACTIVER / DÉSACTIVER HOTSPOTS */
 function activateHotspots(list) {
@@ -88,4 +92,26 @@ function handleSceneClick(event) {
     }
 }
 
-viewer.container.addEventListener("pointerdown", handleSceneClick);
+viewer.container.addEventListener("pointerdown", (event) => {
+    pointerMoved = false;
+    pointerDownX = event.clientX;
+    pointerDownY = event.clientY;
+});
+
+viewer.container.addEventListener("pointermove", (event) => {
+    const dx = Math.abs(event.clientX - pointerDownX);
+    const dy = Math.abs(event.clientY - pointerDownY);
+
+    if (dx > 5 || dy > 5) {
+        pointerMoved = true; // c’est un drag
+    }
+});
+
+viewer.container.addEventListener("pointerup", (event) => {
+
+    // Si l’utilisateur a glissé → on ne clique pas
+    if (pointerMoved) return;
+
+    // Sinon → c’est un vrai clic → on lance le raycaster
+    handleSceneClick(event);
+});
