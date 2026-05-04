@@ -23,7 +23,6 @@ function addCheckMark(position, panoIndex) {
 
     sprite.scale.set(500, 500, 1);
 
-    // Rapprocher la coche de la sphère
     const direction = position.clone().normalize();
     sprite.position.copy(position.clone().sub(direction.multiplyScalar(150)));
 
@@ -50,7 +49,7 @@ function deactivateHotspots(list) {
     list.forEach(h => h.userData.active = false);
 }
 
-/* AJOUT HOTSPOT PANORAMA 1 */
+/* HOTSPOTS PANORAMA 1 */
 setTimeout(() => {
 
     const geo = new THREE.PlaneGeometry(600, 1930);
@@ -80,7 +79,7 @@ setTimeout(() => {
 
 }, 500);
 
-/* AJOUT HOTSPOT PANORAMA 2 */
+/* HOTSPOTS PANORAMA 2 */
 setTimeout(() => {
 
     const geo = new THREE.PlaneGeometry(600, 1200);
@@ -115,7 +114,7 @@ setTimeout(() => {
     const geo = new THREE.PlaneGeometry(1000, 1800);
     const mat = new THREE.MeshBasicMaterial({
         color: 0xff0000,
-        opacity: 0.4,
+        opacity: 0,
         transparent: true,
         side: THREE.DoubleSide
     });
@@ -139,9 +138,6 @@ setTimeout(() => {
 
 }, 500);
 
-
-
-
 setTimeout(() => {
 
     const geo = new THREE.PlaneGeometry(600, 600);
@@ -154,13 +150,13 @@ setTimeout(() => {
 
     const rect3 = new THREE.Mesh(geo, mat);
     rect3.name = "Ventilateur";
-    rect3.position.set(-4150, 650, 1292);  // 👉 À ajuster selon ton besoin
+    rect3.position.set(-4150, 650, 1292);
     rect3.lookAt(new THREE.Vector3(0, 0, 0));
 
     rect3.userData = {
         isClickable: true,
         active: false,
-        panelId: "ventilateur",   // ⚠️ doit exister dans panels.js
+        panelId: "ventilateur",
         found: false
     };
 
@@ -170,8 +166,6 @@ setTimeout(() => {
     totalZones++;
 
 }, 500);
-
-
 
 /* RAYCASTER */
 let raycaster = new THREE.Raycaster();
@@ -201,23 +195,19 @@ function handleSceneClick(event) {
             return;
         }
 
-        // Si déjà trouvé → ouvrir le panneau mais ne pas ajouter de coche
         if (obj.userData.found) {
             showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
             return;
         }
 
-        // Marquer comme trouvé
         obj.userData.found = true;
         foundZones++;
         document.getElementById("counter").innerText =
             `Zones trouvées : ${foundZones} / ${totalZones}`;
 
-        // Ajouter la coche UNE SEULE FOIS
         const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
         if (hit) addCheckMark(hit, currentPano === pano1 ? 1 : 2);
 
-        // Ouvrir le panneau
         showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
     }
 }
@@ -239,7 +229,6 @@ viewer.container.addEventListener("pointerup", (event) => {
 
     if (pointerMoved) return;
 
-    // Debug coordonnées
     const rect = viewer.container.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
@@ -258,6 +247,5 @@ viewer.container.addEventListener("pointerup", (event) => {
         console.log("Z :", Math.round(hit.z));
     }
 
-    // Clic hotspot
     handleSceneClick(event);
 });

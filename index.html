@@ -31,7 +31,8 @@
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            z-index: 20;
+            z-index: 999999;
+            pointer-events: auto;
         }
 
         /* Bouton changement image */
@@ -46,9 +47,9 @@
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            z-index: 20;
+            z-index: 999999;
+            pointer-events: auto;
         }
-
 
         /* PANEL HORIZONTAL */
         #infoPanel {
@@ -57,15 +58,15 @@
             left: 50%;
             transform: translate(-50%, -50%);
             width: 1000px;
-            
             max-width: 95vw;
             background: white;
             border-radius: 14px;
             padding: 20px;
             box-shadow: 0 0 35px rgba(0,0,0,0.35);
             display: none;
-            z-index: 30;
+            z-index: 99999;
             font-family: Arial, sans-serif;
+            pointer-events: auto;
         }
 
         #infoText {
@@ -130,6 +131,20 @@
             cursor: pointer;
             color: #444;
         }
+
+        /* COMPTEUR */
+        #counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 18px;
+            z-index: 999999;
+            pointer-events: none;
+        }
     </style>
 </head>
 
@@ -152,10 +167,7 @@
                     <h2 id="infoTitle" class="panel-title">Titre</h2>
                     <p id="infoText" class="panel-text">Texte descriptif…</p>
 
-                    <div class="panel-logos">
-                        <img src="assets/Challenge4.png" class="panel-logo">
-                        <img src="assets/EcoBaboy.png" class="panel-logo">
-                    </div>
+                    <div class="panel-logos"></div>
                 </div>
 
             </div>
@@ -167,21 +179,10 @@
 
     </div>
 
-        <div id="counter" style="
-        position:absolute;
-        top:20px;
-        right:20px;
-        background:rgba(0,0,0,0.6);
-        color:white;
-        padding:10px 16px;
-        border-radius:8px;
-        font-size:18px;
-        z-index:50;
-        z-index:999999 !important;
-
-    ">
-            Zones trouvées : 0
-        </div>
+    <!-- COMPTEUR -->
+    <div id="counter">
+        Zones trouvées : 0
+    </div>
 
 
     <script>
@@ -201,29 +202,28 @@
         viewer.add(pano1);
         viewer.add(pano2);
 
-        /* PANORAMA ACTIF */
         let currentPano = pano1;
 
         /* --- SWITCH IMAGE --- */
-        document.getElementById("switchImage").addEventListener("pointerdown", () => {
+        document.getElementById("switchImage").addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
 
             if (currentPano === pano1) {
                 currentPano = pano2;
                 viewer.setPanorama(pano2);
                 deactivateHotspots(hotspotsPano1);
                 activateHotspots(hotspotsPano2);
-                hideCheckmarks(checkmarksPano1);   // 👈 cacher coches pano1
-                showCheckmarks(checkmarksPano2);   // 👈 montrer coches pano2
+                hideCheckmarks(checkmarksPano1);
+                showCheckmarks(checkmarksPano2);
                 switchImage.innerText = "⬅️ Image Précédente";
             } else {
                 currentPano = pano1;
                 viewer.setPanorama(pano1);
                 deactivateHotspots(hotspotsPano2);
                 activateHotspots(hotspotsPano1);
-
-                hideCheckmarks(checkmarksPano2);   // 👈 cacher coches pano2
-                showCheckmarks(checkmarksPano1);   // 👈 montrer coches pano1
-
+                hideCheckmarks(checkmarksPano2);
+                showCheckmarks(checkmarksPano1);
                 switchImage.innerText = "➡️ Image suivante";
             }
         });
@@ -239,20 +239,21 @@
                 state ? "⏸️ Pause" : "▶️ Rotation";
         }
 
-        document.getElementById("toggleRotate").addEventListener("pointerdown", () => {
+        document.getElementById("toggleRotate").addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
             setAutoRotate(!isAutoRotateOn);
         });
 
-        /* --- PANEL FUNCTIONS (GLOBAL !) --- */
+        /* --- PANEL FUNCTIONS --- */
         window.showInfoPanel = function (title, text, imageUrl, logos = []) {
 
             document.getElementById("infoTitle").innerText = title;
             document.getElementById("infoText").innerText = text;
             document.getElementById("infoImage").src = imageUrl;
 
-            // --- LOGOS DYNAMIQUES ---
             const logosContainer = document.querySelector(".panel-logos");
-            logosContainer.innerHTML = ""; // on vide
+            logosContainer.innerHTML = "";
 
             logos.forEach(src => {
                 const img = document.createElement("img");
@@ -267,6 +268,7 @@
             setAutoRotate(false);
             disableViewerControls();
         };
+
         window.disableViewerControls = function () {
             if (viewer.OrbitControls) viewer.OrbitControls.enabled = false;
         };
@@ -275,13 +277,13 @@
             if (viewer.OrbitControls) viewer.OrbitControls.enabled = true;
         };
 
-        /* Bouton fermer */
         document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
             document.getElementById("infoPanel").style.display = "none";
             setAutoRotate(savedRotationState);
             enableViewerControls();
         });
     </script>
+
     <script src="./js/panels.js"></script>
     <script src="./js/detection.js"></script>
 
