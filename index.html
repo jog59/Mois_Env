@@ -66,6 +66,10 @@
             font-family: Arial, sans-serif;
         }
 
+        #infoText {
+            white-space: pre-line;
+        }
+
         .panel-content {
             display: flex;
             gap: 20px;
@@ -215,11 +219,22 @@
         });
 
         /* --- PANEL FUNCTIONS (GLOBAL !) --- */
-        window.showInfoPanel = function (title, text, imageUrl) {
+        window.showInfoPanel = function (title, text, imageUrl, logos = []) {
 
             document.getElementById("infoTitle").innerText = title;
             document.getElementById("infoText").innerText = text;
             document.getElementById("infoImage").src = imageUrl;
+
+            // --- LOGOS DYNAMIQUES ---
+            const logosContainer = document.querySelector(".panel-logos");
+            logosContainer.innerHTML = ""; // on vide
+
+            logos.forEach(src => {
+                const img = document.createElement("img");
+                img.src = src;
+                img.className = "panel-logo";
+                logosContainer.appendChild(img);
+            });
 
             document.getElementById("infoPanel").style.display = "block";
 
@@ -227,7 +242,6 @@
             setAutoRotate(false);
             disableViewerControls();
         };
-
         window.disableViewerControls = function () {
             if (viewer.OrbitControls) viewer.OrbitControls.enabled = false;
         };
@@ -243,7 +257,7 @@
             enableViewerControls();
         });
     </script>
-
+    <script src="./js/panels.js"></script>
     <script src="./js/detection.js"></script>
 
 </body>
