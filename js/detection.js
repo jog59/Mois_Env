@@ -81,7 +81,7 @@ function handleSceneClick(event) {
             showInfoPanel(
                 "Zone détectée",
                 "L’eau potable est une ressource industrielle à préserver. Une simple fuite peut représenter des centaines de litres gaspillés par jour.",
-                "assets/image_fontaine_fuite.png"
+                "assets/Image_Fontaine_Fuite.png"
             );
             return;
         }
