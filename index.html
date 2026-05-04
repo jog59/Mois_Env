@@ -180,18 +180,13 @@
                 state ? "⏸️ Pause" : "▶️ Rotation";
         }
 
-        const rotateBtn = document.getElementById("toggleRotate");
-
-        function handleRotateButton() {
+        /* Bouton rotation : pointerdown = tactile + souris + stylet */
+        document.getElementById("toggleRotate").addEventListener("pointerdown", () => {
             setAutoRotate(!isAutoRotateOn);
-        }
+        });
 
-        rotateBtn.addEventListener("click", handleRotateButton);
-        rotateBtn.addEventListener("touchstart", handleRotateButton, { passive: true });
-        rotateBtn.addEventListener("pointerdown", handleRotateButton);
-
-
-        document.getElementById("closePanelBtn").addEventListener("click", () => {
+        /* Bouton fermer */
+        document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
             document.getElementById("infoPanel").style.display = "none";
             setAutoRotate(savedRotationState);
             enableViewerControls();

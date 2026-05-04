@@ -1,9 +1,6 @@
 ﻿console.log("detection.js chargé");
 
-/* -------------------------------------------------------
-   Désactivation / Réactivation des contrôles utilisateur
--------------------------------------------------------- */
-
+/* Désactivation / Réactivation des contrôles utilisateur */
 function disableViewerControls() {
     if (viewer.OrbitControls) {
         viewer.OrbitControls.enabled = false;
@@ -22,34 +19,22 @@ function enableViewerControls() {
     }
 }
 
-/* -------------------------------------------------------
-   Ouverture du panneau
--------------------------------------------------------- */
-
+/* Ouverture du panneau */
 function showInfoPanel(title, text, imageUrl) {
 
-    // Remplit le panneau
     document.getElementById("infoTitle").innerText = title;
     document.getElementById("infoText").innerText = text;
     document.getElementById("infoImage").src = imageUrl;
 
-    // Affiche le panneau
     document.getElementById("infoPanel").style.display = "block";
 
-    // Sauvegarde l'état de rotation AVANT ouverture
     savedRotationState = isAutoRotateOn;
-
-    // Met en pause la rotation
     setAutoRotate(false);
 
-    // Désactive les contrôles utilisateur
     disableViewerControls();
 }
 
-/* -------------------------------------------------------
-   Hotspot rectangle
--------------------------------------------------------- */
-
+/* Hotspot rectangle */
 setTimeout(() => {
 
     console.log("Ajout du rectangle dans la scène Panolens");
@@ -73,24 +58,19 @@ setTimeout(() => {
 
 }, 500);
 
-/* -------------------------------------------------------
-   Raycaster
--------------------------------------------------------- */
-
+/* Raycaster */
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 
 function handleSceneClick(event) {
 
-    // Gestion tactile : récupérer la position du doigt
-    if (event.touches && event.touches.length > 0) {
-        event.clientX = event.touches[0].clientX;
-        event.clientY = event.touches[0].clientY;
-    }
-
     const rect = viewer.container.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    const clientX = event.clientX;
+    const clientY = event.clientY;
+
+    mouse.x = ((clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((clientY - rect.top) / rect.height) * 2 + 1;
 
     raycaster.setFromCamera(mouse, viewer.camera);
 
@@ -110,6 +90,5 @@ function handleSceneClick(event) {
     }
 }
 
-viewer.container.addEventListener("click", handleSceneClick);
-viewer.container.addEventListener("touchstart", handleSceneClick, { passive: true });
+/* Un seul event universel */
 viewer.container.addEventListener("pointerdown", handleSceneClick);
