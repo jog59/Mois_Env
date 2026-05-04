@@ -180,9 +180,16 @@
                 state ? "⏸️ Pause" : "▶️ Rotation";
         }
 
-        document.getElementById("toggleRotate").addEventListener("click", () => {
+        const rotateBtn = document.getElementById("toggleRotate");
+
+        function handleRotateButton() {
             setAutoRotate(!isAutoRotateOn);
-        });
+        }
+
+        rotateBtn.addEventListener("click", handleRotateButton);
+        rotateBtn.addEventListener("touchstart", handleRotateButton, { passive: true });
+        rotateBtn.addEventListener("pointerdown", handleRotateButton);
+
 
         document.getElementById("closePanelBtn").addEventListener("click", () => {
             document.getElementById("infoPanel").style.display = "none";

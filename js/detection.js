@@ -80,7 +80,13 @@ setTimeout(() => {
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 
-viewer.container.addEventListener('click', function (event) {
+function handleSceneClick(event) {
+
+    // Gestion tactile : récupérer la position du doigt
+    if (event.touches && event.touches.length > 0) {
+        event.clientX = event.touches[0].clientX;
+        event.clientY = event.touches[0].clientY;
+    }
 
     const rect = viewer.container.getBoundingClientRect();
     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
@@ -97,25 +103,13 @@ viewer.container.addEventListener('click', function (event) {
             showInfoPanel(
                 "Fontaine à eau",
                 "Cette fontaine présente un risque de fuite détecté lors du contrôle.",
-                "assets/Image_Fontaine_Fuite.png"
+                "assets/Image_Fontaine_Fuite.jpg"
             );
             return;
         }
     }
+}
 
-    const panoHit = raycaster.intersectObject(panorama, true);
-
-    if (panoHit.length === 0) {
-        console.log("Aucune intersection détectée");
-        return;
-    }
-
-    const point = panoHit[0].point;
-
-    console.log(
-        "Position 3D :",
-        point.x.toFixed(0),
-        point.y.toFixed(0),
-        point.z.toFixed(0)
-    );
-});
+viewer.container.addEventListener("click", handleSceneClick);
+viewer.container.addEventListener("touchstart", handleSceneClick, { passive: true });
+viewer.container.addEventListener("pointerdown", handleSceneClick);
