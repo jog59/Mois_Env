@@ -1,133 +1,197 @@
 <!DOCTYPE html>
-<html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity Web Player | skybox</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
-    <link rel="stylesheet" href="TemplateData/style.css">
-  </head>
-  <body>
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" width=1920 height=1080 tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Panolens 360</title>
+
+    <script src="./js/three.min.js"></script>
+    <script src="./js/panolens.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+        }
+
+        #viewer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Bouton Play/Pause flottant */
+        #toggleRotate {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        /* PANEL HORIZONTAL */
+        #infoPanel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 780px;
+            max-width: 95vw;
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 0 35px rgba(0,0,0,0.35);
+            display: none;
+            z-index: 30;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Contenu en 2 colonnes */
+        .panel-content {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Colonne gauche : image */
+        .panel-left {
+            flex: 1.2;
+        }
+
+        .panel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        /* Colonne droite */
+        .panel-right {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-title {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .panel-text {
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333;
+            margin: 0 0 20px 0;
+            flex: 1;
+        }
+
+        /* Logos */
+        .panel-logos {
+            display: flex;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .panel-logo {
+            width: 90px;
+            height: auto;
+        }
+
+        /* Bouton fermer */
+        #closePanelBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- VIEWER + UI -->
+    <div id="viewer">
+
+        <!-- PANEL D'INFO -->
+        <div id="infoPanel">
+
+            <button id="closePanelBtn">✖</button>
+
+            <div class="panel-content">
+
+                <!-- Image -->
+                <div class="panel-left">
+                    <img id="infoImage" src="" class="panel-image">
+                </div>
+
+                <!-- Texte + logos -->
+                <div class="panel-right">
+                    <h2 id="infoTitle" class="panel-title">Titre</h2>
+                    <p id="infoText" class="panel-text">Texte descriptif…</p>
+
+                    <div class="panel-logos">
+                        <img src="assets/Challenge4.png" class="panel-logo">
+                        <img src="assets/EcoBaboy.png" class="panel-logo">
+                    </div>
+                </div>
+
+            </div>
         </div>
-      </div>
-      <div id="unity-warning"> </div>
-      <div id="unity-footer">
-        <div id="unity-logo-title-footer"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">skybox</div>
-      </div>
+
+        <!-- BOUTON PLAY/PAUSE -->
+        <button id="toggleRotate">▶️ Rotation</button>
+
     </div>
+
     <script>
-      var canvas = document.querySelector("#unity-canvas");
+        /* --- PANORAMA --- */
+        const panorama = new PANOLENS.ImagePanorama('assets/image1.jpg');
 
-      // Shows a temporary message banner/ribbon for a few seconds, or
-      // a permanent error message on top of the canvas if type=='error'.
-      // If type=='warning', a yellow highlight color is used.
-      // Modify or remove this function to customize the visually presented
-      // way that non-critical warnings and error messages are presented to the
-      // user.
-      function unityShowBanner(msg, type) {
-        var warningBanner = document.querySelector("#unity-warning");
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        /* --- VIEWER --- */
+        const viewer = new PANOLENS.Viewer({
+            container: document.querySelector('#viewer'),
+            autoRotate: false,
+            autoRotateSpeed: 0.3,
+            controlBar: true,
+            output: 'console'
+        });
+
+        viewer.add(panorama);
+
+        /* --- GESTION AUTO-ROTATE --- */
+        let isAutoRotateOn = false;
+        let savedRotationState = false;
+
+        function setAutoRotate(state) {
+            isAutoRotateOn = state;
+            if (viewer.OrbitControls) {
+                viewer.OrbitControls.autoRotate = state;
+            }
+            document.getElementById("toggleRotate").innerText =
+                state ? "⏸️ Pause" : "▶️ Rotation";
         }
-        var div = document.createElement('div');
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == 'error') div.style = 'background: red; padding: 10px;';
-        else {
-          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
-          setTimeout(function() {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
-      }
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/export2.loader.js";
-      var config = {
-        arguments: [],
-        dataUrl: buildUrl + "/export2.data",
-        frameworkUrl: buildUrl + "/export2.framework.js",
-        codeUrl: buildUrl + "/export2.wasm",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "DefaultCompany",
-        productName: "skybox",
-        productVersion: "0.1.0",
-        showBanner: unityShowBanner,
-        // errorHandler: function(err, url, line) {
-        //    alert("error " + err + " occurred at line " + line);
-        //    // Return 'true' if you handled this error and don't want Unity
-        //    // to process it further, 'false' otherwise.
-        //    return true;
-        // },
-      };
+        document.getElementById("toggleRotate").addEventListener("click", () => {
+            setAutoRotate(!isAutoRotateOn);
+        });
 
-      // By default, Unity keeps WebGL canvas render target size matched with
-      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
-      // Set this to false if you want to decouple this synchronization from
-      // happening inside the engine, and you would instead like to size up
-      // the canvas DOM size and WebGL render target sizes yourself.
-      // config.matchWebGLToCanvasSize = false;
-
-      // If you would like all file writes inside Unity Application.persistentDataPath
-      // directory to automatically persist so that the contents are remembered when
-      // the user revisits the site the next time, uncomment the following line:
-      // config.autoSyncPersistentDataPath = true;
-      // This autosyncing is currently not the default behavior to avoid regressing
-      // existing user projects that might rely on the earlier manual
-      // JS_FileSystem_Sync() behavior, but in future Unity version, this will be
-      // expected to change.
-
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        // Mobile device style: fill the whole browser client area with the game canvas:
-
-        var meta = document.createElement('meta');
-        meta.name = 'viewport';
-        meta.content = 'width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes';
-        document.getElementsByTagName('head')[0].appendChild(meta);
-        document.querySelector("#unity-container").className = "unity-mobile";
-        canvas.className = "unity-mobile";
-
-        // To lower canvas resolution on mobile devices to gain some
-        // performance, uncomment the following line:
-        // config.devicePixelRatio = 1;
-
-
-      } else {
-        // Desktop style: Render the game canvas in a window that can be maximized to fullscreen:
-        canvas.style.width = "1920px";
-        canvas.style.height = "1080px";
-      }
-
-      document.querySelector("#unity-loading-bar").style.display = "block";
-
-      var script = document.createElement("script");
-      script.src = loaderUrl;
-      script.onload = () => {
-        createUnityInstance(canvas, config, (progress) => {
-          document.querySelector("#unity-progress-bar-full").style.width = 100 * progress + "%";
-              }).then((unityInstance) => {
-                document.querySelector("#unity-loading-bar").style.display = "none";
-                document.querySelector("#unity-fullscreen-button").onclick = () => {
-                  unityInstance.SetFullscreen(1);
-                };
-
-              }).catch((message) => {
-                alert(message);
-              });
-            };
-
-      document.body.appendChild(script);
-
+        document.getElementById("closePanelBtn").addEventListener("click", () => {
+            document.getElementById("infoPanel").style.display = "none";
+            setAutoRotate(savedRotationState);
+            enableViewerControls();
+        });
     </script>
-  </body>
+
+    <script src="./js/detection.js"></script>
+
+</body>
 </html>
