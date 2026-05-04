@@ -83,7 +83,7 @@ function handleSceneClick(event) {
             showInfoPanel(
                 "Fontaine à eau",
                 "Cette fontaine présente un risque de fuite détecté lors du contrôle.",
-                "assets/Image_Fontaine_Fuite.jpg"
+                "assets/Image_Fontaine_Fuite.png"
             );
             return;
         }
