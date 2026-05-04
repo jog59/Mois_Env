@@ -33,6 +33,21 @@
             z-index: 20;
         }
 
+        /* Bouton changement image */
+        #switchImage {
+            position: absolute;
+            bottom: 20px;
+            left: 160px;
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 20;
+        }
+
         /* PANEL HORIZONTAL */
         #infoPanel {
             position: absolute;
@@ -50,13 +65,11 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Contenu en 2 colonnes */
         .panel-content {
             display: flex;
             gap: 20px;
         }
 
-        /* Colonne gauche : image */
         .panel-left {
             flex: 1.2;
         }
@@ -68,7 +81,6 @@
             border-radius: 10px;
         }
 
-        /* Colonne droite */
         .panel-right {
             flex: 1;
             display: flex;
@@ -90,7 +102,6 @@
             flex: 1;
         }
 
-        /* Logos */
         .panel-logos {
             display: flex;
             gap: 16px;
@@ -102,7 +113,6 @@
             height: auto;
         }
 
-        /* Bouton fermer */
         #closePanelBtn {
             position: absolute;
             top: 10px;
@@ -118,7 +128,6 @@
 
 <body>
 
-    <!-- VIEWER + UI -->
     <div id="viewer">
 
         <!-- PANEL D'INFO -->
@@ -128,12 +137,10 @@
 
             <div class="panel-content">
 
-                <!-- Image -->
                 <div class="panel-left">
                     <img id="infoImage" src="" class="panel-image">
                 </div>
 
-                <!-- Texte + logos -->
                 <div class="panel-right">
                     <h2 id="infoTitle" class="panel-title">Titre</h2>
                     <p id="infoText" class="panel-text">Texte descriptif…</p>
@@ -147,14 +154,16 @@
             </div>
         </div>
 
-        <!-- BOUTON PLAY/PAUSE -->
+        <!-- BOUTONS -->
         <button id="toggleRotate">▶️ Rotation</button>
+        <button id="switchImage">➡️ Image suivante</button>
 
     </div>
 
     <script>
-        /* --- PANORAMA --- */
-        const panorama = new PANOLENS.ImagePanorama('assets/image1.jpg');
+        /* --- PANORAMAS --- */
+        const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
+        const pano2 = new PANOLENS.ImagePanorama('assets/image2.jpg');
 
         /* --- VIEWER --- */
         const viewer = new PANOLENS.Viewer({
@@ -165,25 +174,66 @@
             output: 'console'
         });
 
-        viewer.add(panorama);
+        viewer.add(pano1);
+        viewer.add(pano2);
 
-        /* --- GESTION AUTO-ROTATE --- */
+        /* PANORAMA ACTIF */
+        let currentPano = pano1;
+
+        /* --- SWITCH IMAGE --- */
+        document.getElementById("switchImage").addEventListener("pointerdown", () => {
+
+            if (currentPano === pano1) {
+                currentPano = pano2;
+                viewer.setPanorama(pano2);
+                deactivateHotspots(hotspotsPano1);
+                activateHotspots(hotspotsPano2);
+                switchImage.innerText = "⬅️ Retour image 1";
+            } else {
+                currentPano = pano1;
+                viewer.setPanorama(pano1);
+                deactivateHotspots(hotspotsPano2);
+                activateHotspots(hotspotsPano1);
+                switchImage.innerText = "➡️ Image suivante";
+            }
+        });
+
+        /* --- ROTATION AUTO --- */
         let isAutoRotateOn = false;
         let savedRotationState = false;
 
         function setAutoRotate(state) {
             isAutoRotateOn = state;
-            if (viewer.OrbitControls) {
-                viewer.OrbitControls.autoRotate = state;
-            }
+            if (viewer.OrbitControls) viewer.OrbitControls.autoRotate = state;
             document.getElementById("toggleRotate").innerText =
                 state ? "⏸️ Pause" : "▶️ Rotation";
         }
 
-        /* Bouton rotation : pointerdown = tactile + souris + stylet */
         document.getElementById("toggleRotate").addEventListener("pointerdown", () => {
             setAutoRotate(!isAutoRotateOn);
         });
+
+        /* --- PANEL FUNCTIONS (GLOBAL !) --- */
+        window.showInfoPanel = function (title, text, imageUrl) {
+
+            document.getElementById("infoTitle").innerText = title;
+            document.getElementById("infoText").innerText = text;
+            document.getElementById("infoImage").src = imageUrl;
+
+            document.getElementById("infoPanel").style.display = "block";
+
+            savedRotationState = isAutoRotateOn;
+            setAutoRotate(false);
+            disableViewerControls();
+        };
+
+        window.disableViewerControls = function () {
+            if (viewer.OrbitControls) viewer.OrbitControls.enabled = false;
+        };
+
+        window.enableViewerControls = function () {
+            if (viewer.OrbitControls) viewer.OrbitControls.enabled = true;
+        };
 
         /* Bouton fermer */
         document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
