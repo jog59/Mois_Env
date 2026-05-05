@@ -3,9 +3,11 @@
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
 let hotspotsPano2 = [];
+let hotspotsPano3 = [];
 
 let checkmarksPano1 = [];
 let checkmarksPano2 = [];
+let checkmarksPano3 = [];
 
 let totalZones = 0;
 let foundZones = 0;
@@ -29,7 +31,8 @@ function addCheckMark(position, panoIndex) {
     viewer.scene.add(sprite);
 
     if (panoIndex === 1) checkmarksPano1.push(sprite);
-    else checkmarksPano2.push(sprite);
+    else if (panoIndex === 2) checkmarksPano2.push(sprite);
+    else checkmarksPano3.push(sprite);
 }
 
 function hideCheckmarks(list) {
@@ -167,6 +170,44 @@ setTimeout(() => {
 
 }, 500);
 
+
+
+
+
+/* SON*/
+// Création du son spatial
+const listener = new THREE.AudioListener();
+viewer.camera.add(listener);
+
+const sound = new THREE.PositionalAudio(listener);
+
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load('assets/Voix 005.m4a', function (buffer) {
+    sound.setBuffer(buffer);
+    sound.setRefDistance(500);
+    sound.setLoop(true);
+    sound.setVolume(1.0);
+});
+
+// Objet 3D invisible qui porte le son
+const soundSource = new THREE.Mesh(
+    new THREE.SphereGeometry(50, 8, 8),
+    new THREE.MeshBasicMaterial({ visible: false })
+);
+
+soundSource.position.set(4579, -1496, -1038);
+soundSource.add(sound);
+viewer.scene.add(soundSource);
+
+document.addEventListener("pointerdown", () => {
+    if (sound && !sound.isPlaying) {
+        sound.play();
+    }
+}, { once: true });
+
+
+
+
 /* RAYCASTER */
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
@@ -206,7 +247,10 @@ function handleSceneClick(event) {
             `Zones trouvées : ${foundZones} / ${totalZones}`;
 
         const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
-        if (hit) addCheckMark(hit, currentPano === pano1 ? 1 : 2);
+        if (hit) addCheckMark(hit,
+            currentPano === pano1 ? 1 :
+                currentPano === pano2 ? 2 : 3
+        );
 
         showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
     }
@@ -249,3 +293,53 @@ viewer.container.addEventListener("pointerup", (event) => {
 
     handleSceneClick(event);
 });
+
+document.getElementById("switchImagePrev").addEventListener("pointerdown", (event) => {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    /* --- IMAGE 3 → IMAGE 2 --- */
+    if (currentPano === pano3) {
+
+        currentPano = pano2;
+        viewer.setPanorama(pano2);
+
+        deactivateHotspots(hotspotsPano3);
+        activateHotspots(hotspotsPano2);
+
+        hideCheckmarks(checkmarksPano3);
+        showCheckmarks(checkmarksPano2);
+
+        // Sur l'image 2 : bouton suivant + précédent
+        switchImage.style.display = "block";
+        switchImage.innerText = "➡️ Image suivante";
+
+        switchImagePrev.innerText = "⬅️ Image précédente";
+
+        return;
+    }
+
+    /* --- IMAGE 2 → IMAGE 1 --- */
+    if (currentPano === pano2) {
+
+        currentPano = pano1;
+        viewer.setPanorama(pano1);
+
+        deactivateHotspots(hotspotsPano2);
+        activateHotspots(hotspotsPano1);
+
+        hideCheckmarks(checkmarksPano2);
+        showCheckmarks(checkmarksPano1);
+
+        // Sur l'image 1 : seulement bouton suivant
+        switchImage.style.display = "block";
+        switchImage.innerText = "➡️ Image suivante";
+
+        switchImagePrev.style.display = "none";
+
+        return;
+    }
+});
+
+
+

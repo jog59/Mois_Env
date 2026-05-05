@@ -19,6 +19,12 @@
             height: 100vh;
         }
 
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    
+
         /* Bouton Play/Pause flottant */
         #toggleRotate {
             position: absolute;
@@ -35,11 +41,28 @@
             pointer-events: auto;
         }
 
+        #switchImagePrev {
+            position: absolute;
+            bottom: 20px;
+            left: 160px; /* même place que le bouton suivant par défaut */
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 999999;
+            pointer-events: auto;
+            /*display: none;*/ /* caché par défaut */
+        }
+
+
         /* Bouton changement image */
         #switchImage {
             position: absolute;
             bottom: 20px;
-            left: 160px;
+            left: 350px;
             padding: 12px 18px;
             background: rgba(0,0,0,0.6);
             color: white;
@@ -50,6 +73,8 @@
             z-index: 999999;
             pointer-events: auto;
         }
+
+
 
         /* PANEL HORIZONTAL */
         #infoPanel {
@@ -176,6 +201,7 @@
         <!-- BOUTONS -->
         <button id="toggleRotate">▶️ Rotation</button>
         <button id="switchImage">➡️ Image suivante</button>
+        <button id="switchImagePrev">➡️ Image suivante</button>
 
     </div>
 
@@ -189,6 +215,7 @@
         /* --- PANORAMAS --- */
         const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
         const pano2 = new PANOLENS.ImagePanorama('assets/image2.jpg');
+        const pano3 = new PANOLENS.ImagePanorama('assets/image1.jpg');
 
         /* --- VIEWER --- */
         const viewer = new PANOLENS.Viewer({
@@ -201,32 +228,87 @@
 
         viewer.add(pano1);
         viewer.add(pano2);
+        viewer.add(pano3);
 
         let currentPano = pano1;
+        // État initial : image 1
+        switchImagePrev.disabled = true;   // pas de précédent
+        switchImage.disabled = false;      // suivant actif
 
         /* --- SWITCH IMAGE --- */
-        document.getElementById("switchImage").addEventListener("pointerdown", (event) => {
+        switchImage.addEventListener("pointerdown", (event) => {
+            if (switchImage.disabled) return; // inactif = ne fait rien
             event.preventDefault();
             event.stopImmediatePropagation();
 
+            // IMAGE 1 → 2
             if (currentPano === pano1) {
                 currentPano = pano2;
                 viewer.setPanorama(pano2);
+
                 deactivateHotspots(hotspotsPano1);
                 activateHotspots(hotspotsPano2);
                 hideCheckmarks(checkmarksPano1);
                 showCheckmarks(checkmarksPano2);
-                switchImage.innerText = "⬅️ Image Précédente";
-            } else {
+
+                switchImagePrev.disabled = false;  // actif
+                switchImage.disabled = false;      // actif
+                return;
+            }
+
+            // IMAGE 2 → 3
+            if (currentPano === pano2) {
+                currentPano = pano3;
+                viewer.setPanorama(pano3);
+
+                deactivateHotspots(hotspotsPano2);
+                activateHotspots(hotspotsPano3);
+                hideCheckmarks(checkmarksPano2);
+                showCheckmarks(checkmarksPano3);
+
+                switchImage.disabled = true;       // ➡️ désactivé
+                switchImagePrev.disabled = false;  // ⬅️ actif
+                return;
+            }
+        });
+
+        switchImagePrev.addEventListener("pointerdown", (event) => {
+            if (switchImagePrev.disabled) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            // IMAGE 3 → 2
+            if (currentPano === pano3) {
+                currentPano = pano2;
+                viewer.setPanorama(pano2);
+
+                deactivateHotspots(hotspotsPano3);
+                activateHotspots(hotspotsPano2);
+                hideCheckmarks(checkmarksPano3);
+                showCheckmarks(checkmarksPano2);
+
+                switchImagePrev.disabled = false;
+                switchImage.disabled = false;
+                return;
+            }
+
+            // IMAGE 2 → 1
+            if (currentPano === pano2) {
                 currentPano = pano1;
                 viewer.setPanorama(pano1);
+
                 deactivateHotspots(hotspotsPano2);
                 activateHotspots(hotspotsPano1);
                 hideCheckmarks(checkmarksPano2);
                 showCheckmarks(checkmarksPano1);
-                switchImage.innerText = "➡️ Image suivante";
+
+                switchImagePrev.disabled = true;  // ⬅️ désactivé
+                switchImage.disabled = false;     // ➡️ actif
+                return;
             }
         });
+
+
 
         /* --- ROTATION AUTO --- */
         let isAutoRotateOn = false;
