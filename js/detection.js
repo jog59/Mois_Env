@@ -205,6 +205,15 @@ document.addEventListener("pointerdown", () => {
     }
 }, { once: true });
 
+// Lier le son à l'image 1
+pano1.addEventListener('enter', () => {
+    if (!sound.isPlaying) sound.play();
+});
+
+pano1.addEventListener('leave', () => {
+    if (sound.isPlaying) sound.stop();
+});
+
 
 
 
