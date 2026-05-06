@@ -387,7 +387,6 @@ const puddle = new THREE.Mesh(
 // Orientation au sol
 
 puddle.rotation.x = -Math.PI / 2;
-puddle.position.set(x, y + 0.5, z);
 
 
 // Position (à adapter à ton panorama)
