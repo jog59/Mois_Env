@@ -369,8 +369,8 @@ const puddleMaterial = new THREE.MeshStandardMaterial({
     transparent: true,
 
     opacity: 0.55,     // transparence légère mais lisible
-    roughness: 0.55,   // casse le brillant excessif
-    metalness: 0.0,   // surtout PAS métallique
+//    roughness: 0.55,   // casse le brillant excessif
+//    metalness: 0.0,   // surtout PAS métallique
 
     depthWrite: false
 });
