@@ -367,21 +367,28 @@ const puddleTexture = new THREE.TextureLoader().load('assets/flaque.png');
 const puddleMaterial = new THREE.MeshStandardMaterial({
     map: puddleTexture,
     transparent: true,
-    opacity: 0.35,     // clé : faible opacité
-    roughness: 0.15,   // surface mouillée
-    metalness: 0.0,
+
+    opacity: 0.55,     // transparence légère mais lisible
+    roughness: 0.55,   // casse le brillant excessif
+    metalness: 0.0,   // surtout PAS métallique
+
     depthWrite: false
 });
+
 puddleMaterial.color.setRGB(1.0, 1.0, 1.0)
 
 // Géométrie plate
 const puddle = new THREE.Mesh(
-    new THREE.PlaneGeometry(500, 350), // taille flaque
+    new THREE.PlaneGeometry(230, 160),
     puddleMaterial
 );
 
+
 // Orientation au sol
+
 puddle.rotation.x = -Math.PI / 2;
+puddle.position.set(x, y + 0.5, z);
+
 
 // Position (à adapter à ton panorama)
 puddle.position.set(3600, -2000, 1500);
