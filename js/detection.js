@@ -182,11 +182,19 @@ viewer.camera.add(listener);
 const sound = new THREE.PositionalAudio(listener);
 
 const audioLoader = new THREE.AudioLoader();
+
 audioLoader.load('assets/fuite_air_comprimee.m4a', function (buffer) {
     sound.setBuffer(buffer);
-    sound.setRefDistance(500);
     sound.setLoop(true);
-    sound.setVolume(1.0);
+
+    sound.setVolume(0.6);
+
+    sound.setRefDistance(100);
+    sound.setRolloffFactor(2.5);
+    sound.setDistanceModel('inverse');
+    sound.setMaxDistance(3000);
+
+    sound.setDirectionalCone(60, 180, 0.15);
 });
 
 // Objet 3D invisible qui porte le son
