@@ -182,7 +182,7 @@ viewer.camera.add(listener);
 const sound = new THREE.PositionalAudio(listener);
 
 const audioLoader = new THREE.AudioLoader();
-audioLoader.load('assets/Voix 005.m4a', function (buffer) {
+audioLoader.load('fuite_air_comprimee.m4a', function (buffer) {
     sound.setBuffer(buffer);
     sound.setRefDistance(500);
     sound.setLoop(true);
