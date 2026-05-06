@@ -360,4 +360,37 @@ document.getElementById("switchImagePrev").addEventListener("pointerdown", (even
 });
 
 
+// Texture flaque (PNG avec alpha)
+const puddleTexture = new THREE.TextureLoader().load('assets/flaque.png');
+
+// Matériau sol mouillé
+const puddleMaterial = new THREE.MeshStandardMaterial({
+    map: puddleTexture,
+    transparent: true,
+    opacity: 0.8,
+    roughness: 0.25,   // effet humide
+    metalness: 0.35,  // léger brillant
+    depthWrite: false // évite artefacts avec le sol
+});
+
+// Géométrie plate
+const puddle = new THREE.Mesh(
+    new THREE.PlaneGeometry(500, 350), // taille flaque
+    puddleMaterial
+);
+
+// Orientation au sol
+puddle.rotation.x = -Math.PI / 2;
+
+// Position (à adapter à ton panorama)
+puddle.position.set(2900, -1480, -2500);
+
+// Légèrement au-dessus du sol (évite z-fighting)
+puddle.position.y += 1;
+
+// Ajout à la scène
+viewer.scene.add(puddle);
+
+
+
 
