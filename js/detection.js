@@ -367,11 +367,12 @@ const puddleTexture = new THREE.TextureLoader().load('assets/flaque.png');
 const puddleMaterial = new THREE.MeshStandardMaterial({
     map: puddleTexture,
     transparent: true,
-    opacity: 0.7,
-    roughness: 0.5,    // très doux, eau propre
-    metalness: 0.0,   // surtout pas métallique
+    opacity: 0.35,     // clé : faible opacité
+    roughness: 0.15,   // surface mouillée
+    metalness: 0.0,
     depthWrite: false
 });
+puddleMaterial.color.setRGB(1.0, 1.0, 1.0)
 
 // Géométrie plate
 const puddle = new THREE.Mesh(
