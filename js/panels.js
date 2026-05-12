@@ -1,6 +1,8 @@
 ﻿// Base de données des panneaux
 window.PANELS = {
 
+
+    //PANNEAU FONTAINE
     fontaine: {
         title: "Fontaine à eau",
         text: `L’eau potable est une ressource industrielle à préserver.
@@ -18,6 +20,8 @@ Signaler immédiatement toute fuite à la maintenance.
         found: false
     },
 
+
+    // PANNEAU DECHETS
     dechets: {   // ⚠️ sans accent pour correspondre à panelId
         title: "Déchets",
         text: `Le tri des déchets : un geste simple, un impact majeur
@@ -39,6 +43,8 @@ Mal trier, c’est compromettre toute la chaine de recyclage et annuler les effo
         found: false
     },
 
+
+    //PANNEAU VENTILATEUR
     ventilateur: {
         title: "Ventilateur",
         text: `L’ utilisation d’un ventilateur sur ligne hors période de production génère une surconsommation électrique (Muda énergétique)
@@ -58,6 +64,30 @@ Chaque arrêt utile contribue à la performance, à la sécurité et à la durab
             "assets/EcoBaboy.png"
         ],
         found: false
+    },
+
+
+    //PANNEAU AIR COMPRIMEE
+       air_comprimee: {
+        title: "Air Comprimée",
+        text: `L’ utilisation d’un ventilateur sur ligne hors période de production génère une surconsommation électrique (Muda énergétique)
+        Chaque ventilateur consomme jusqu’à 300W par heure de fonctionnement.
+        Appliquons le pilier STOP de l’ESCO en arrêtant les équipements inutiles hors période de production ou si je n’en ai pas besoin
+
+        Pas de production = pas de fonctionnement inutile
+Avant de quitter votre poste ou lors d’un arrêt de production, pensez à vérifier :
+✅ L’équipement est-il nécessaire ?
+✅ Peut-il être arrêté en sécurité ?
+Chaque arrêt utile contribue à la performance, à la sécurité et à la durabilité du site.
+
+`,
+        image: "assets/Image_Ventilateur.png",
+        logos: [
+            "assets/Challenge4.png",
+            "assets/EcoBaboy.png"
+        ],
+        found: false
     }
+
 
 };

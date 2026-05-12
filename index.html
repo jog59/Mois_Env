@@ -62,7 +62,7 @@
         #switchImage {
             position: absolute;
             bottom: 20px;
-            left: 350px;
+            left: 370px;
             padding: 12px 18px;
             background: rgba(0,0,0,0.6);
             color: white;
@@ -200,8 +200,17 @@
 
         <!-- BOUTONS -->
         <button id="toggleRotate">▶️ Rotation</button>
-        <button id="switchImage">➡️ Image suivante</button>
-        <button id="switchImagePrev">➡️ Image suivante</button>
+        <button id="switchImage">Image suivante ➡️</button>
+        <button id="switchImagePrev">⬅️ Image précédente</button>
+
+        <button id="debugBtn" style="
+    position: absolute;
+    top: 100px;
+    right: 400px;
+    z-index: 999999;
+">
+            DEBUG
+        </button>
 
     </div>
 
@@ -337,6 +346,12 @@
             const logosContainer = document.querySelector(".panel-logos");
             logosContainer.innerHTML = "";
 
+
+            if (title === "Air Comprimée" && sound.isPlaying) {
+                sound.pause();
+            }
+
+
             logos.forEach(src => {
                 const img = document.createElement("img");
                 img.src = src;
@@ -345,6 +360,9 @@
             });
 
             document.getElementById("infoPanel").style.display = "block";
+
+
+
 
             savedRotationState = isAutoRotateOn;
             setAutoRotate(false);

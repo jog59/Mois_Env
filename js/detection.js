@@ -17,6 +17,32 @@ let pointerDownX = 0;
 let pointerDownY = 0;
 let pointerMoved = false;
 
+
+//MODE DEBUG
+let debugMode = false;
+function updateDebugVisibility() {
+
+    // Masquer toutes les zones
+    [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3].forEach(z => {
+        if (z.material) z.material.visible = false;
+    });
+
+    if (!debugMode) return;
+
+    // Afficher uniquement les zones du panorama actif
+    if (currentPano === pano1) {
+        hotspotsPano1.forEach(z => { if (z.material) z.material.visible = true; });
+    }
+
+    if (currentPano === pano2) {
+        hotspotsPano2.forEach(z => { if (z.material) z.material.visible = true; });
+    }
+
+    if (currentPano === pano3) {
+        hotspotsPano3.forEach(z => { if (z.material) z.material.visible = true; });
+    }
+}
+
 /* AJOUT COCHES */
 function addCheckMark(position, panoIndex) {
     const texture = new THREE.TextureLoader().load("assets/picto-coche-verte.png");
@@ -58,9 +84,10 @@ setTimeout(() => {
     const geo = new THREE.PlaneGeometry(600, 1930);
     const mat = new THREE.MeshBasicMaterial({
         color: 0x00ff00,
-        opacity: 0,
-        transparent: true,
-        side: THREE.DoubleSide
+        opacity: 0.5,
+        transparent: false,
+        side: THREE.DoubleSide,
+        visible: debugMode
     });
 
     const rect1 = new THREE.Mesh(geo, mat);
@@ -82,13 +109,43 @@ setTimeout(() => {
 
 }, 500);
 
+
+     setTimeout(() => {  
+
+    const geo = new THREE.PlaneGeometry(600, 1930);
+    const mat = new THREE.MeshBasicMaterial({
+        color: 0x00ff00,
+        opacity: 0.5,
+        transparent: false,
+        side: THREE.DoubleSide
+    });
+
+    const rect5 = new THREE.Mesh(geo, mat);
+    rect5.name = "Air Comprimee";
+    rect5.position.set(4501, -1600, -1200);
+    rect5.lookAt(new THREE.Vector3(0, 0, 0));
+
+    rect5.userData = {
+        isClickable: true,
+        active: true,
+        panelId: "air_comprimee",
+        found: false
+    };
+
+    hotspotsPano1.push(rect5);
+    viewer.scene.add(rect5);
+
+    totalZones++;
+
+}, 500);   
+
 /* HOTSPOTS PANORAMA 2 */
 setTimeout(() => {
 
     const geo = new THREE.PlaneGeometry(600, 1200);
     const mat = new THREE.MeshBasicMaterial({
         color: 0xff0000,
-        opacity: 0,
+        opacity: 0.5,
         transparent: true,
         side: THREE.DoubleSide
     });
@@ -117,7 +174,7 @@ setTimeout(() => {
     const geo = new THREE.PlaneGeometry(1000, 1800);
     const mat = new THREE.MeshBasicMaterial({
         color: 0xff0000,
-        opacity: 0,
+        opacity: 0.5,
         transparent: true,
         side: THREE.DoubleSide
     });
@@ -146,7 +203,7 @@ setTimeout(() => {
     const geo = new THREE.PlaneGeometry(600, 600);
     const mat = new THREE.MeshBasicMaterial({
         color: 0x0000ff,
-        opacity: 0,
+        opacity: 0.5,
         transparent: true,
         side: THREE.DoubleSide
     });
@@ -182,11 +239,19 @@ viewer.camera.add(listener);
 const sound = new THREE.PositionalAudio(listener);
 
 const audioLoader = new THREE.AudioLoader();
-audioLoader.load('assets/Voix 005.m4a', function (buffer) {
+
+
+audioLoader.load('assets/fuite_air_comprimee.m4a', function (buffer) {
     sound.setBuffer(buffer);
-    sound.setRefDistance(500);
     sound.setLoop(true);
-    sound.setVolume(1.0);
+    sound.setVolume(0.6);
+
+    sound.setRefDistance(800);
+    sound.setMaxDistance(8000);
+    sound.setRolloffFactor(1.2);
+    sound.setDistanceModel('inverse');
+
+    sound.setDirectionalCone(120, 240, 0.4);
 });
 
 // Objet 3D invisible qui porte le son
@@ -196,6 +261,7 @@ const soundSource = new THREE.Mesh(
 );
 
 soundSource.position.set(4579, -1496, -1038);
+soundSource.lookAt(viewer.camera.position);
 soundSource.add(sound);
 viewer.scene.add(soundSource);
 
@@ -349,6 +415,17 @@ document.getElementById("switchImagePrev").addEventListener("pointerdown", (even
         return;
     }
 });
+
+
+function handlePanelSound(panelId) {
+    if (panelId === "air_comprimee" && sound.isPlaying) {
+        sound.pause();
+    }
+}
+
+
+
+
 
 
 
