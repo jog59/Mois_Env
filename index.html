@@ -260,8 +260,13 @@
                 hideCheckmarks(checkmarksPano1);
                 showCheckmarks(checkmarksPano2);
 
+                updateDebugVisibility();
+
                 switchImagePrev.disabled = false;  // actif
-                switchImage.disabled = false;      // actif
+                switchImage.disabled = false;      // actif.
+
+
+ 
                 return;
             }
 
@@ -275,10 +280,14 @@
                 hideCheckmarks(checkmarksPano2);
                 showCheckmarks(checkmarksPano3);
 
+                updateDebugVisibility();
+
                 switchImage.disabled = true;       // ➡️ désactivé
                 switchImagePrev.disabled = false;  // ⬅️ actif
                 return;
             }
+
+
         });
 
         switchImagePrev.addEventListener("pointerdown", (event) => {
@@ -382,6 +391,16 @@
             setAutoRotate(savedRotationState);
             enableViewerControls();
         });
+
+            document.getElementById("infoPanel").addEventListener("pointerdown", (event) => {
+                event.stopPropagation();
+            });
+
+            document.getElementById("debugBtn").addEventListener("pointerdown", () => {
+                debugMode = !debugMode;
+                updateDebugVisibility();
+            });
+
     </script>
 
     <script src="./js/panels.js"></script>
