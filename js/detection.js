@@ -271,7 +271,7 @@ setTimeout(() => {
 /* HOTSPOTS PANORAMA 4 */
 
 setTimeout(() => {
-    const geo = new THREE.PlaneGeometry(600, 1930);
+    const geo = new THREE.PlaneGeometry(1900, 600);
     const mat = new THREE.MeshBasicMaterial({
         color: 0x00ff00,
         opacity: 0.5,
