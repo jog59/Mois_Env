@@ -427,10 +427,10 @@ document.getElementById("switchImagePrev").addEventListener("pointerdown", (even
 
         // Sur l'image 3 : bouton suivant + précédent
         switchImage.style.display = "block";
-/*        switchImage.innerText = "➡️ Image suivante";
+        switchImage.innerText = "➡️ Image suivante";
 
         switchImagePrev.innerText = "⬅️ Image précédente";
-*/
+
         return;
     }
 
