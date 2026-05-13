@@ -1,6 +1,9 @@
-﻿console.log("detection.js chargé");
+console.log("detection.js chargé");
 
-/* LISTES DE HOTSPOTS */
+/* ========================= */
+/* VARIABLES */
+/* ========================= */
+
 let hotspotsPano1 = [];
 let hotspotsPano2 = [];
 let hotspotsPano3 = [];
@@ -12,416 +15,374 @@ let checkmarksPano3 = [];
 let totalZones = 0;
 let foundZones = 0;
 
-/* Variables pour différencier clic / glissé */
+/* DRAG vs CLICK */
 let pointerDownX = 0;
 let pointerDownY = 0;
 let pointerMoved = false;
 
-
-//MODE DEBUG
+/* DEBUG */
 let debugMode = false;
+
+/* ========================= */
+/* DEBUG VISIBILITY */
+/* ========================= */
+
 function updateDebugVisibility() {
 
-    // Masquer toutes les zones
-    [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3].forEach(z => {
-        if (z.material) z.material.visible = false;
-    });
+  [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3].forEach(z => {
+    if (z.material) z.material.visible = false;
+  });
 
-    if (!debugMode) return;
+  if (!debugMode) return;
 
-    // Afficher uniquement les zones du panorama actif
-    if (currentPano === pano1) {
-        hotspotsPano1.forEach(z => { if (z.material) z.material.visible = true; });
-    }
+  if (currentPano === pano1) {
+    hotspotsPano1.forEach(z => z.material.visible = true);
+  }
 
-    if (currentPano === pano2) {
-        hotspotsPano2.forEach(z => { if (z.material) z.material.visible = true; });
-    }
+  if (currentPano === pano2) {
+    hotspotsPano2.forEach(z => z.material.visible = true);
+  }
 
-    if (currentPano === pano3) {
-        hotspotsPano3.forEach(z => { if (z.material) z.material.visible = true; });
-    }
+  if (currentPano === pano3) {
+    hotspotsPano3.forEach(z => z.material.visible = true);
+  }
 }
 
-/* AJOUT COCHES */
+/* ========================= */
+/* CHECKMARKS */
+/* ========================= */
+
 function addCheckMark(position, panoIndex) {
-    const texture = new THREE.TextureLoader().load("assets/picto-coche-verte.png");
-    const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
-    const sprite = new THREE.Sprite(material);
 
-    sprite.scale.set(500, 500, 1);
+  const texture = new THREE.TextureLoader().load("assets/picto-coche-verte.png");
+  const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
 
-    const direction = position.clone().normalize();
-    sprite.position.copy(position.clone().sub(direction.multiplyScalar(150)));
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(500, 500, 1);
 
-    viewer.scene.add(sprite);
+  const direction = position.clone().normalize();
+  sprite.position.copy(position.clone().sub(direction.multiplyScalar(150)));
 
-    if (panoIndex === 1) checkmarksPano1.push(sprite);
-    else if (panoIndex === 2) checkmarksPano2.push(sprite);
-    else checkmarksPano3.push(sprite);
+  viewer.scene.add(sprite);
+
+  if (panoIndex === 1) checkmarksPano1.push(sprite);
+  else if (panoIndex === 2) checkmarksPano2.push(sprite);
+  else checkmarksPano3.push(sprite);
 }
 
 function hideCheckmarks(list) {
-    list.forEach(s => s.visible = false);
+  list.forEach(s => s.visible = false);
 }
 
 function showCheckmarks(list) {
-    list.forEach(s => s.visible = true);
+  list.forEach(s => s.visible = true);
 }
 
-/* ACTIVER / DÉSACTIVER HOTSPOTS */
+/* ========================= */
+/* ACTIVATION HOTSPOTS */
+/* ========================= */
+
 function activateHotspots(list) {
-    list.forEach(h => h.userData.active = true);
+  list.forEach(h => h.userData.active = true);
 }
 
 function deactivateHotspots(list) {
-    list.forEach(h => h.userData.active = false);
+  list.forEach(h => h.userData.active = false);
 }
 
-/* HOTSPOTS PANORAMA 1 */
+/* ========================= */
+/* HOTSPOTS PANO 1 */
+/* ========================= */
+
 setTimeout(() => {
 
-    const geo = new THREE.PlaneGeometry(600, 1930);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        opacity: 0.5,
-        transparent: false,
-        side: THREE.DoubleSide,
-        visible: debugMode
-    });
+  const geo = new THREE.PlaneGeometry(600, 1930);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    opacity: 0.5,
+    transparent: true,
+    side: THREE.DoubleSide,
+    visible: debugMode
+  });
 
-    const rect1 = new THREE.Mesh(geo, mat);
-    rect1.name = "Fontaine";
-    rect1.position.set(3600, -1080, 2500);
-    rect1.lookAt(new THREE.Vector3(0, 0, 0));
+  const rect1 = new THREE.Mesh(geo, mat);
 
-    rect1.userData = {
-        isClickable: true,
-        active: true,
-        panelId: "fontaine",
-        found: false
-    };
+  rect1.name = "Fontaine";
+  rect1.position.set(3600, -1080, 2500);
+  rect1.lookAt(new THREE.Vector3(0, 0, 0));
 
-    hotspotsPano1.push(rect1);
-    viewer.scene.add(rect1);
+  rect1.userData = {
+    isClickable: true,
+    active: true,
+    panelId: "fontaine",
+    found: false
+  };
 
-    totalZones++;
-
-}, 500);
-
-
-     setTimeout(() => {  
-
-    const geo = new THREE.PlaneGeometry(600, 1930);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        opacity: 0.5,
-        transparent: false,
-        side: THREE.DoubleSide
-    });
-
-    const rect5 = new THREE.Mesh(geo, mat);
-    rect5.name = "Air Comprimee";
-    rect5.position.set(4501, -1600, -1200);
-    rect5.lookAt(new THREE.Vector3(0, 0, 0));
-
-    rect5.userData = {
-        isClickable: true,
-        active: true,
-        panelId: "air_comprimee",
-        found: false
-    };
-
-    hotspotsPano1.push(rect5);
-    viewer.scene.add(rect5);
-
-    totalZones++;
-
-}, 500);   
-
-/* HOTSPOTS PANORAMA 2 */
-setTimeout(() => {
-
-    const geo = new THREE.PlaneGeometry(600, 1200);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-    });
-
-    const rect2 = new THREE.Mesh(geo, mat);
-    rect2.name = "Déchets";
-    rect2.position.set(3400, -1360, -3000);
-    rect2.lookAt(new THREE.Vector3(0, 0, 0));
-
-    rect2.userData = {
-        isClickable: true,
-        active: false,
-        panelId: "dechets",
-        found: false
-    };
-
-    hotspotsPano2.push(rect2);
-    viewer.scene.add(rect2);
-
-    totalZones++;
+  hotspotsPano1.push(rect1);
+  viewer.scene.add(rect1);
+  totalZones++;
 
 }, 500);
 
 setTimeout(() => {
 
-    const geo = new THREE.PlaneGeometry(1000, 1800);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-    });
+  const geo = new THREE.PlaneGeometry(600, 1930);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0x00ff00,
+    opacity: 0.5,
+    transparent: true,
+    side: THREE.DoubleSide,
+    visible: debugMode
+  });
 
-    const rect4 = new THREE.Mesh(geo, mat);
-    rect4.name = "Déchets2";
-    rect4.position.set(-2100, -1800, -1600);
-    rect4.lookAt(new THREE.Vector3(0, 0, 0));
+  const rect5 = new THREE.Mesh(geo, mat);
 
-    rect4.userData = {
-        isClickable: true,
-        active: false,
-        panelId: "dechets",
-        found: false
-    };
+  rect5.name = "Air Comprimee";
+  rect5.position.set(4501, -1600, -1200);
+  rect5.lookAt(new THREE.Vector3(0, 0, 0));
 
-    hotspotsPano2.push(rect4);
-    viewer.scene.add(rect4);
+  rect5.userData = {
+    isClickable: true,
+    active: true,
+    panelId: "air_comprimee",
+    found: false
+  };
 
-    totalZones++;
+  hotspotsPano1.push(rect5);
+  viewer.scene.add(rect5);
+  totalZones++;
+
+}, 500);
+
+/* ========================= */
+/* HOTSPOTS PANO 2 */
+/* ========================= */
+
+setTimeout(() => {
+
+  const geo = new THREE.PlaneGeometry(600, 1200);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0xff0000,
+    opacity: 0.5,
+    transparent: true,
+    side: THREE.DoubleSide
+  });
+
+  const rect2 = new THREE.Mesh(geo, mat);
+
+  rect2.name = "Déchets";
+  rect2.position.set(3400, -1360, -3000);
+  rect2.lookAt(new THREE.Vector3(0, 0, 0));
+
+  rect2.userData = {
+    isClickable: true,
+    active: false,
+    panelId: "dechets",
+    found: false
+  };
+
+  hotspotsPano2.push(rect2);
+  viewer.scene.add(rect2);
+  totalZones++;
 
 }, 500);
 
 setTimeout(() => {
 
-    const geo = new THREE.PlaneGeometry(600, 600);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0x0000ff,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-    });
+  const geo = new THREE.PlaneGeometry(1000, 1800);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0xff0000,
+    opacity: 0.5,
+    transparent: true,
+    side: THREE.DoubleSide
+  });
 
-    const rect3 = new THREE.Mesh(geo, mat);
-    rect3.name = "Ventilateur";
-    rect3.position.set(-4150, 650, 1292);
-    rect3.lookAt(new THREE.Vector3(0, 0, 0));
+  const rect4 = new THREE.Mesh(geo, mat);
 
-    rect3.userData = {
-        isClickable: true,
-        active: false,
-        panelId: "ventilateur",
-        found: false
-    };
+  rect4.name = "Déchets2";
+  rect4.position.set(-2100, -1800, -1600);
+  rect4.lookAt(new THREE.Vector3(0, 0, 0));
 
-    hotspotsPano2.push(rect3);
-    viewer.scene.add(rect3);
+  rect4.userData = {
+    isClickable: true,
+    active: false,
+    panelId: "dechets",
+    found: false
+  };
 
-    totalZones++;
+  hotspotsPano2.push(rect4);
+  viewer.scene.add(rect4);
+  totalZones++;
 
 }, 500);
 
+setTimeout(() => {
 
+  const geo = new THREE.PlaneGeometry(600, 600);
+  const mat = new THREE.MeshBasicMaterial({
+    color: 0x0000ff,
+    opacity: 0.5,
+    transparent: true,
+    side: THREE.DoubleSide
+  });
 
+  const rect3 = new THREE.Mesh(geo, mat);
 
+  rect3.name = "Ventilateur";
+  rect3.position.set(-4150, 650, 1292);
+  rect3.lookAt(new THREE.Vector3(0, 0, 0));
 
-/* SON*/
-// Création du son spatial
+  rect3.userData = {
+    isClickable: true,
+    active: false,
+    panelId: "ventilateur",
+    found: false
+  };
+
+  hotspotsPano2.push(rect3);
+  viewer.scene.add(rect3);
+  totalZones++;
+
+}, 500);
+
+/* ========================= */
+/* SON SPATIAL */
+/* ========================= */
+
 const listener = new THREE.AudioListener();
 viewer.camera.add(listener);
 
 const sound = new THREE.PositionalAudio(listener);
-
 const audioLoader = new THREE.AudioLoader();
 
-
 audioLoader.load('assets/fuite_air_comprimee.m4a', function (buffer) {
-    sound.setBuffer(buffer);
-    sound.setLoop(true);
-    sound.setVolume(0.6);
 
-    sound.setRefDistance(800);
-    sound.setMaxDistance(8000);
-    sound.setRolloffFactor(1.2);
-    sound.setDistanceModel('inverse');
-
-    sound.setDirectionalCone(120, 240, 0.4);
+  sound.setBuffer(buffer);
+  sound.setLoop(true);
+  sound.setVolume(0.6);
+  sound.setRefDistance(800);
+  sound.setMaxDistance(8000);
 });
 
-// Objet 3D invisible qui porte le son
 const soundSource = new THREE.Mesh(
-    new THREE.SphereGeometry(50, 8, 8),
-    new THREE.MeshBasicMaterial({ visible: false })
+  new THREE.SphereGeometry(50, 8, 8),
+  new THREE.MeshBasicMaterial({ visible: false })
 );
 
 soundSource.position.set(4579, -1496, -1038);
-soundSource.lookAt(viewer.camera.position);
 soundSource.add(sound);
+
 viewer.scene.add(soundSource);
 
-document.addEventListener("pointerdown", () => {
-    if (sound && !sound.isPlaying) {
-        sound.play();
-    }
-}, { once: true });
+/* ========================= */
+/* GESTION SON PANEL */
+/* ========================= */
 
-// Lier le son à l'image 1
-pano1.addEventListener('enter', () => {
-    if (!sound.isPlaying) sound.play();
-});
+function handlePanelSound(panelId) {
+  if (panelId === "air_comprimee" && sound.isPlaying) {
+    sound.pause();
+  }
+}
 
-pano1.addEventListener('leave', () => {
-    if (sound.isPlaying) sound.stop();
-});
+/* ========================= */
+/* RAYCAST */
+/* ========================= */
 
-
-
-
-/* RAYCASTER */
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 
-/* FONCTION PRINCIPALE DE CLIC */
+/* ========================= */
+/* CLICK PRINCIPAL */
+/* ========================= */
+
 function handleSceneClick(event) {
 
-    const rect = viewer.container.getBoundingClientRect();
-    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  const rect = viewer.container.getBoundingClientRect();
 
-    raycaster.setFromCamera(mouse, viewer.camera);
+  mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+  mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    const intersects = raycaster.intersectObjects(viewer.scene.children, true);
+  raycaster.setFromCamera(mouse, viewer.camera);
 
-    if (intersects.length === 0) return;
+  const intersects = raycaster.intersectObjects(viewer.scene.children, true);
 
-    const obj = intersects[0].object;
+  if (intersects.length === 0) return;
 
-    if (obj.userData.isClickable && obj.userData.active) {
+  const obj = intersects[0].object;
 
-        const panel = PANELS[obj.userData.panelId];
+  if (obj.userData.isClickable && obj.userData.active) {
 
-        if (!panel) {
-            console.warn("Panel introuvable :", obj.userData.panelId);
-            return;
-        }
+    const panel = PANELS[obj.userData.panelId];
 
-        if (obj.userData.found) {
-            showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.video || null);
-            return;
-        }
-
-        obj.userData.found = true;
-        foundZones++;
-        document.getElementById("counter").innerText =
-            `Zones trouvées : ${foundZones} / ${totalZones}`;
-
-        const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
-        if (hit) addCheckMark(hit,
-            currentPano === pano1 ? 1 :
-                currentPano === pano2 ? 2 : 3
-        );
-
-        showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.video || null);
+    if (!panel) {
+      console.warn("Panel introuvable :", obj.userData.panelId);
+      return;
     }
+
+    handlePanelSound(obj.userData.panelId);
+
+    // Déjà trouvé
+    if (obj.userData.found) {
+
+      showInfoPanel(
+        panel.title,
+        panel.text,
+        panel.image,
+        panel.logos || [],
+        panel.video || null
+      );
+      return;
+    }
+
+    // Nouveau
+    obj.userData.found = true;
+    foundZones++;
+
+    document.getElementById("counter").innerText =
+      `Zones trouvées : ${foundZones} / ${totalZones}`;
+
+    const hit = raycaster.ray.intersectSphere(
+      new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000)
+    );
+
+    if (hit) {
+      addCheckMark(
+        hit,
+        currentPano === pano1 ? 1 :
+        currentPano === pano2 ? 2 : 3
+      );
+    }
+
+    showInfoPanel(
+      panel.title,
+      panel.text,
+      panel.image,
+      panel.logos || [],
+      panel.video || null
+    );
+  }
 }
 
-/* GESTION DU DRAG VS CLIC */
+/* ========================= */
+/* EVENTS POINTER */
+/* ========================= */
+
 viewer.container.addEventListener("pointerdown", (event) => {
-    pointerMoved = false;
-    pointerDownX = event.clientX;
-    pointerDownY = event.clientY;
+  pointerMoved = false;
+  pointerDownX = event.clientX;
+  pointerDownY = event.clientY;
 });
 
 viewer.container.addEventListener("pointermove", (event) => {
-    const dx = Math.abs(event.clientX - pointerDownX);
-    const dy = Math.abs(event.clientY - pointerDownY);
-    if (dx > 5 || dy > 5) pointerMoved = true;
+  const dx = Math.abs(event.clientX - pointerDownX);
+  const dy = Math.abs(event.clientY - pointerDownY);
+  if (dx > 5 || dy > 5) pointerMoved = true;
 });
 
 viewer.container.addEventListener("pointerup", (event) => {
-
-    if (pointerMoved) return;
-
-    const rect = viewer.container.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
-    const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
-
-    const mouseVec = new THREE.Vector2(x, y);
-    const ray = new THREE.Raycaster();
-    ray.setFromCamera(mouseVec, viewer.camera);
-
-    const sphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000);
-    const hit = ray.ray.intersectSphere(sphere);
-
-    if (hit) {
-        console.log("%cCoordonnées 3D :", "color:#00c853;font-weight:bold;");
-        console.log("X :", Math.round(hit.x));
-        console.log("Y :", Math.round(hit.y));
-        console.log("Z :", Math.round(hit.z));
-    }
-
-    handleSceneClick(event);
+  if (pointerMoved) return;
+  handleSceneClick(event);
 });
-
-document.getElementById("switchImagePrev").addEventListener("pointerdown", (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-
-    /* --- IMAGE 3 → IMAGE 2 --- */
-    if (currentPano === pano3) {
-
-        currentPano = pano2;
-        viewer.setPanorama(pano2);
-
-        deactivateHotspots(hotspotsPano3);
-        activateHotspots(hotspotsPano2);
-
-        hideCheckmarks(checkmarksPano3);
-        showCheckmarks(checkmarksPano2);
-
-        // Sur l'image 2 : bouton suivant + précédent
-        switchImage.style.display = "block";
-        switchImage.innerText = "➡️ Image suivante";
-
-        switchImagePrev.innerText = "⬅️ Image précédente";
-
-        return;
-    }
-
-    /* --- IMAGE 2 → IMAGE 1 --- */
-    if (currentPano === pano2) {
-
-        currentPano = pano1;
-        viewer.setPanorama(pano1);
-
-        deactivateHotspots(hotspotsPano2);
-        activateHotspots(hotspotsPano1);
-
-        hideCheckmarks(checkmarksPano2);
-        showCheckmarks(checkmarksPano1);
-
-        // Sur l'image 1 : seulement bouton suivant
-        switchImage.style.display = "block";
-        switchImage.innerText = "➡️ Image suivante";
-
-        switchImagePrev.style.display = "none";
-
-        return;
-    }
-});
-
-
-function handlePanelSound(panelId) {
-    if (panelId === "air_comprimee" && sound.isPlaying) {
-        sound.pause();
-    }
-}
 
 
 
