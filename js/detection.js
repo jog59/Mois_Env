@@ -282,7 +282,7 @@ setTimeout(() => {
 
     const Zone4_1 = new THREE.Mesh(geo, mat);
     Zone4_1.name = "Fontaine";
-    Zone4_1.position.set(1900, -1400, -3000);
+    Zone4_1.position.set(1500, -1200, -3000);
     Zone4_1.lookAt(new THREE.Vector3(0, 0, 0));
 
     Zone4_1.userData = {
