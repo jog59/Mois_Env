@@ -233,7 +233,7 @@ setTimeout(() => {
 
 setTimeout(() => {
 
-    const geo = new THREE.PlaneGeometry(600, 600);
+    const geo = new THREE.PlaneGeometry(800, 1200);
     const mat = new THREE.MeshBasicMaterial({
         color: 0x0000ff,
         opacity: 0.5,
