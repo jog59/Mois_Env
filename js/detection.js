@@ -1,13 +1,15 @@
-console.log("detection.js chargé !!");
+console.log("detection.js chargé");
 
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
 let hotspotsPano2 = [];
 let hotspotsPano3 = [];
+let hotspotsPano4 = [];
 
 let checkmarksPano1 = [];
 let checkmarksPano2 = [];
 let checkmarksPano3 = [];
+let checkmarksPano4 = [];
 
 let totalZones = 0;
 let foundZones = 0;
@@ -23,7 +25,7 @@ let debugMode = false;
 function updateDebugVisibility() {
 
     // Masquer toutes les zones
-    [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3].forEach(z => {
+    [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3, ...hotspotsPano4].forEach(z => {
         if (z.material) z.material.visible = false;
     });
 
@@ -58,7 +60,8 @@ function addCheckMark(position, panoIndex) {
 
     if (panoIndex === 1) checkmarksPano1.push(sprite);
     else if (panoIndex === 2) checkmarksPano2.push(sprite);
-    else checkmarksPano3.push(sprite);
+    else if (panoIndex === 3) checkmarksPano3.push(sprite);
+    else checkmarksPano4.push(sprite);
 }
 
 function hideCheckmarks(list) {
@@ -261,8 +264,8 @@ setTimeout(() => {
 
 }, 500);
 
-
-
+/* HOTSPOTS PANORAMA 3 */
+/* HOTSPOTS PANORAMA 4 */
 
 
 /* SON*/
@@ -421,10 +424,10 @@ document.getElementById("switchImagePrev").addEventListener("pointerdown", (even
 
         // Sur l'image 2 : bouton suivant + précédent
         switchImage.style.display = "block";
-        switchImage.innerText = "➡️ Image suivante";
+/*        switchImage.innerText = "➡️ Image suivante";
 
         switchImagePrev.innerText = "⬅️ Image précédente";
-
+*/
         return;
     }
 
