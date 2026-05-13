@@ -184,9 +184,27 @@
 
             <div class="panel-content">
 
-                <div class="panel-left">
-                    <img id="infoImage" src="" class="panel-image">
+
+            <div class="panel-left">
+                <img id="infoImage" class="panel-image">
+            
+                <div id="videoOverlay" style="
+                    position:absolute;
+                    top:0;
+                    left:0;
+                    width:100%;
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    cursor:pointer;
+                  ">
+                    ▶️
                 </div>
+            
+                <video id="infoVideo" class="panel-image" controls style="display:none;"></video>
+            </div>
+
 
                 <div class="panel-right">
                     <h2 id="infoTitle" class="panel-title">Titre</h2>
@@ -224,7 +242,7 @@
         /* --- PANORAMAS --- */
         const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
         const pano2 = new PANOLENS.ImagePanorama('assets/image2.jpg');
-        const pano3 = new PANOLENS.ImagePanorama('assets/image1.jpg');
+        const pano3 = new PANOLENS.ImagePanorama('assets/image3.jpg');
 
         /* --- VIEWER --- */
         const viewer = new PANOLENS.Viewer({
@@ -346,27 +364,77 @@
         });
 
         /* --- PANEL FUNCTIONS --- */
-        window.showInfoPanel = function (title, text, imageUrl, logos = []) {
+      window.showInfoPanel = function (title, text, imageUrl, logos = [], videoUrl = null) {
 
-            document.getElementById("infoTitle").innerText = title;
-            document.getElementById("infoText").innerText = text;
-            document.getElementById("infoImage").src = imageUrl;
+  // --- ELEMENTS ---
+  const image = document.getElementById("infoImage");
+  const video = document.getElementById("infoVideo");
+  const overlay = document.getElementById("videoOverlay");
 
-            const logosContainer = document.querySelector(".panel-logos");
-            logosContainer.innerHTML = "";
+  document.getElementById("infoTitle").innerText = title;
+  document.getElementById("infoText").innerText = text;
 
+  const logosContainer = document.querySelector(".panel-logos");
+  logosContainer.innerHTML = "";
 
-            if (title === "Air Comprimée" && sound.isPlaying) {
-                sound.pause();
-            }
+  // --- GESTION SON ---
+  if (sound && sound.isPlaying) {
+    sound.pause();
+  }
 
+  // --- LOGOS ---
+  logos.forEach(src => {
+    const img = document.createElement("img");
+    img.src = src;
+    img.className = "panel-logo";
+    logosContainer.appendChild(img);
+  });
 
-            logos.forEach(src => {
-                const img = document.createElement("img");
-                img.src = src;
-                img.className = "panel-logo";
-                logosContainer.appendChild(img);
-            });
+  // --- RESET VIDEO ---
+  video.pause();
+  video.currentTime = 0;
+
+  // --- IMAGE + VIDEO AVEC OVERLAY ---
+  if (videoUrl) {
+
+    // image visible par défaut
+    image.src = imageUrl;
+    image.style.display = "block";
+
+    // overlay bouton play
+    overlay.style.display = "flex";
+
+    // video cachée
+    video.style.display = "none";
+
+    // click sur overlay
+    overlay.onclick = () => {
+      overlay.style.display = "none";
+      image.style.display = "none";
+
+      video.src = videoUrl;
+      video.style.display = "block";
+      video.play();
+    };
+
+  } else {
+
+    // pas de vidéo
+    image.src = imageUrl;
+    image.style.display = "block";
+
+    overlay.style.display = "none";
+    video.style.display = "none";
+  }
+
+  // --- AFFICHAGE PANEL ---
+  document.getElementById("infoPanel").style.display = "block";
+
+  savedRotationState = isAutoRotateOn;
+  setAutoRotate(false);
+  disableViewerControls();
+};
+
 
             document.getElementById("infoPanel").style.display = "block";
 
