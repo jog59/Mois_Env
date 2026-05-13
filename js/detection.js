@@ -312,7 +312,7 @@ function handleSceneClick(event) {
         }
 
         if (obj.userData.found) {
-            showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
+            showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.video || null);
             return;
         }
 
@@ -327,7 +327,7 @@ function handleSceneClick(event) {
                 currentPano === pano2 ? 2 : 3
         );
 
-        showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
+        showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.video || null);
     }
 }
 
