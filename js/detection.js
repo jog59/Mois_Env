@@ -350,7 +350,6 @@ pano1.addEventListener('leave', () => {
 
 
 
-
 /* RAYCASTER */
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
@@ -390,10 +389,12 @@ function handleSceneClick(event) {
             `Zones trouvées : ${foundZones} / ${totalZones}`;
 
         const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
-        if (hit) addCheckMark(hit,
+         if (hit) {
+          addCheckMark(hit,
             currentPano === pano1 ? 1 :
-                currentPano === pano2 ? 2 : 3
-        );
+            currentPano === pano2 ? 2 :
+            currentPano === pano3 ? 3 : 4
+          );
 
         showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
     }
