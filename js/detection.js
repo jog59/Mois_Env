@@ -395,7 +395,7 @@ function handleSceneClick(event) {
             currentPano === pano2 ? 2 :
             currentPano === pano3 ? 3 : 4
           );
-
+         }
         showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
     }
 }
