@@ -113,7 +113,7 @@ setTimeout(() => {
   };
 
   hotspotsPano1.push(rect1);
-  pano1.add(rect1); // ✅ FIX
+//  pano1.add(rect1); // ✅ FIX
   totalZones++;
 
 }, 500);
@@ -142,7 +142,7 @@ setTimeout(() => {
   };
 
   hotspotsPano1.push(rect5);
-  pano1.add(rect5); // ✅ FIX
+//  pano1.add(rect5); // ✅ FIX
   totalZones++;
 
 }, 500);
@@ -174,7 +174,7 @@ setTimeout(() => {
   };
 
   hotspotsPano2.push(rect2);
-  pano2.add(rect2); // ✅ FIX
+//  pano2.add(rect2); // ✅ FIX
   totalZones++;
 
 }, 500);
@@ -202,7 +202,7 @@ setTimeout(() => {
   };
 
   hotspotsPano2.push(rect4);
-  pano2.add(rect4); // ✅ FIX
+//  pano2.add(rect4); // ✅ FIX
   totalZones++;
 
 }, 500);
@@ -230,7 +230,7 @@ setTimeout(() => {
   };
 
   hotspotsPano2.push(rect3);
-  pano2.add(rect3); // ✅ FIX
+//  pano2.add(rect3); // ✅ FIX
   totalZones++;
 
 }, 500);
