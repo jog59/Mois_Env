@@ -1,4 +1,4 @@
-console.log("detection.js chargé");
+console.log("detection.js chargé !");
 
 /* ========================= */
 /* VARIABLES */
@@ -335,6 +335,3 @@ viewer.container.addEventListener("pointermove", (e) => {
 viewer.container.addEventListener("pointerup", (e) => {
   if (!pointerMoved) handleSceneClick(e);
 });
-
-
-
