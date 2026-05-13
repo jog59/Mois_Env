@@ -260,7 +260,7 @@ soundSource.position.set(4579, -1496, -1038);
 soundSource.add(sound);
 
 // ✅ FIX PANOLENS
-viewer.scene.add(soundSource);
+//viewer.scene.add(soundSource);
 
 /* ========================= */
 /* PANEL SOUND */
