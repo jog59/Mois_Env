@@ -1,4 +1,4 @@
-console.log("detection.js chargé !");
+console.log("detection.js chargé !!");
 
 /* ========================= */
 /* VARIABLES */
@@ -240,7 +240,12 @@ setTimeout(() => {
 /* ========================= */
 
 const listener = new THREE.AudioListener();
-viewer.camera.add(listener);
+
+viewer.addUpdateCallback(function () {
+  if (viewer.camera && !listener.parent) {
+    viewer.camera.add(listener);
+  }
+});
 
 const sound = new THREE.PositionalAudio(listener);
 
