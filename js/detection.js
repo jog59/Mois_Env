@@ -90,20 +90,20 @@ setTimeout(() => {
         visible: debugMode
     });
 
-    const rect1 = new THREE.Mesh(geo, mat);
-    rect1.name = "Fontaine";
-    rect1.position.set(3600, -1080, 2500);
-    rect1.lookAt(new THREE.Vector3(0, 0, 0));
+    const Zone1_1 = new THREE.Mesh(geo, mat);
+    Zone1_1.name = "Fontaine";
+    Zone1_1.position.set(3600, -1080, 2500);
+    Zone1_1.lookAt(new THREE.Vector3(0, 0, 0));
 
-    rect1.userData = {
+    Zone1_1.userData = {
         isClickable: true,
         active: true,
         panelId: "fontaine",
         found: false
     };
 
-    hotspotsPano1.push(rect1);
-    viewer.scene.add(rect1);
+    hotspotsPano1.push(Zone1_1);
+    viewer.scene.add(Zone1_1);
 
     totalZones++;
 
@@ -120,20 +120,20 @@ setTimeout(() => {
         side: THREE.DoubleSide
     });
 
-    const rect5 = new THREE.Mesh(geo, mat);
-    rect5.name = "Air Comprimee";
-    rect5.position.set(4501, -1600, -1200);
-    rect5.lookAt(new THREE.Vector3(0, 0, 0));
+    const Zone1_2 = new THREE.Mesh(geo, mat);
+    Zone1_2.name = "Air Comprimee";
+    Zone1_2.position.set(4501, -1600, -1200);
+    Zone1_2.lookAt(new THREE.Vector3(0, 0, 0));
 
-    rect5.userData = {
+    Zone1_2.userData = {
         isClickable: true,
         active: true,
         panelId: "air_comprimee",
         found: false
     };
 
-    hotspotsPano1.push(rect5);
-    viewer.scene.add(rect5);
+    hotspotsPano1.push(Zone1_2);
+    viewer.scene.add(Zone1_2);
 
     totalZones++;
 
@@ -150,20 +150,20 @@ setTimeout(() => {
         side: THREE.DoubleSide
     });
 
-    const rect2 = new THREE.Mesh(geo, mat);
-    rect2.name = "Déchets";
-    rect2.position.set(3400, -1360, -3000);
-    rect2.lookAt(new THREE.Vector3(0, 0, 0));
+    const Zone2_1 = new THREE.Mesh(geo, mat);
+    Zone2_1.name = "Déchets";
+    Zone2_1.position.set(3400, -1360, -3000);
+    Zone2_1.lookAt(new THREE.Vector3(0, 0, 0));
 
-    rect2.userData = {
+    Zone2_1.userData = {
         isClickable: true,
         active: false,
         panelId: "dechets",
         found: false
     };
 
-    hotspotsPano2.push(rect2);
-    viewer.scene.add(rect2);
+    hotspotsPano2.push(Zone2_1);
+    viewer.scene.add(Zone2_1);
 
     totalZones++;
 
@@ -179,20 +179,20 @@ setTimeout(() => {
         side: THREE.DoubleSide
     });
 
-    const rect4 = new THREE.Mesh(geo, mat);
-    rect4.name = "Déchets2";
-    rect4.position.set(-2100, -1800, -1600);
-    rect4.lookAt(new THREE.Vector3(0, 0, 0));
+    const Zone2_2 = new THREE.Mesh(geo, mat);
+    Zone2_2.name = "Déchets2";
+    Zone2_2.position.set(-2100, -1800, -1600);
+    Zone2_2.lookAt(new THREE.Vector3(0, 0, 0));
 
-    rect4.userData = {
+    Zone2_2.userData = {
         isClickable: true,
         active: false,
         panelId: "dechets",
         found: false
     };
 
-    hotspotsPano2.push(rect4);
-    viewer.scene.add(rect4);
+    hotspotsPano2.push(Zone2_2);
+    viewer.scene.add(Zone2_2);
 
     totalZones++;
 
@@ -208,20 +208,49 @@ setTimeout(() => {
         side: THREE.DoubleSide
     });
 
-    const rect3 = new THREE.Mesh(geo, mat);
-    rect3.name = "Ventilateur";
-    rect3.position.set(-4150, 650, 1292);
-    rect3.lookAt(new THREE.Vector3(0, 0, 0));
+    const Zone2_3 = new THREE.Mesh(geo, mat);
+    Zone2_3.name = "Ventilateur";
+    Zone2_3.position.set(-4150, 650, 1292);
+    Zone2_3.lookAt(new THREE.Vector3(0, 0, 0));
 
-    rect3.userData = {
+    Zone2_3.userData = {
         isClickable: true,
         active: false,
         panelId: "ventilateur",
         found: false
     };
 
-    hotspotsPano2.push(rect3);
-    viewer.scene.add(rect3);
+    hotspotsPano2.push(Zone2_3);
+    viewer.scene.add(Zone2_3);
+
+    totalZones++;
+
+}, 500);
+
+setTimeout(() => {
+
+    const geo = new THREE.PlaneGeometry(600, 600);
+    const mat = new THREE.MeshBasicMaterial({
+        color: 0x0000ff,
+        opacity: 0.5,
+        transparent: true,
+        side: THREE.DoubleSide
+    });
+
+    const Zone2_4 = new THREE.Mesh(geo, mat);
+    Zone2_4.name = "Air comprimée";
+    Zone2_4.position.set(-4150, 650, 1292);
+    Zone2_4.lookAt(new THREE.Vector3(0, 0, 0));
+
+    Zone2_4.userData = {
+        isClickable: true,
+        active: false,
+        panelId: "air_comprimee",
+        found: false
+    };
+
+    hotspotsPano2.push(Zone2_4);
+    viewer.scene.add(Zone2_4);
 
     totalZones++;
 
