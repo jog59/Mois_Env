@@ -244,7 +244,7 @@ setTimeout(() => {
 
     const Zone2_4 = new THREE.Mesh(geo, mat);
     Zone2_4.name = "Air comprimée";
-    Zone2_4.position.set(-1875, 2600, 3800);
+    Zone2_4.position.set(-1875, 2460, 3000);
     Zone2_4.lookAt(new THREE.Vector3(0, 0, 0));
 
     Zone2_4.userData = {
