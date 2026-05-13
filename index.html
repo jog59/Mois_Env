@@ -1,483 +1,243 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
+  <meta charset="UTF-8">
+  <title>Mois de l'environnement 2026</title>
 
-    <meta charset="UTF-8">
-    <title>Mois de l'environnement 2026</title>
-    <link rel="icon" type="image/png" sizes="192x192" href="assets/EcoBaboy.png">
-    <script src="./js/three.min.js"></script>
-    <script src="./js/panolens.min.js"></script>
+  <script src="./js/three.min.js"></script>
+  <script src="./js/panolens.min.js"></script>
 
-    <style>
-        body {
-            margin: 0;
-        }
+  <style>
+    body {
+      margin: 0;
+    }
 
-        #viewer {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
-        }
+    #viewer {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+    }
 
-        button:disabled {
-            opacity: 0.4;
-            cursor: not-allowed;
-        }
-    
+    /* ===== PANEL ===== */
+    #infoPanel {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 1000px;
+      max-width: 95vw;
+      background: white;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 0 35px rgba(0, 0, 0, 0.35);
+      display: none;
+      z-index: 99999;
+    }
 
-        /* Bouton Play/Pause flottant */
-        #toggleRotate {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            padding: 12px 18px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 999999;
-            pointer-events: auto;
-        }
+    .panel-content {
+      display: flex;
+      gap: 20px;
+    }
 
-        #switchImagePrev {
-            position: absolute;
-            bottom: 20px;
-            left: 160px; /* même place que le bouton suivant par défaut */
-            padding: 12px 18px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 999999;
-            pointer-events: auto;
-            /*display: none;*/ /* caché par défaut */
-        }
+    .panel-left {
+      flex: 0.4;
+      position: relative;
+    }
 
+    .panel-image {
+      width: 100%;
+      border-radius: 10px;
+    }
 
-        /* Bouton changement image */
-        #switchImage {
-            position: absolute;
-            bottom: 20px;
-            left: 370px;
-            padding: 12px 18px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            z-index: 999999;
-            pointer-events: auto;
-        }
+    #infoImage {
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
 
+    #infoVideo {
+      display: none;
+      position: relative;
+      z-index: 3;
+    }
 
+    #videoOverlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: none; /* ✅ très important */
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      color: white;
+      background: rgba(0, 0, 0, 0.4);
+      cursor: pointer;
+      z-index: 2;
+    }
 
-        /* PANEL HORIZONTAL */
-        #infoPanel {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 1000px;
-            max-width: 95vw;
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 0 35px rgba(0,0,0,0.35);
-            display: none;
-            z-index: 99999;
-            font-family: Arial, sans-serif;
-            pointer-events: auto;
-        }
+    .panel-right {
+      flex: 0.6;
+      display: flex;
+      flex-direction: column;
+    }
 
-        #infoText {
-            white-space: pre-line;
-        }
+    .panel-title {
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
 
-        .panel-content {
-            display: flex;
-            gap: 20px;
-        }
+    .panel-text {
+      flex: 1;
+      white-space: pre-line;
+    }
 
-        .panel-left {
-            flex: 0.4;
-        }
+    .panel-logos {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
 
-        .panel-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
-        }
+    .panel-logo {
+      width: 80px;
+    }
 
-        .panel-right {
-            flex: 0.6;
-            display: flex;
-            flex-direction: column;
-        }
+    #closePanelBtn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 18px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
 
-        .panel-title {
-            margin: 0 0 10px 0;
-            font-size: 22px;
-            font-weight: bold;
-            color: #222;
-        }
-
-        .panel-text {
-            font-size: 16px;
-            line-height: 1.4;
-            color: #333;
-            margin: 0 0 20px 0;
-            flex: 1;
-        }
-
-        .panel-logos {
-            display: flex;
-            gap: 16px;
-            margin-top: auto;
-        }
-
-        .panel-logo {
-            width: 90px;
-            height: auto;
-        }
-
-        #closePanelBtn {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: transparent;
-            border: none;
-            font-size: 22px;
-            cursor: pointer;
-            color: #444;
-        }
-
-        /* COMPTEUR */
-        #counter {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(0,0,0,0.6);
-            color: white;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-size: 18px;
-            z-index: 999999;
-            pointer-events: none;
-        }
-    </style>
+    /* ===== UI ===== */
+    #counter {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
 
 <body>
 
-    <div id="viewer">
+  <div id="viewer">
 
-        <!-- PANEL D'INFO -->
-        <div id="infoPanel">
+    <!-- PANEL -->
+    <div id="infoPanel">
 
-            <button id="closePanelBtn">✖</button>
+      <button id="closePanelBtn">✖</button>
 
-            <div class="panel-content">
+      <div class="panel-content">
 
+        <!-- LEFT -->
+        <div class="panel-left">
 
-            <div class="panel-left">
-                <img id="infoImage" class="panel-image">
-            
-               
-                    <div id="videoOverlay" style="
-                      position:absolute;
-                      top:0;
-                      left:0;
-                      width:100%;
-                      height:100%;
-                      display:none; 
-                      align-items:center;
-                      justify-content:center;
-                      font-size:48px;
-                      color:white;
-                      background:rgba(0,0,0,0.4);
-                      cursor:pointer;
-                    ">
-                      ▶️
-                    </div>
+          <img id="infoImage" class="panel-image">
 
-            
-                <video id="infoVideo" class="panel-image" controls style="display:none;"></video>
-            </div>
+          <div id="videoOverlay">
+            ▶️
+          </div>
 
+          <video id="infoVideo" class="panel-image" controls></video>
 
-                <div class="panel-right">
-                    <h2 id="infoTitle" class="panel-title">Titre</h2>
-                    <p id="infoText" class="panel-text">Texte descriptif…</p>
-
-                    <div class="panel-logos"></div>
-                </div>
-
-            </div>
         </div>
 
-        <!-- BOUTONS -->
-        <button id="toggleRotate">▶️ Rotation</button>
-        <button id="switchImage">Image suivante ➡️</button>
-        <button id="switchImagePrev">⬅️ Image précédente</button>
+        <!-- RIGHT -->
+        <div class="panel-right">
+          <h2 id="infoTitle"></h2>
+          <p id="infoText"></p>
+          <div class="panel-logos"></div>
+        </div>
 
-        <button id="debugBtn" style="
-    position: absolute;
-    top: 100px;
-    right: 400px;
-    z-index: 999999;
-">
-            DEBUG
-        </button>
-
+      </div>
     </div>
 
     <!-- COMPTEUR -->
-    <div id="counter">
-        Zones trouvées : 0
-    </div>
+    <div id="counter">Zones trouvées : 0</div>
 
+  </div>
 
-    <script>
-        /* --- PANORAMAS --- */
-        const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
-        const pano2 = new PANOLENS.ImagePanorama('assets/image2.jpg');
-        const pano3 = new PANOLENS.ImagePanorama('assets/image3.jpg');
+  <script>
 
-        /* --- VIEWER --- */
-        const viewer = new PANOLENS.Viewer({
-            container: document.querySelector('#viewer'),
-            autoRotate: false,
-            autoRotateSpeed: 0.3,
-            controlBar: true,
-            output: 'console'
-        });
+    /* ===== SHOW PANEL ===== */
+    window.showInfoPanel = function (title, text, imageUrl, logos = [], videoUrl = null) {
 
-        viewer.add(pano1);
-        viewer.add(pano2);
-        viewer.add(pano3);
+      const image = document.getElementById("infoImage");
+      const video = document.getElementById("infoVideo");
+      const overlay = document.getElementById("videoOverlay");
 
-        let currentPano = pano1;
-        // État initial : image 1
-        switchImagePrev.disabled = true;   // pas de précédent
-        switchImage.disabled = false;      // suivant actif
+      document.getElementById("infoTitle").innerText = title;
+      document.getElementById("infoText").innerText = text;
 
-        /* --- SWITCH IMAGE --- */
-        switchImage.addEventListener("pointerdown", (event) => {
-            if (switchImage.disabled) return; // inactif = ne fait rien
-            event.preventDefault();
-            event.stopImmediatePropagation();
+      /* LOGOS */
+      const logosContainer = document.querySelector(".panel-logos");
+      logosContainer.innerHTML = "";
 
-            // IMAGE 1 → 2
-            if (currentPano === pano1) {
-                currentPano = pano2;
-                viewer.setPanorama(pano2);
+      logos.forEach(src => {
+        const img = document.createElement("img");
+        img.src = src;
+        img.className = "panel-logo";
+        logosContainer.appendChild(img);
+      });
 
-                deactivateHotspots(hotspotsPano1);
-                activateHotspots(hotspotsPano2);
-                hideCheckmarks(checkmarksPano1);
-                showCheckmarks(checkmarksPano2);
+      /* RESET VIDEO */
+      video.pause();
+      video.currentTime = 0;
 
-                updateDebugVisibility();
+      /* IMAGE + VIDEO */
+      if (videoUrl) {
 
-                switchImagePrev.disabled = false;  // actif
-                switchImage.disabled = false;      // actif.
+        image.src = imageUrl;
+        image.style.display = "block";
 
+        overlay.style.display = "flex";
 
- 
-                return;
-            }
+        video.style.display = "none";
 
-            // IMAGE 2 → 3
-            if (currentPano === pano2) {
-                currentPano = pano3;
-                viewer.setPanorama(pano3);
+        overlay.onclick = () => {
+          overlay.style.display = "none";
+          image.style.display = "none";
 
-                deactivateHotspots(hotspotsPano2);
-                activateHotspots(hotspotsPano3);
-                hideCheckmarks(checkmarksPano2);
-                showCheckmarks(checkmarksPano3);
+          video.src = videoUrl;
+          video.style.display = "block";
+          video.play();
+        };
 
-                updateDebugVisibility();
+      } else {
 
-                switchImage.disabled = true;       // ➡️ désactivé
-                switchImagePrev.disabled = false;  // ⬅️ actif
-                return;
-            }
+        image.src = imageUrl;
+        image.style.display = "block";
 
+        overlay.style.display = "none";
+        video.style.display = "none";
+      }
 
-        });
-
-        switchImagePrev.addEventListener("pointerdown", (event) => {
-            if (switchImagePrev.disabled) return;
-            event.preventDefault();
-            event.stopImmediatePropagation();
-
-            // IMAGE 3 → 2
-            if (currentPano === pano3) {
-                currentPano = pano2;
-                viewer.setPanorama(pano2);
-
-                deactivateHotspots(hotspotsPano3);
-                activateHotspots(hotspotsPano2);
-                hideCheckmarks(checkmarksPano3);
-                showCheckmarks(checkmarksPano2);
-
-                switchImagePrev.disabled = false;
-                switchImage.disabled = false;
-                return;
-            }
-
-            // IMAGE 2 → 1
-            if (currentPano === pano2) {
-                currentPano = pano1;
-                viewer.setPanorama(pano1);
-
-                deactivateHotspots(hotspotsPano2);
-                activateHotspots(hotspotsPano1);
-                hideCheckmarks(checkmarksPano2);
-                showCheckmarks(checkmarksPano1);
-
-                switchImagePrev.disabled = true;  // ⬅️ désactivé
-                switchImage.disabled = false;     // ➡️ actif
-                return;
-            }
-        });
-
-
-
-        /* --- ROTATION AUTO --- */
-        let isAutoRotateOn = false;
-        let savedRotationState = false;
-
-        function setAutoRotate(state) {
-            isAutoRotateOn = state;
-            if (viewer.OrbitControls) viewer.OrbitControls.autoRotate = state;
-            document.getElementById("toggleRotate").innerText =
-                state ? "⏸️ Pause" : "▶️ Rotation";
-        }
-
-        document.getElementById("toggleRotate").addEventListener("pointerdown", (event) => {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-            setAutoRotate(!isAutoRotateOn);
-        });
-
-        /* --- PANEL FUNCTIONS --- */
-      window.showInfoPanel = function (title, text, imageUrl, logos = [], videoUrl = null) {
-
-  // --- ELEMENTS ---
-  const image = document.getElementById("infoImage");
-  const video = document.getElementById("infoVideo");
-  const overlay = document.getElementById("videoOverlay");
-
-  document.getElementById("infoTitle").innerText = title;
-  document.getElementById("infoText").innerText = text;
-
-  const logosContainer = document.querySelector(".panel-logos");
-  logosContainer.innerHTML = "";
-
-  // --- GESTION SON ---
-  if (sound && sound.isPlaying) {
-    sound.pause();
-  }
-
-  // --- LOGOS ---
-  logos.forEach(src => {
-    const img = document.createElement("img");
-    img.src = src;
-    img.className = "panel-logo";
-    logosContainer.appendChild(img);
-  });
-
-  // --- RESET VIDEO ---
-  video.pause();
-  video.currentTime = 0;
-
-  // --- IMAGE + VIDEO AVEC OVERLAY ---
-  if (videoUrl) {
-
-    // image visible par défaut
-    image.src = imageUrl;
-    image.style.display = "block";
-
-    // overlay bouton play
-    overlay.style.display = "flex";
-
-    // video cachée
-    video.style.display = "none";
-
-    // click sur overlay
-    overlay.onclick = () => {
-      overlay.style.display = "none";
-      image.style.display = "none";
-
-      video.src = videoUrl;
-      video.style.display = "block";
-      video.play();
+      document.getElementById("infoPanel").style.display = "block";
     };
 
-  } else {
+    /* CLOSE PANEL */
+    document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
 
-    // pas de vidéo
-    image.src = imageUrl;
-    image.style.display = "block";
+      const video = document.getElementById("infoVideo");
+      video.pause();
+      video.currentTime = 0;
 
-    overlay.style.display = "none";
-    video.style.display = "none";
-  }
+      document.getElementById("infoPanel").style.display = "none";
+    });
 
-  // --- AFFICHAGE PANEL ---
-  document.getElementById("infoPanel").style.display = "block";
+  </script>
 
-  savedRotationState = isAutoRotateOn;
-  setAutoRotate(false);
-  disableViewerControls();
-};
-
-
-            document.getElementById("infoPanel").style.display = "block";
-
-
-
-
-            savedRotationState = isAutoRotateOn;
-            setAutoRotate(false);
-            disableViewerControls();
-        };
-
-        window.disableViewerControls = function () {
-            if (viewer.OrbitControls) viewer.OrbitControls.enabled = false;
-        };
-
-        window.enableViewerControls = function () {
-            if (viewer.OrbitControls) viewer.OrbitControls.enabled = true;
-        };
-
-        document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
-            document.getElementById("infoPanel").style.display = "none";
-            setAutoRotate(savedRotationState);
-            enableViewerControls();
-        });
-
-            document.getElementById("infoPanel").addEventListener("pointerdown", (event) => {
-                event.stopPropagation();
-            });
-
-            document.getElementById("debugBtn").addEventListener("pointerdown", () => {
-                debugMode = !debugMode;
-                updateDebugVisibility();
-            });
-
-    </script>
-
-    <script src="./js/panels.js"></script>
-    <script src="./js/detection.js"></script>
+  <script src="./js/panels.js"></script>
+  <script src="./js/detection.js"></script>
 
 </body>
 </html>
