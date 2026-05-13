@@ -240,7 +240,7 @@ setTimeout(() => {
 /* ========================= */
 
 const listener = new THREE.AudioListener();
-viewer.camera.add(listener);
+// viewer.camera.add(listener);
 
 const sound = new THREE.PositionalAudio(listener);
 
