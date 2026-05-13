@@ -1,243 +1,410 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Mois de l'environnement 2026</title>
 
-  <script src="./js/three.min.js"></script>
-  <script src="./js/panolens.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Mois de l'environnement 2026</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/EcoBaboy.png">
+    <script src="./js/three.min.js"></script>
+    <script src="./js/panolens.min.js"></script>
 
-  <style>
-    body {
-      margin: 0;
-    }
+    <style>
+        body {
+            margin: 0;
+        }
 
-    #viewer {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-    }
+        #viewer {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
 
-    /* ===== PANEL ===== */
-    #infoPanel {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 1000px;
-      max-width: 95vw;
-      background: white;
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 0 35px rgba(0, 0, 0, 0.35);
-      display: none;
-      z-index: 99999;
-    }
+        button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+    
 
-    .panel-content {
-      display: flex;
-      gap: 20px;
-    }
+        /* Bouton Play/Pause flottant */
+        #toggleRotate {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 999999;
+            pointer-events: auto;
+        }
 
-    .panel-left {
-      flex: 0.4;
-      position: relative;
-    }
+        #switchImagePrev {
+            position: absolute;
+            bottom: 20px;
+            left: 160px; /* même place que le bouton suivant par défaut */
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 999999;
+            pointer-events: auto;
+            /*display: none;*/ /* caché par défaut */
+        }
 
-    .panel-image {
-      width: 100%;
-      border-radius: 10px;
-    }
 
-    #infoImage {
-      display: block;
-      position: relative;
-      z-index: 1;
-    }
+        /* Bouton changement image */
+        #switchImage {
+            position: absolute;
+            bottom: 20px;
+            left: 370px;
+            padding: 12px 18px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            z-index: 999999;
+            pointer-events: auto;
+        }
 
-    #infoVideo {
-      display: none;
-      position: relative;
-      z-index: 3;
-    }
 
-    #videoOverlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: none; /* ✅ très important */
-      align-items: center;
-      justify-content: center;
-      font-size: 50px;
-      color: white;
-      background: rgba(0, 0, 0, 0.4);
-      cursor: pointer;
-      z-index: 2;
-    }
 
-    .panel-right {
-      flex: 0.6;
-      display: flex;
-      flex-direction: column;
-    }
+        /* PANEL HORIZONTAL */
+        #infoPanel {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 1000px;
+            max-width: 95vw;
+            background: white;
+            border-radius: 14px;
+            padding: 20px;
+            box-shadow: 0 0 35px rgba(0,0,0,0.35);
+            display: none;
+            z-index: 99999;
+            font-family: Arial, sans-serif;
+            pointer-events: auto;
+        }
 
-    .panel-title {
-      font-size: 22px;
-      margin-bottom: 10px;
-    }
+        #infoText {
+            white-space: pre-line;
+        }
 
-    .panel-text {
-      flex: 1;
-      white-space: pre-line;
-    }
+        .panel-content {
+            display: flex;
+            gap: 20px;
+        }
 
-    .panel-logos {
-      display: flex;
-      gap: 10px;
-      margin-top: 10px;
-    }
+        .panel-left {
+            flex: 0.4;
+        }
 
-    .panel-logo {
-      width: 80px;
-    }
+        .panel-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
 
-    #closePanelBtn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 18px;
-      cursor: pointer;
-      background: none;
-      border: none;
-    }
+        .panel-right {
+            flex: 0.6;
+            display: flex;
+            flex-direction: column;
+        }
 
-    /* ===== UI ===== */
-    #counter {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
-      padding: 10px;
-      border-radius: 8px;
-    }
-  </style>
+        .panel-title {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+            font-weight: bold;
+            color: #222;
+        }
+
+        .panel-text {
+            font-size: 16px;
+            line-height: 1.4;
+            color: #333;
+            margin: 0 0 20px 0;
+            flex: 1;
+        }
+
+        .panel-logos {
+            display: flex;
+            gap: 16px;
+            margin-top: auto;
+        }
+
+        .panel-logo {
+            width: 90px;
+            height: auto;
+        }
+
+        #closePanelBtn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            cursor: pointer;
+            color: #444;
+        }
+
+        /* COMPTEUR */
+        #counter {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(0,0,0,0.6);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 18px;
+            z-index: 999999;
+            pointer-events: none;
+        }
+    </style>
 </head>
 
 <body>
 
-  <div id="viewer">
+    <div id="viewer">
 
-    <!-- PANEL -->
-    <div id="infoPanel">
+        <!-- PANEL D'INFO -->
+        <div id="infoPanel">
 
-      <button id="closePanelBtn">✖</button>
+            <button id="closePanelBtn">✖</button>
 
-      <div class="panel-content">
+            <div class="panel-content">
 
-        <!-- LEFT -->
-        <div class="panel-left">
+                <div class="panel-left">
+                    <img id="infoImage" src="" class="panel-image">
+                </div>
 
-          <img id="infoImage" class="panel-image">
+                <div class="panel-right">
+                    <h2 id="infoTitle" class="panel-title">Titre</h2>
+                    <p id="infoText" class="panel-text">Texte descriptif…</p>
 
-          <div id="videoOverlay">
-            ▶️
-          </div>
+                    <div class="panel-logos"></div>
+                </div>
 
-          <video id="infoVideo" class="panel-image" controls></video>
-
+            </div>
         </div>
 
-        <!-- RIGHT -->
-        <div class="panel-right">
-          <h2 id="infoTitle"></h2>
-          <p id="infoText"></p>
-          <div class="panel-logos"></div>
-        </div>
+        <!-- BOUTONS -->
+        <button id="toggleRotate">▶️ Rotation</button>
+        <button id="switchImage">Image suivante ➡️</button>
+        <button id="switchImagePrev">⬅️ Image précédente</button>
 
-      </div>
+        <button id="debugBtn" style="
+    position: absolute;
+    top: 100px;
+    right: 400px;
+    z-index: 999999;
+">
+            DEBUG
+        </button>
+
     </div>
 
     <!-- COMPTEUR -->
-    <div id="counter">Zones trouvées : 0</div>
+    <div id="counter">
+        Zones trouvées : 0
+    </div>
 
-  </div>
 
-  <script>
+    <script>
+        /* --- PANORAMAS --- */
+        const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
+        const pano2 = new PANOLENS.ImagePanorama('assets/image2.jpg');
+        const pano3 = new PANOLENS.ImagePanorama('assets/image1.jpg');
 
-    /* ===== SHOW PANEL ===== */
-    window.showInfoPanel = function (title, text, imageUrl, logos = [], videoUrl = null) {
+        /* --- VIEWER --- */
+        const viewer = new PANOLENS.Viewer({
+            container: document.querySelector('#viewer'),
+            autoRotate: false,
+            autoRotateSpeed: 0.3,
+            controlBar: true,
+            output: 'console'
+        });
 
-      const image = document.getElementById("infoImage");
-      const video = document.getElementById("infoVideo");
-      const overlay = document.getElementById("videoOverlay");
+        viewer.add(pano1);
+        viewer.add(pano2);
+        viewer.add(pano3);
 
-      document.getElementById("infoTitle").innerText = title;
-      document.getElementById("infoText").innerText = text;
+        let currentPano = pano1;
+        // État initial : image 1
+        switchImagePrev.disabled = true;   // pas de précédent
+        switchImage.disabled = false;      // suivant actif
 
-      /* LOGOS */
-      const logosContainer = document.querySelector(".panel-logos");
-      logosContainer.innerHTML = "";
+        /* --- SWITCH IMAGE --- */
+        switchImage.addEventListener("pointerdown", (event) => {
+            if (switchImage.disabled) return; // inactif = ne fait rien
+            event.preventDefault();
+            event.stopImmediatePropagation();
 
-      logos.forEach(src => {
-        const img = document.createElement("img");
-        img.src = src;
-        img.className = "panel-logo";
-        logosContainer.appendChild(img);
-      });
+            // IMAGE 1 → 2
+            if (currentPano === pano1) {
+                currentPano = pano2;
+                viewer.setPanorama(pano2);
 
-      /* RESET VIDEO */
-      video.pause();
-      video.currentTime = 0;
+                deactivateHotspots(hotspotsPano1);
+                activateHotspots(hotspotsPano2);
+                hideCheckmarks(checkmarksPano1);
+                showCheckmarks(checkmarksPano2);
 
-      /* IMAGE + VIDEO */
-      if (videoUrl) {
+                updateDebugVisibility();
 
-        image.src = imageUrl;
-        image.style.display = "block";
+                switchImagePrev.disabled = false;  // actif
+                switchImage.disabled = false;      // actif.
 
-        overlay.style.display = "flex";
 
-        video.style.display = "none";
+ 
+                return;
+            }
 
-        overlay.onclick = () => {
-          overlay.style.display = "none";
-          image.style.display = "none";
+            // IMAGE 2 → 3
+            if (currentPano === pano2) {
+                currentPano = pano3;
+                viewer.setPanorama(pano3);
 
-          video.src = videoUrl;
-          video.style.display = "block";
-          video.play();
+                deactivateHotspots(hotspotsPano2);
+                activateHotspots(hotspotsPano3);
+                hideCheckmarks(checkmarksPano2);
+                showCheckmarks(checkmarksPano3);
+
+                updateDebugVisibility();
+
+                switchImage.disabled = true;       // ➡️ désactivé
+                switchImagePrev.disabled = false;  // ⬅️ actif
+                return;
+            }
+
+
+        });
+
+        switchImagePrev.addEventListener("pointerdown", (event) => {
+            if (switchImagePrev.disabled) return;
+            event.preventDefault();
+            event.stopImmediatePropagation();
+
+            // IMAGE 3 → 2
+            if (currentPano === pano3) {
+                currentPano = pano2;
+                viewer.setPanorama(pano2);
+
+                deactivateHotspots(hotspotsPano3);
+                activateHotspots(hotspotsPano2);
+                hideCheckmarks(checkmarksPano3);
+                showCheckmarks(checkmarksPano2);
+
+                switchImagePrev.disabled = false;
+                switchImage.disabled = false;
+                return;
+            }
+
+            // IMAGE 2 → 1
+            if (currentPano === pano2) {
+                currentPano = pano1;
+                viewer.setPanorama(pano1);
+
+                deactivateHotspots(hotspotsPano2);
+                activateHotspots(hotspotsPano1);
+                hideCheckmarks(checkmarksPano2);
+                showCheckmarks(checkmarksPano1);
+
+                switchImagePrev.disabled = true;  // ⬅️ désactivé
+                switchImage.disabled = false;     // ➡️ actif
+                return;
+            }
+        });
+
+
+
+        /* --- ROTATION AUTO --- */
+        let isAutoRotateOn = false;
+        let savedRotationState = false;
+
+        function setAutoRotate(state) {
+            isAutoRotateOn = state;
+            if (viewer.OrbitControls) viewer.OrbitControls.autoRotate = state;
+            document.getElementById("toggleRotate").innerText =
+                state ? "⏸️ Pause" : "▶️ Rotation";
+        }
+
+        document.getElementById("toggleRotate").addEventListener("pointerdown", (event) => {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            setAutoRotate(!isAutoRotateOn);
+        });
+
+        /* --- PANEL FUNCTIONS --- */
+        window.showInfoPanel = function (title, text, imageUrl, logos = []) {
+
+            document.getElementById("infoTitle").innerText = title;
+            document.getElementById("infoText").innerText = text;
+            document.getElementById("infoImage").src = imageUrl;
+
+            const logosContainer = document.querySelector(".panel-logos");
+            logosContainer.innerHTML = "";
+
+
+            if (title === "Air Comprimée" && sound.isPlaying) {
+                sound.pause();
+            }
+
+
+            logos.forEach(src => {
+                const img = document.createElement("img");
+                img.src = src;
+                img.className = "panel-logo";
+                logosContainer.appendChild(img);
+            });
+
+            document.getElementById("infoPanel").style.display = "block";
+
+
+
+
+            savedRotationState = isAutoRotateOn;
+            setAutoRotate(false);
+            disableViewerControls();
         };
 
-      } else {
+        window.disableViewerControls = function () {
+            if (viewer.OrbitControls) viewer.OrbitControls.enabled = false;
+        };
 
-        image.src = imageUrl;
-        image.style.display = "block";
+        window.enableViewerControls = function () {
+            if (viewer.OrbitControls) viewer.OrbitControls.enabled = true;
+        };
 
-        overlay.style.display = "none";
-        video.style.display = "none";
-      }
+        document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
+            document.getElementById("infoPanel").style.display = "none";
+            setAutoRotate(savedRotationState);
+            enableViewerControls();
+        });
 
-      document.getElementById("infoPanel").style.display = "block";
-    };
+            document.getElementById("infoPanel").addEventListener("pointerdown", (event) => {
+                event.stopPropagation();
+            });
 
-    /* CLOSE PANEL */
-    document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
+            document.getElementById("debugBtn").addEventListener("pointerdown", () => {
+                debugMode = !debugMode;
+                updateDebugVisibility();
+            });
 
-      const video = document.getElementById("infoVideo");
-      video.pause();
-      video.currentTime = 0;
+    </script>
 
-      document.getElementById("infoPanel").style.display = "none";
-    });
-
-  </script>
-
-  <script src="./js/panels.js"></script>
-  <script src="./js/detection.js"></script>
+    <script src="./js/panels.js"></script>
+    <script src="./js/detection.js"></script>
 
 </body>
 </html>
