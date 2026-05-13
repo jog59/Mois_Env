@@ -271,7 +271,7 @@ setTimeout(() => {
 /* HOTSPOTS PANORAMA 4 */
 
 setTimeout(() => {
-    const geo = new THREE.PlaneGeometry(1300, 600);
+    const geo = new THREE.PlaneGeometry(1300, 650);
     const mat = new THREE.MeshBasicMaterial({
         color: 0x00ff00,
         opacity: 0.5,
@@ -282,7 +282,7 @@ setTimeout(() => {
 
     const Zone4_1 = new THREE.Mesh(geo, mat);
     Zone4_1.name = "Fontaine";
-    Zone4_1.position.set(1300, -1150, -3000);
+    Zone4_1.position.set(1320, -1100, -3000);
     Zone4_1.lookAt(new THREE.Vector3(0, 0, 0));
 
     Zone4_1.userData = {
