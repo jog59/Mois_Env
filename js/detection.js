@@ -1,4 +1,4 @@
-console.log("detection.js chargé");
+console.log("detection.js chargé !");
 
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
@@ -282,7 +282,7 @@ setTimeout(() => {
 
     const Zone4_1 = new THREE.Mesh(geo, mat);
     Zone4_1.name = "Fontaine";
-    Zone4_1.position.set(2053, -1592, -3000);
+    Zone4_1.position.set(2053, -1592, -2000);
     Zone4_1.lookAt(new THREE.Vector3(0, 0, 0));
 
     Zone4_1.userData = {
