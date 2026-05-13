@@ -86,6 +86,7 @@ Chaque arrêt utile contribue à la performance, à la sécurité et à la durab
             "assets/Challenge4.png",
             "assets/EcoBaboy.png"
         ],
+		video: "assets/video_plastic.mp4",
         found: false
     }
 
