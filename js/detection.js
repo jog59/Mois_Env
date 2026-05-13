@@ -282,7 +282,7 @@ setTimeout(() => {
 
     const Zone4_1 = new THREE.Mesh(geo, mat);
     Zone4_1.name = "Fontaine";
-    Zone4_1.position.set(2053, -1592, -2000);
+    Zone4_1.position.set(2053, -1592, -3000);
     Zone4_1.lookAt(new THREE.Vector3(0, 0, 0));
 
     Zone4_1.userData = {
@@ -292,7 +292,7 @@ setTimeout(() => {
         found: false
     };
 
-    hotspotsPano1.push(Zone4_1);
+    hotspotsPano4.push(Zone4_1);
     viewer.scene.add(Zone4_1);
 
     totalZones++;
