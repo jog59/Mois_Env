@@ -117,7 +117,8 @@ setTimeout(() => {
         color: 0x00ff00,
         opacity: 0.5,
         transparent: false,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        visible: debugMode
     });
 
     const Zone1_2 = new THREE.Mesh(geo, mat);
@@ -147,7 +148,8 @@ setTimeout(() => {
         color: 0xff0000,
         opacity: 0.5,
         transparent: true,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        visible: debugMode
     });
 
     const Zone2_1 = new THREE.Mesh(geo, mat);
@@ -176,7 +178,8 @@ setTimeout(() => {
         color: 0xff0000,
         opacity: 0.5,
         transparent: true,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        visible: debugMode
     });
 
     const Zone2_2 = new THREE.Mesh(geo, mat);
@@ -205,7 +208,8 @@ setTimeout(() => {
         color: 0x0000ff,
         opacity: 0.5,
         transparent: true,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        visible: debugMode
     });
 
     const Zone2_3 = new THREE.Mesh(geo, mat);
@@ -234,7 +238,8 @@ setTimeout(() => {
         color: 0x0000ff,
         opacity: 0.5,
         transparent: true,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        visible: debugMode
     });
 
     const Zone2_4 = new THREE.Mesh(geo, mat);
