@@ -43,6 +43,9 @@ function updateDebugVisibility() {
     if (currentPano === pano3) {
         hotspotsPano3.forEach(z => { if (z.material) z.material.visible = true; });
     }
+        if (currentPano === pano4) {
+        hotspotsPano4.forEach(z => { if (z.material) z.material.visible = true; });
+    }
 }
 
 /* AJOUT COCHES */
@@ -410,6 +413,28 @@ document.getElementById("switchImagePrev").addEventListener("pointerdown", (even
     event.preventDefault();
     event.stopImmediatePropagation();
 
+ /* --- IMAGE 4 → IMAGE 3 --- */
+    if (currentPano === pano4) {
+
+        currentPano = pano3;
+        viewer.setPanorama(pano3);
+
+        deactivateHotspots(hotspotsPano4);
+        activateHotspots(hotspotsPano3);
+
+        hideCheckmarks(checkmarksPano4);
+        showCheckmarks(checkmarksPano3);
+
+        // Sur l'image 3 : bouton suivant + précédent
+        switchImage.style.display = "block";
+/*        switchImage.innerText = "➡️ Image suivante";
+
+        switchImagePrev.innerText = "⬅️ Image précédente";
+*/
+        return;
+    }
+
+    
     /* --- IMAGE 3 → IMAGE 2 --- */
     if (currentPano === pano3) {
 
