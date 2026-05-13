@@ -1,4 +1,4 @@
-console.log("detection.js chargé !!");
+console.log("detection.js chargé");
 
 /* ========================= */
 /* VARIABLES */
@@ -240,12 +240,7 @@ setTimeout(() => {
 /* ========================= */
 
 const listener = new THREE.AudioListener();
-
-viewer.addUpdateCallback(function () {
-  if (viewer.camera && !listener.parent) {
-    viewer.camera.add(listener);
-  }
-});
+viewer.camera.add(listener);
 
 const sound = new THREE.PositionalAudio(listener);
 
@@ -265,7 +260,7 @@ soundSource.position.set(4579, -1496, -1038);
 soundSource.add(sound);
 
 // ✅ FIX PANOLENS
-pano1.add(soundSource);
+viewer.scene.add(soundSource);
 
 /* ========================= */
 /* PANEL SOUND */
