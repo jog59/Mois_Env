@@ -8,6 +8,7 @@ const material = new THREE.SpriteMaterial({
 const sprite = new THREE.Sprite(material);
 
 sprite.scale.set(500, 500, 1);
-sprite.position.set(2000, 500, 2000);
+sprite.position.set(1000, 500, 1000);
 
 pano1.add(sprite);
+console.log("Animation fuite_air chargé");
