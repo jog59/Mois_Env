@@ -37,12 +37,20 @@ fragmentShader: `
 `
 });
 
-
 const sprite = new THREE.Mesh(
   new THREE.PlaneGeometry(2000, 1000),
   material
 );
 
-sprite.position.set(0, 0, -3000);
+function animateReveal() {
+  requestAnimationFrame(animateReveal);
 
+  if (material.uniforms.progress.value < 1) {
+    material.uniforms.progress.value += 0.01;
+  }
+}
+
+animateReveal();
+
+sprite.position.set(0, 0, -3000);
 pano1.add(sprite);
