@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée!");
+console.log("Animation fuite_air chargée!!");
 
 
 const texture = new THREE.TextureLoader().load("assets/wind.png");
@@ -60,6 +60,6 @@ function animateReveal() {
 
 animateReveal();
 
-sprite.position.set(2500, -1539, -1245);
-sprite.scale.set(1000,1000,1);
+sprite.position.set(2000, -539, -545);
+sprite.scale.set(2000,2000,1);
 pano1.add(sprite);
