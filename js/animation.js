@@ -9,7 +9,7 @@ const material = new THREE.SpriteMaterial({
 const sprite = new THREE.Sprite(material);
 
 
-sprite.scale.set(500, 500, 1);
+sprite.scale.set(2500, 2500, 1);
 sprite.position.set(0, 0, -2000);
 
 
