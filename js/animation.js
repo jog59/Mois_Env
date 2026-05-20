@@ -11,4 +11,4 @@ sprite.scale.set(500, 500, 1);
 sprite.position.set(1000, 500, 1000);
 
 pano1.add(sprite);
-console.log("Animation fuite_air chargé");
+console.log("Animation fuite_air chargée");
