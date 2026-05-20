@@ -2,8 +2,7 @@ const texture = new THREE.TextureLoader().load("assets/fuite_air.gif");
 
 const material = new THREE.SpriteMaterial({
   map: texture,
-  transparent: true,
-    opacity: 1
+  transparent: true
 });
 
 const sprite = new THREE.Sprite(material);
