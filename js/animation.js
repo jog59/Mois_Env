@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée!!!");
+console.log("Animation fuite_air chargée!");
 
 
 const texture = new THREE.TextureLoader().load("assets/wind.png");
@@ -25,13 +25,13 @@ fragmentShader: `
 
     vec4 color = texture2D(map, vUv);
 
-    // ✅ largeur de la zone de transition
     float edge = 0.05;
 
-    // ✅ effet de révélation douce
-    float alpha = smoothstep(progress - edge, progress, vUv.x);
+    // ✅ apparition gauche → droite
+    float alpha = smoothstep(progress, progress + edge, vUv.x);
 
-    // ✅ appliquer l'alpha
+    alpha = clamp(alpha, 0.0, 1.0);
+
     gl_FragColor = vec4(color.rgb, color.a * alpha);
   }
 `
@@ -42,11 +42,19 @@ const sprite = new THREE.Mesh(
   material
 );
 
+let direction = 1; // 1 = apparition, -1 = disparition
+
 function animateReveal() {
   requestAnimationFrame(animateReveal);
 
-  if (material.uniforms.progress.value < 1) {
-    material.uniforms.progress.value += 0.01;
+  material.uniforms.progress.value += 0.01 * direction;
+
+  if (material.uniforms.progress.value >= 1) {
+    direction = -1;
+  }
+
+  if (material.uniforms.progress.value <= 0) {
+    direction = 1;
   }
 }
 
