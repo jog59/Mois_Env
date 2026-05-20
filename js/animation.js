@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée!!");
+console.log("Animation fuite_air chargée!!!");
 
 
 const texture = new THREE.TextureLoader().load("assets/wind.png");
