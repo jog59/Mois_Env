@@ -61,5 +61,5 @@ function animateReveal() {
 animateReveal();
 
 sprite.position.set(4500, -1539, -1245);
-sprite.scale(1000,1000,1);
+sprite.scale.set(1000,1000,1);
 pano1.add(sprite);
