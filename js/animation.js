@@ -3,6 +3,11 @@ console.log("Animation fuite_air chargée!!");
 // ✅ texture
 const texture = new THREE.TextureLoader().load("assets/vent2.png");
 
+
+texture.wrapS = THREE.RepeatWrapping;
+texture.wrapT = THREE.RepeatWrapping
+
+
 // ✅ shader correct
 const material = new THREE.ShaderMaterial({
   uniforms: {
