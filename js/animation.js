@@ -65,8 +65,9 @@ function animateReveal() {
   if (material.uniforms.progress.value <= 0) {
     direction = 1;
   }
+  */
 }
-*/
+
 animateReveal();
 
 sprite.position.set(4600, -1300, -1100);
