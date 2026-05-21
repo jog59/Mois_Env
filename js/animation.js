@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée!");
+console.log("Animation fuite_air chargée");
 
 
 const texture = new THREE.TextureLoader().load("assets/wind.png");
@@ -51,7 +51,14 @@ function animateReveal() {
 
   material.uniforms.progress.value += 0.05 * direction;
 
-  if (material.uniforms.progress.value >= 1) {
+
+  // ✅ reset direct à gauche
+  if (material.uniforms.progress.value > 1) {
+    material.uniforms.progress.value = 0;
+  }
+
+  
+ /* if (material.uniforms.progress.value >= 1) {
     direction = -1;
   }
 
@@ -59,7 +66,7 @@ function animateReveal() {
     direction = 1;
   }
 }
-
+*/
 animateReveal();
 
 sprite.position.set(4600, -1300, -1100);
