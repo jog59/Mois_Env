@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée");
+console.log("Animation fuite_air chargée!");
 
 
 const texture = new THREE.TextureLoader().load("assets/wind.png");
@@ -28,7 +28,7 @@ fragmentShader: `
     float edge = 0.05;
 
     // ✅ apparition gauche → droite
-    float alpha = smoothstep(progress, progress + edge, -vUv.x);
+    float alpha = smoothstep(progress, progress + edge, 1.0 -vUv.x);
 
     alpha = clamp(alpha, 0.0, 1.0);
 
