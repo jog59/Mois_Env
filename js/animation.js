@@ -49,7 +49,7 @@ function animateReveal() {
   
 
 
-  material.uniforms.progress.value += 0.01 * direction;
+  material.uniforms.progress.value += 0.05 * direction;
 
   if (material.uniforms.progress.value >= 1) {
     direction = -1;
