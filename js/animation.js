@@ -1,11 +1,13 @@
-console.log("Animation fuite_air chargée!");
+console.log("Animation fuite_air chargée!!");
 
-/*
+// ✅ texture
 const texture = new THREE.TextureLoader().load("assets/vent2.png");
+
+// ✅ shader correct
 const material = new THREE.ShaderMaterial({
   uniforms: {
     map: { value: texture },
-    progress: { value: 0.0 } // 0 = invisible, 1 = visible
+    time: { value: 0 }
   },
   transparent: true,
   vertexShader: `
@@ -16,86 +18,52 @@ const material = new THREE.ShaderMaterial({
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
   `,
-fragmentShader: `
-  uniform sampler2D map;
-  uniform float progress;
-  varying vec2 vUv;
+  fragmentShader: `
+    uniform sampler2D map;
+    uniform float time;
+    varying vec2 vUv;
 
-  void main() {
+    void main() {
 
-    vec4 color = texture2D(map, vUv);
+      vec2 uv = vUv;
 
-    float edge = 0.05;
+      // ✅ flux vers la droite
+      uv.x -= time * 0.5;
 
-    // ✅ apparition gauche → droite
-    float alpha = smoothstep(progress, progress + edge, 1.0 - vUv.x);
+      // ✅ turbulence
+      uv.y += sin(uv.x * 10.0 + time * 3.0) * 0.05;
 
-    alpha = clamp(alpha, 0.0, 1.0);
+      vec4 color = texture2D(map, uv);
 
-    gl_FragColor = vec4(color.rgb, color.a * alpha);
-  }
-`
+      // ✅ ignorer transparent
+      if (color.a < 0.05) discard;
+
+      gl_FragColor = color;
+    }
+  `
 });
 
+// ✅ mesh
 const sprite = new THREE.Mesh(
   new THREE.PlaneGeometry(2000, 1000),
   material
 );
 
-let direction = 1; // 1 = apparition, -1 = disparition
-
-function animateReveal() {
-  requestAnimationFrame(animateReveal);
-  
-  material.uniforms.progress.value += 0.04 * direction;
-
-  // ✅ reset direct à gauche
-  if (material.uniforms.progress.value > 1) {
-    material.uniforms.progress.value = 0;
-  }
-
-  
- /* if (material.uniforms.progress.value >= 1) {
-    direction = -1;
-  }
-
-  if (material.uniforms.progress.value <= 0) {
-    direction = 1;
-  }
-  */
-//}
-
-//animateReveal();
-//
-
-const texture = new THREE.TextureLoader().load("assets/vent2.png");
-
-const material = new THREE.ShaderMaterial({
-  uniforms: {
-    map: { value: texture },
-    time: { value: 0 }
-  },
-  transparent: true,
-  vertexShader: `...`,
-  fragmentShader: `...`
-});
-
-const sprite = new THREE.Mesh(
-  new THREE.PlaneGeometry(2000, 1000),
-  material
-);
-
-
+// ✅ animation
 function animateWind() {
   requestAnimationFrame(animateWind);
+
   material.uniforms.time.value += 0.02;
 }
-
 animateWind();
 
-sprite.position.set(4600, -1300, -1100);
-sprite.lookAt(viewer.camera.position);
+// ✅ position
+const dir = new THREE.Vector3(4600, -1300, -1100).normalize();
+sprite.position.copy(dir.multiplyScalar(4800));
+
+// ✅ scale
 sprite.scale.set(0.25, 0.25, 1);
 
-
+// ✅ ajout
 pano1.add(sprite);
+``
