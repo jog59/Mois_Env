@@ -62,6 +62,7 @@ animateReveal();
 
 sprite.position.set(3500, -1300, -2000);
 sprite.lookAt(viewer.camera.position);
+sprite.scale.set(700, 350, 1);
 
 
 pano1.add(sprite);
