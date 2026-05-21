@@ -28,7 +28,7 @@ fragmentShader: `
     float edge = 0.05;
 
     // ✅ apparition gauche → droite
-    float alpha = smoothstep(progress, progress + edge, vUv.x);
+    float alpha = smoothstep(progress, progress + edge, -vUv.x);
 
     alpha = clamp(alpha, 0.0, 1.0);
 
