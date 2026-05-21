@@ -1,6 +1,6 @@
 console.log("Animation fuite_air chargée");
 
-/*
+
 const texture = new THREE.TextureLoader().load("assets/vent2.png");
 const material = new THREE.ShaderMaterial({
   uniforms: {
@@ -63,39 +63,11 @@ function animateReveal() {
     direction = 1;
   }
   */
-//}
-
-//animate();
-//*/
-
-
-uniform sampler2D map;
-uniform float time;
-varying vec2 vUv;
-
-void main() {
-
-  vec2 uv = vUv;
-
-  // ✅ déplacement du vent
-  uv.x -= time * 0.5;
-
-  // ✅ turbulence
-  uv.y += sin(uv.x * 10.0 + time * 2.0) * 0.05;
-
-  vec4 color = texture2D(map, uv);
-
-  gl_FragColor = color;
 }
 
 
-material.uniforms.time = { value: 0 };
 
-function animate() {
-  requestAnimationFrame(animate);
 
-  material.uniforms.time.value += 0.02;
-}
 
 
 
