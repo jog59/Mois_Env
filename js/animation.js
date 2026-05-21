@@ -62,7 +62,7 @@ function animateReveal() {
 
 animateReveal();
 
-sprite.position.set(4650, -1350, -1200);
+sprite.position.set(4670, -1300, -1200);
 sprite.lookAt(viewer.camera.position);
 sprite.scale.set(0.25, 0.25, 1);
 
