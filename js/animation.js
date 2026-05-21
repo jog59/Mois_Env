@@ -1,7 +1,7 @@
-console.log("Animation fuite_air chargée!");
+console.log("Animation fuite_air chargée");
 
 
-const texture = new THREE.TextureLoader().load("assets/wind.png");
+const texture = new THREE.TextureLoader().load("assets/vent.png");
 const material = new THREE.ShaderMaterial({
   uniforms: {
     map: { value: texture },
@@ -49,7 +49,7 @@ function animateReveal() {
   
 
 
-  material.uniforms.progress.value += 0.05 * direction;
+  material.uniforms.progress.value += 0.04 * direction;
 
 
   // ✅ reset direct à gauche
