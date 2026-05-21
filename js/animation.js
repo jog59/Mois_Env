@@ -63,10 +63,10 @@ function animateReveal() {
     direction = 1;
   }
   */
-}
+//}
 
-animate();
-*/
+//animate();
+//*/
 
 
 uniform sampler2D map;
