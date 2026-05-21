@@ -63,9 +63,9 @@ function animateReveal() {
     direction = 1;
   }
   */
-}
+//}
 
-animateReveal();
+//animateReveal();
 */
 
   const texture = new THREE.TextureLoader().load("assets/vent2.png");
