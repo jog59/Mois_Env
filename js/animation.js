@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée");
+console.log("Animation fuite_air chargée!");
 
 /*
 const texture = new THREE.TextureLoader().load("assets/vent2.png");
@@ -68,7 +68,7 @@ function animateReveal() {
 //animateReveal();
 //
 
-  const texture = new THREE.TextureLoader().load("assets/vent2.png");
+const texture = new THREE.TextureLoader().load("assets/vent2.png");
 
 const material = new THREE.ShaderMaterial({
   uniforms: {
@@ -85,10 +85,6 @@ const sprite = new THREE.Mesh(
   material
 );
 
-sprite.position.set(4600, -1300, -1100);
-sprite.scale.set(0.25, 0.25, 1);
-
-pano1.add(sprite);
 
 function animateWind() {
   requestAnimationFrame(animateWind);
