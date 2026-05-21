@@ -1,6 +1,6 @@
 console.log("Animation fuite_air chargée");
 
-
+/*
 const texture = new THREE.TextureLoader().load("assets/vent2.png");
 const material = new THREE.ShaderMaterial({
   uniforms: {
@@ -65,14 +65,37 @@ function animateReveal() {
   */
 }
 
-
-
-
-
-
-
-  
 animateReveal();
+*/
+
+  const texture = new THREE.TextureLoader().load("assets/vent2.png");
+
+const material = new THREE.ShaderMaterial({
+  uniforms: {
+    map: { value: texture },
+    time: { value: 0 }
+  },
+  transparent: true,
+  vertexShader: `...`,
+  fragmentShader: `...`
+});
+
+const sprite = new THREE.Mesh(
+  new THREE.PlaneGeometry(2000, 1000),
+  material
+);
+
+sprite.position.set(4600, -1300, -1100);
+sprite.scale.set(0.25, 0.25, 1);
+
+pano1.add(sprite);
+
+function animateWind() {
+  requestAnimationFrame(animateWind);
+  material.uniforms.time.value += 0.02;
+}
+
+animateWind();
 
 sprite.position.set(4600, -1300, -1100);
 sprite.lookAt(viewer.camera.position);
