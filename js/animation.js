@@ -62,9 +62,9 @@ function animateReveal() {
 
 animateReveal();
 
-sprite.position.set(3500, -1300, -2000);
+sprite.position.set(4000, -1300, -2000);
 sprite.lookAt(viewer.camera.position);
-sprite.scale.set(0.5, 0.25, 1);
+sprite.scale.set(0.15, 0.15, 1);
 
 
 pano1.add(sprite);
