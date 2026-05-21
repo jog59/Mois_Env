@@ -1,4 +1,4 @@
-console.log("Animation fuite_air chargée!!");
+console.log("Animation fuite_air chargée");
 
 // ✅ texture
 const texture = new THREE.TextureLoader().load("assets/vent2.png");
