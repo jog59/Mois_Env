@@ -357,6 +357,38 @@ createHotspot(pano1, hotspotsPano1, {
 );
 
 
+// climatisation1
+createHotspot(pano1, hotspotsPano1, {
+    w: 50, h: 50,
+    x: 480, y: 95, z: -110,
+    panelId: "climatisation",
+    groupId: "climatisation_pano1"
+}
+);
+
+// climatisation2
+createHotspot(pano1, hotspotsPano1, {
+    w: 50, h: 50,
+    x: 460, y: 110, z: 190,
+    panelId: "climatisation",
+    groupId: "climatisation_pano1"
+}
+);
+
+// Ventilateur
+createHotspot(pano1, hotspotsPano1, {
+    w: 65, h: 85,
+    x: 431, y: 125, z: -215,
+    panelId: "ventilateur"
+});
+
+// déchets_sol
+createHotspot(pano1, hotspotsPano1, {
+    w: 45, h: 40,
+    x: -235, y: -155, z: -410,
+    panelId: "dechets"
+});
+
 /* PANORAMA 2 */
 
 // Déchets 1
