@@ -287,17 +287,27 @@ createHotspot(pano1, hotspotsPano1, {
     x: 3600, y: -1080, z: 2500,
     panelId: "fontaine",
 
+    sound: {
+        src: "assets/drip7.mp3",
+        loop: true,
+        volume: 0.30,
+        refDistance: 1000,
+        maxDistance: 2000,
+        rolloffFactor: 3,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
 
     animation: {
         type: "drip",
         x: 3500, y: -1050, z: 2500,  // position du point de fuite (haut)
 
         // Paramètres ajustables :
-        dropCount: 6,       // nombre de gouttes simultanées
+        dropCount: 3,       // nombre de gouttes simultanées
         height: 690,        // hauteur de chute en unités 3D
-        speed: 0.8,         // vitesse (cycles par seconde)
+        speed: 0.5,         // vitesse (cycles par seconde)
         size: 18,           // rayon des gouttes
-        spreadX: 100,       // dispersion horizontale
+        spreadX: 80,       // dispersion horizontale
         wobble: 8,          // ondulation latérale pendant la chute
         color: 0x4499ff     // couleur des gouttes
     }
@@ -542,8 +552,32 @@ createHotspot(pano3, hotspotsPano3, {
     w: 2000, h: 50,
     x: -30, y: 410, z: 300,
     panelId: "fuite",
-    // groupId: "ecl",
-    rotationX: 0, rotationY: 0, rotationZ: 2    
+    rotationX: 0, rotationY: 0, rotationZ: 2,
+
+    sound: {
+        src: "assets/drip3.mp3",
+        loop: true,
+        volume: 0.15,
+        refDistance: 20,
+        maxDistance: 50,
+        rolloffFactor: 1.5,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+
+    animation: {
+        type: "drip",
+        x: 2833, y: 3125, z: 2684,  // position du point de fuite (haut)
+
+        // Paramètres ajustables :
+        dropCount: 1,       // nombre de gouttes simultanées
+        height: 1000,        // hauteur de chute en unités 3D
+        speed: 0.75,         // vitesse (cycles par seconde)
+        size: 18,           // rayon des gouttes
+        spreadX: 75,       // dispersion horizontale
+        wobble: 8,          // ondulation latérale pendant la chute
+        color: 0x4499ff     // couleur des gouttes
+    }
 });
 
 // Déchets 
@@ -585,8 +619,34 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 830, h: 600,
     x: 2750, y: -850, z: 2000,
-    panelId: "fontaine"
-   // groupId: "fuite"
+    panelId: "fontaine",
+
+    
+
+    sound: {
+        src: "assets/drip4.mp3",
+        loop: true,
+        volume: 1,
+        refDistance: 500,
+        maxDistance: 3000,
+        rolloffFactor: 1.5,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+
+    animation: {
+        type: "drip",
+        x: 3912, y: -1000, z: 2950,  // position du point de fuite (haut)
+
+        // Paramètres ajustables :
+        dropCount: 1,       // nombre de gouttes simultanées
+        height: 50,        // hauteur de chute en unités 3D
+        speed: 0.3,         // vitesse (cycles par seconde)
+        size: 18,           // rayon des gouttes
+        spreadX: 40,       // dispersion horizontale
+        wobble: 1,          // ondulation latérale pendant la chute
+        color: 0x4499ff     // couleur des gouttes
+    }
 });
 
 // Déchets pano4
@@ -601,10 +661,34 @@ createHotspot(pano4, hotspotsPano4, {
 // Réseau incendie
 createHotspot(pano4, hotspotsPano4, {
     w: 7000, h: 200,
-    x: 760, y: 2760, z: -3500,
+    x: 760, y: 2700, z: -3500,
     panelId: "fuite",
     groupId: "incendie",
-    rotationX: 50
+    rotationX: 50,
+    sound: {
+        src: "assets/drip5.mp3",
+        loop: true,
+        volume: 0.8,
+        refDistance: 500,
+        maxDistance: 3000,
+        rolloffFactor: 1.5,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+
+    animation: {
+        type: "drip",
+        x: -158, y: 3082, z: -3926,  // position du point de fuite (haut)
+
+        // Paramètres ajustables :
+        dropCount: 2,       // nombre de gouttes simultanées
+        height: 1200,        // hauteur de chute en unités 3D
+        speed: 0.6,         // vitesse (cycles par seconde)
+        size: 18,           // rayon des gouttes
+        spreadX: 60,       // dispersion horizontale
+        wobble: 3,          // ondulation latérale pendant la chute
+        color: 0x4499ff     // couleur des gouttes
+    }
 });
 
 // Éclairage hauteur 1
