@@ -23,7 +23,7 @@
             opacity: 0.4;
             cursor: not-allowed;
         }
-    
+
 
         /* Bouton Play/Pause flottant */
         #toggleRotate {
@@ -76,85 +76,131 @@
 
 
 
-        /* PANEL HORIZONTAL */
+        /* PANEL MEDIA CAROUSEL */
         #infoPanel {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 1000px;
-            max-width: 95vw;
-            background: white;
-            border-radius: 14px;
-            padding: 20px;
-            box-shadow: 0 0 35px rgba(0,0,0,0.35);
+            width: 96vw;
+            height: 92vh;
+            background: #111;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 60px rgba(0,0,0,0.7);
             display: none;
             z-index: 99999;
             font-family: Arial, sans-serif;
             pointer-events: auto;
         }
 
-        #infoText {
-            white-space: pre-line;
-        }
-
-        .panel-content {
-            display: flex;
-            gap: 20px;
-        }
-
-        .panel-left {
-            flex: 0.4;
-        }
-
-        .panel-image {
+        /* Zone média principale */
+        #panelMediaWrapper {
+            position: relative;
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            border-radius: 10px;
+            background: #000;
+            overflow: hidden;
         }
 
-        .panel-right {
-            flex: 0.6;
-            display: flex;
-            flex-direction: column;
+        .panel-media-item {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 0.35s ease;
+            pointer-events: none;
         }
 
-        .panel-title {
-            margin: 0 0 10px 0;
-            font-size: 22px;
-            font-weight: bold;
-            color: #222;
+        .panel-media-item.active {
+            opacity: 1;
+            pointer-events: auto;
         }
 
-        .panel-text {
-            font-size: 16px;
-            line-height: 1.4;
-            color: #333;
-            margin: 0 0 20px 0;
-            flex: 1;
+        .panel-media-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
         }
 
-        .panel-logos {
-            display: flex;
-            gap: 16px;
-            margin-top: auto;
+        .panel-media-item video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            background: #000;
         }
 
-        .panel-logo {
-            width: 90px;
-            height: auto;
-        }
-
+        /* Bouton fermer */
         #closePanelBtn {
             position: absolute;
             top: 10px;
-            right: 10px;
-            background: transparent;
+            right: 12px;
+            background: rgba(0,0,0,0.55);
             border: none;
-            font-size: 22px;
+            font-size: 20px;
             cursor: pointer;
-            color: #444;
+            color: #fff;
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+        }
+
+        #closePanelBtn:hover { background: rgba(255,255,255,0.2); }
+
+        /* Flèches navigation */
+        .panel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            font-size: 28px;
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s;
+        }
+
+        .panel-nav:hover { background: rgba(255,255,255,0.25); }
+        .panel-nav:disabled { opacity: 0.2; cursor: default; }
+        #panelPrev { left: 10px; }
+        #panelNext { right: 10px; }
+
+        /* Indicateurs (dots) */
+        #panelDots {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 7px;
+            z-index: 10;
+        }
+
+        .panel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .panel-dot.active {
+            background: #fff;
+            transform: scale(1.3);
         }
 
         /* COMPTEUR */
@@ -177,28 +223,23 @@
 
     <div id="viewer">
 
-        <!-- PANEL D'INFO -->
+        <!-- PANEL D'INFO MEDIA -->
         <div id="infoPanel">
 
-            <button id="closePanelBtn">✖</button>
-
-            <div class="panel-content">
-
-                <div class="panel-left">
-                    <img id="infoImage" src="" class="panel-image">
-                </div>
-
-                <div class="panel-right">
-                    <h2 id="infoTitle" class="panel-title">Titre</h2>
-                    <p id="infoText" class="panel-text">Texte descriptif…</p>
-
-                    <div class="panel-logos"></div>
-                </div>
-
+            <div id="panelMediaWrapper">
+                <!-- Les items média sont injectés dynamiquement -->
+                <button id="closePanelBtn" title="Fermer">✕</button>
+                <button class="panel-nav" id="panelPrev">&#8249;</button>
+                <button class="panel-nav" id="panelNext">&#8250;</button>
+                <div id="panelDots"></div>
             </div>
+
         </div>
 
         <!-- BOUTONS -->
+
+
+
         <button id="toggleRotate">▶️ Rotation</button>
         <button id="switchImage">Image suivante ➡️</button>
         <button id="switchImagePrev">⬅️ Image précédente</button>
@@ -224,7 +265,10 @@
         /* --- PANORAMAS --- */
         const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
         const pano2 = new PANOLENS.ImagePanorama('assets/image2.jpg');
-        const pano3 = new PANOLENS.ImagePanorama('assets/image1.jpg');
+        const pano3 = new PANOLENS.ImagePanorama('assets/plastic.jpg');
+        const pano4 = new PANOLENS.ImagePanorama('assets/image3.jpg');
+
+
 
         /* --- VIEWER --- */
         const viewer = new PANOLENS.Viewer({
@@ -238,6 +282,7 @@
         viewer.add(pano1);
         viewer.add(pano2);
         viewer.add(pano3);
+        viewer.add(pano4);
 
         let currentPano = pano1;
         // État initial : image 1
@@ -265,8 +310,6 @@
                 switchImagePrev.disabled = false;  // actif
                 switchImage.disabled = false;      // actif.
 
-
- 
                 return;
             }
 
@@ -282,6 +325,23 @@
 
                 updateDebugVisibility();
 
+                switchImage.disabled = false;       // ➡️ actif
+                switchImagePrev.disabled = false;  // ⬅️ actif
+                return;
+            }
+
+            // IMAGE 3 → 4
+            if (currentPano === pano3) {
+                currentPano = pano4;
+                viewer.setPanorama(pano4);
+
+                deactivateHotspots(hotspotsPano3);
+                activateHotspots(hotspotsPano4);
+                hideCheckmarks(checkmarksPano3);
+                showCheckmarks(checkmarksPano4);
+
+                updateDebugVisibility();
+
                 switchImage.disabled = true;       // ➡️ désactivé
                 switchImagePrev.disabled = false;  // ⬅️ actif
                 return;
@@ -294,6 +354,22 @@
             if (switchImagePrev.disabled) return;
             event.preventDefault();
             event.stopImmediatePropagation();
+
+            // IMAGE 4 → 3
+            if (currentPano === pano4) {
+                currentPano = pano3;
+                viewer.setPanorama(pano3);
+
+                deactivateHotspots(hotspotsPano4);
+                activateHotspots(hotspotsPano3);
+                hideCheckmarks(checkmarksPano4);
+                showCheckmarks(checkmarksPano3);
+
+                switchImagePrev.disabled = false;
+                switchImage.disabled = false;
+                return;
+            }
+
 
             // IMAGE 3 → 2
             if (currentPano === pano3) {
@@ -345,32 +421,111 @@
             setAutoRotate(!isAutoRotateOn);
         });
 
-        /* --- PANEL FUNCTIONS --- */
-        window.showInfoPanel = function (title, text, imageUrl, logos = []) {
+        /* --- PANEL MEDIA CAROUSEL --- */
+        let panelMediaIndex = 0;
+        let panelMediaList = [];
+        let panelCurrentVideo = null;
 
-            document.getElementById("infoTitle").innerText = title;
-            document.getElementById("infoText").innerText = text;
-            document.getElementById("infoImage").src = imageUrl;
+        function renderPanelMedia(media) {
+            const wrapper = document.getElementById("panelMediaWrapper");
 
-            const logosContainer = document.querySelector(".panel-logos");
-            logosContainer.innerHTML = "";
+            // Supprimer anciens items (sauf boutons fixes)
+            wrapper.querySelectorAll(".panel-media-item").forEach(el => el.remove());
 
+            // Vider dots
+            const dotsEl = document.getElementById("panelDots");
+            dotsEl.innerHTML = "";
 
-            if (title === "Air Comprimée" && sound.isPlaying) {
-                sound.pause();
-            }
+            panelMediaList = media;
+            panelMediaIndex = 0;
+            panelCurrentVideo = null;
 
+            // Créer les items
+            media.forEach((item, i) => {
+                const div = document.createElement("div");
+                div.className = "panel-media-item" + (i === 0 ? " active" : "");
 
-            logos.forEach(src => {
-                const img = document.createElement("img");
-                img.src = src;
-                img.className = "panel-logo";
-                logosContainer.appendChild(img);
+                if (item.type === "video") {
+                    const vid = document.createElement("video");
+                    vid.src = item.src;
+                    vid.controls = true;
+                    vid.preload = "metadata";
+                    if (item.autoplay && i === 0) { vid.autoplay = true; vid.muted = !!item.muted; }
+                    div.appendChild(vid);
+                    if (i === 0) panelCurrentVideo = vid;
+                } else {
+                    const img = document.createElement("img");
+                    img.src = item.src;
+                    img.alt = item.alt || "";
+                    div.appendChild(img);
+                }
+
+                // Insérer avant les boutons (avant closePanelBtn)
+                wrapper.insertBefore(div, wrapper.querySelector("#closePanelBtn"));
+
+                // Dot
+                if (media.length > 1) {
+                    const dot = document.createElement("div");
+                    dot.className = "panel-dot" + (i === 0 ? " active" : "");
+                    dot.addEventListener("pointerdown", (e) => { e.stopPropagation(); goToMedia(i); });
+                    dotsEl.appendChild(dot);
+                }
             });
 
+            updatePanelNav();
+        }
+
+        function goToMedia(index) {
+            const items = document.querySelectorAll(".panel-media-item");
+            const dots  = document.querySelectorAll(".panel-dot");
+
+            // Pauser vidéo courante
+            if (panelCurrentVideo) { panelCurrentVideo.pause(); panelCurrentVideo = null; }
+
+            items[panelMediaIndex]?.classList.remove("active");
+            dots[panelMediaIndex]?.classList.remove("active");
+
+            panelMediaIndex = index;
+
+            items[panelMediaIndex]?.classList.add("active");
+            dots[panelMediaIndex]?.classList.add("active");
+
+            // Gérer vidéo entrante
+            const activeVid = items[panelMediaIndex]?.querySelector("video");
+            if (activeVid) { panelCurrentVideo = activeVid; }
+
+            updatePanelNav();
+        }
+
+        function updatePanelNav() {
+            document.getElementById("panelPrev").disabled = (panelMediaIndex === 0);
+            document.getElementById("panelNext").disabled = (panelMediaIndex === panelMediaList.length - 1);
+            // Cacher nav si un seul média
+            const show = panelMediaList.length > 1;
+            document.getElementById("panelPrev").style.display = show ? "" : "none";
+            document.getElementById("panelNext").style.display = show ? "" : "none";
+        }
+
+        document.getElementById("panelPrev").addEventListener("pointerdown", (e) => {
+            e.stopPropagation();
+            if (panelMediaIndex > 0) goToMedia(panelMediaIndex - 1);
+        });
+
+        document.getElementById("panelNext").addEventListener("pointerdown", (e) => {
+            e.stopPropagation();
+            if (panelMediaIndex < panelMediaList.length - 1) goToMedia(panelMediaIndex + 1);
+        });
+
+        window.showInfoPanel = function (title, text, imageUrl, logos = [], media = null) {
+
+            // Construire la liste média : priorité au tableau `media`, sinon fallback image simple
+            const mediaList = media && media.length > 0
+                ? media
+                : [{ type: "image", src: imageUrl }];
+
+            renderPanelMedia(mediaList);
+
             document.getElementById("infoPanel").style.display = "block";
-
-
 
 
             savedRotationState = isAutoRotateOn;
@@ -387,24 +542,26 @@
         };
 
         document.getElementById("closePanelBtn").addEventListener("pointerdown", () => {
+            if (panelCurrentVideo) { panelCurrentVideo.pause(); panelCurrentVideo = null; }
             document.getElementById("infoPanel").style.display = "none";
             setAutoRotate(savedRotationState);
             enableViewerControls();
         });
 
-            document.getElementById("infoPanel").addEventListener("pointerdown", (event) => {
-                event.stopPropagation();
-            });
+        document.getElementById("infoPanel").addEventListener("pointerdown", (event) => {
+            event.stopPropagation();
+        });
 
-            document.getElementById("debugBtn").addEventListener("pointerdown", () => {
-                debugMode = !debugMode;
-                updateDebugVisibility();
-            });
+        document.getElementById("debugBtn").addEventListener("pointerdown", () => {
+            debugMode = !debugMode;
+            updateDebugVisibility();
+        });
 
     </script>
 
     <script src="./js/panels.js"></script>
     <script src="./js/detection.js"></script>
+    <script src="./js/animation.js"></script>
 
 </body>
 </html>

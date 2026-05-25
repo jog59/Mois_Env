@@ -1,93 +1,88 @@
-﻿// Base de données des panneaux
+// Base de données des panneaux
+// Chaque panneau a un tableau `media` : liste d'images et/ou vidéos affichées dans le carousel.
+// Format d'un item :
+//   { type: "image", src: "assets/mon_image.png", alt: "description optionnelle" }
+//   { type: "video", src: "assets/ma_video.mp4", autoplay: false, muted: false }
+
 window.PANELS = {
 
-
-    //PANNEAU FONTAINE
+    // PANNEAU FONTAINE
     fontaine: {
         title: "Fontaine à eau",
-        text: `L’eau potable est une ressource industrielle à préserver.
-Une simple fuite peut représenter des centaines de litres gaspillés par jour.
-    Chacun est acteur de la maîtrise des consommations, de la durabilité du site et du respect de nos engagements environnementaux.
-Une fuite peut provoquer un risque d’accident.
-
-Signaler immédiatement toute fuite à la maintenance.
-`,
-        image: "assets/Image_Fontaine_Fuite.png",
-        logos: [
-            "assets/Challenge4.png",
-            "assets/EcoBaboy.png"
+        media: [
+            { type: "image", src: "assets/panneau_fontaine.png", alt: "Fuite fontaine" }
+            //{ type: "video", src: "assets/fuite_air.mp4" }
         ],
         found: false
     },
 
-
-    // PANNEAU DECHETS
-    dechets: {   // ⚠️ sans accent pour correspondre à panelId
+    // PANNEAU TRI DECHETS
+    dechets: {
         title: "Déchets",
-        text: `Le tri des déchets : un geste simple, un impact majeur
- Le tri des déchets permet :
-
-	=> la valorisation des matières recyclables,
-	=> La réduction des déchets ultimes,
-	=> La maîtrise des couts de traitement,
-	=> Le respect des exigences réglementaires et environnementales
-
-Mal trier, c’est compromettre toute la chaine de recyclage et annuler les efforts collectifs.
-
-     `,
-        image: "assets/Image_Dechets.png",
-        logos: [
-            "assets/Challenge5.png",
-            "assets/EcoBaboy.png"
+        media: [
+            { type: "image", src: "assets/panneau_tri_dechets.png", alt: "Tri des déchets" }
+           // { type: "image", src: "assets/Challenge5.png", alt: "Challenge 5" }
+            // Exemple vidéo : { type: "video", src: "assets/video_dechets.mp4" }
         ],
         found: false
     },
 
-
-    //PANNEAU VENTILATEUR
+    // PANNEAU VENTILATEUR
     ventilateur: {
         title: "Ventilateur",
-        text: `L’ utilisation d’un ventilateur sur ligne hors période de production génère une surconsommation électrique (Muda énergétique)
-        Chaque ventilateur consomme jusqu’à 300W par heure de fonctionnement.
-        Appliquons le pilier STOP de l’ESCO en arrêtant les équipements inutiles hors période de production ou si je n’en ai pas besoin
+        media: [
+            { type: "image", src: "assets/panneau_ventilateur.png", alt: "Ventilateur inutile" }
+           // { type: "image", src: "assets/Challenge4.png", alt: "Challenge 4" }
+            // Exemple vidéo : { type: "video", src: "assets/video_ventilateur.mp4" }
+        ],
+        found: false
+    },
 
-        Pas de production = pas de fonctionnement inutile
-Avant de quitter votre poste ou lors d’un arrêt de production, pensez à vérifier :
-✅ L’équipement est-il nécessaire ?
-✅ Peut-il être arrêté en sécurité ?
-Chaque arrêt utile contribue à la performance, à la sécurité et à la durabilité du site.
+    // PANNEAU AIR COMPRIMEE
+    air_comprimee: {
+        title: "Air Comprimée",
+        media: [
+            { type: "image", src: "assets/panneau_air_comprimee1.png", alt: "Air comprimée" },
+            { type: "image", src: "assets/panneau_air_comprimee2.png", alt: "Air comprimée" },
+            { type: "video", src: "assets/video_air_comprimee.mp4", autoplay: false }
+        ],
+        found: false
+    },
 
-`,
-        image: "assets/Image_Ventilateur.png",
-        logos: [
-            "assets/Challenge4.png",
-            "assets/EcoBaboy.png"
+    // PANNEAU RADIANT
+    radiant: {
+        title: "Radiant",
+        media: [
+            { type: "image", src: "assets/Image_Ventilateur.png", alt: "Radiant" }
+        ],
+        found: false
+    },
+
+    // PANNEAU FUITE
+    fuite: {
+        title: "Fuite réseau incendie",
+        media: [
+            { type: "image", src: "assets/Image_Fontaine_Fuite.png", alt: "Fuite réseau" }
+        ],
+        found: false
+    },
+
+    //ECLAIRAGE
+    eclairage: {
+        title: "eclairage",
+        media: [
+            { type: "image", src: "assets/panneau_eclairage.png", alt: "eclairage" }
         ],
         found: false
     },
 
 
-    //PANNEAU AIR COMPRIMEE
-       air_comprimee: {
-        title: "Air Comprimée",
-        text: `L’ utilisation d’un ventilateur sur ligne hors période de production génère une surconsommation électrique (Muda énergétique)
-        Chaque ventilateur consomme jusqu’à 300W par heure de fonctionnement.
-        Appliquons le pilier STOP de l’ESCO en arrêtant les équipements inutiles hors période de production ou si je n’en ai pas besoin
-
-        Pas de production = pas de fonctionnement inutile
-Avant de quitter votre poste ou lors d’un arrêt de production, pensez à vérifier :
-✅ L’équipement est-il nécessaire ?
-✅ Peut-il être arrêté en sécurité ?
-Chaque arrêt utile contribue à la performance, à la sécurité et à la durabilité du site.
-
-`,
-        image: "assets/Image_Ventilateur.png",
-        logos: [
-            "assets/Challenge4.png",
-            "assets/EcoBaboy.png"
+    //CLIMATISATION
+        climatisation: {
+        title: "Climatisation",
+        media: [
+            { type: "image", src: "assets/Image_Fontaine_Fuite.png", alt: "Fuite réseau" }
         ],
         found: false
     }
-
-
 };

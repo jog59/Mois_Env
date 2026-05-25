@@ -1,46 +1,249 @@
-﻿console.log("detection.js chargé");
+console.log("detection.js chargé");
 
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
 let hotspotsPano2 = [];
 let hotspotsPano3 = [];
+let hotspotsPano4 = [];
 
 let checkmarksPano1 = [];
 let checkmarksPano2 = [];
 let checkmarksPano3 = [];
+let checkmarksPano4 = [];
 
 let totalZones = 0;
 let foundZones = 0;
+
+/* GROUPES : { groupId -> { found: bool, checkmarkAdded: bool } } */
+const groups = {};
 
 /* Variables pour différencier clic / glissé */
 let pointerDownX = 0;
 let pointerDownY = 0;
 let pointerMoved = false;
 
-
-//MODE DEBUG
+/* MODE DEBUG */
 let debugMode = false;
 function updateDebugVisibility() {
-
-    // Masquer toutes les zones
-    [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3].forEach(z => {
+    [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3, ...hotspotsPano4].forEach(z => {
         if (z.material) z.material.visible = false;
     });
-
     if (!debugMode) return;
+    if (currentPano === pano1) hotspotsPano1.forEach(z => { if (z.material) z.material.visible = true; });
+    if (currentPano === pano2) hotspotsPano2.forEach(z => { if (z.material) z.material.visible = true; });
+    if (currentPano === pano3) hotspotsPano3.forEach(z => { if (z.material) z.material.visible = true; });
+    if (currentPano === pano4) hotspotsPano4.forEach(z => { if (z.material) z.material.visible = true; });
+}
 
-    // Afficher uniquement les zones du panorama actif
-    if (currentPano === pano1) {
-        hotspotsPano1.forEach(z => { if (z.material) z.material.visible = true; });
+/* AUDIO LISTENER GLOBAL */
+const listener = new THREE.AudioListener();
+viewer.camera.add(listener);
+
+// Déblocage audio au premier geste utilisateur
+document.addEventListener("pointerdown", () => {
+    if (listener.context.state === "suspended") {
+        listener.context.resume();
+    }
+}, { once: true });
+
+/* ANIMATION DES ICÔNES (pulse) */
+const animatedIcons = [];
+
+(function animLoop() {
+    requestAnimationFrame(animLoop);
+    const t = performance.now() / 1000;
+    animatedIcons.forEach(s => {
+        if (!s.visible) return;
+        const pulse = 1 + 0.12 * Math.sin(t * 3);
+        s.scale.set(
+            s.userData.baseScaleX * pulse,
+            s.userData.baseScaleY * pulse,
+            1
+        );
+    });
+})();
+
+
+/* ============================================================
+   ANIMATIONS SHADER
+   ============================================================ */
+
+function buildAnimation(options, pano) {
+    if (options.type === "wind")  return buildWindAnimation(options, pano);
+    if (options.type === "drip")  return buildDripAnimation(options, pano);
+    console.warn("Type d'animation inconnu :", options.type);
+    return null;
+
+
+}
+
+/* --- WIND : flux de particules/texture animée --- */
+function buildWindAnimation(options, pano) {
+
+    const texture = new THREE.TextureLoader().load(options.src);
+    texture.wrapS = THREE.RepeatWrapping;
+    texture.wrapT = THREE.RepeatWrapping;
+
+    const material = new THREE.ShaderMaterial({
+        uniforms: {
+            map:       { value: texture },
+            time:      { value: 0 },
+            speedX:    { value: options.speedX    ?? 0.5  },
+            speedY:    { value: options.speedY    ?? 0.0  },
+            turbAmp:   { value: options.turbAmp   ?? 0.05 },
+            turbFreq:  { value: options.turbFreq  ?? 10.0 },
+            turbSpeed: { value: options.turbSpeed ?? 3.0  },
+            opacity:   { value: options.opacity   ?? 1.0  }
+        },
+        transparent: true,
+        vertexShader: `
+            varying vec2 vUv;
+            void main() {
+                vUv = uv;
+                gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+            }
+        `,
+        fragmentShader: `
+            uniform sampler2D map;
+            uniform float time;
+            uniform float speedX;
+            uniform float speedY;
+            uniform float turbAmp;
+            uniform float turbFreq;
+            uniform float turbSpeed;
+            uniform float opacity;
+            varying vec2 vUv;
+            void main() {
+                vec2 uv = vUv;
+                uv.x -= time * speedX;
+                uv.y -= time * speedY;
+                uv.y += sin(uv.x * turbFreq + time * turbSpeed) * turbAmp;
+                vec4 color = texture2D(map, uv);
+                if (color.a < 0.05) discard;
+                gl_FragColor = vec4(color.rgb, color.a * opacity);
+            }
+        `
+    });
+
+    const mesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(options.w ?? 2000, options.h ?? 1000),
+        material
+    );
+
+    const px = options.x ?? 0;
+    const py = options.y ?? 0;
+    const pz = options.z ?? 0;
+    const dir = new THREE.Vector3(px, py, pz).normalize();
+    mesh.position.copy(dir.multiplyScalar(4800));
+    mesh.lookAt(new THREE.Vector3(0, 0, 0));
+    mesh.scale.set(options.scale ?? 1, options.scale ?? 1, 1);
+
+    pano.add(mesh);
+
+    // Masquer si pas le pano actif au chargement
+    if (pano !== currentPano) mesh.visible = false;
+
+    (function loop() {
+        requestAnimationFrame(loop);
+        if (!mesh.visible) return;
+        material.uniforms.time.value += 0.02;
+    })();
+
+    return mesh;
+}
+
+/* --- DRIP : goutte à goutte (à implémenter) --- */
+function buildDripAnimation(options, pano) {
+
+    const group = new THREE.Group();
+
+    const dropCount = options.dropCount ?? 6;
+    const dropColor = options.color ?? 0x4499ff;
+    const spreadX = options.spreadX ?? 100;  // dispersion horizontale des gouttes
+    const height = options.height ?? 400;  // hauteur de chute
+    const dropSpeed = options.speed ?? 0.8;  // vitesse de chute (0-1, relatif)
+    const dropSize = options.size ?? 18;   // rayon des gouttes
+
+    // Créer les gouttes
+    const drops = [];
+    for (let i = 0; i < dropCount; i++) {
+
+        const geo = new THREE.SphereGeometry(dropSize, 6, 6);
+        const mat = new THREE.MeshBasicMaterial({
+            color: dropColor,
+            transparent: true,
+            opacity: 0.85
+        });
+        const drop = new THREE.Mesh(geo, mat);
+
+        // Position initiale aléatoire dans la colonne
+        drop.userData.offsetX = (Math.random() - 0.5) * spreadX;
+        drop.userData.phase = Math.random();        // décalage de phase (0-1)
+        drop.userData.speed = dropSpeed * (0.7 + Math.random() * 0.6);
+        drop.userData.delay = Math.random();        // délai avant apparition
+
+        drop.position.set(drop.userData.offsetX, 0, 0);
+        drop.visible = false;
+        group.add(drop);
+        drops.push(drop);
     }
 
-    if (currentPano === pano2) {
-        hotspotsPano2.forEach(z => { if (z.material) z.material.visible = true; });
-    }
+    // Positionner le groupe
+    const px = options.x ?? 0;
+    const py = options.y ?? 0;
+    const pz = options.z ?? 0;
+    group.position.set(px, py, pz);
+    group.lookAt(new THREE.Vector3(0, 0, 0));
 
-    if (currentPano === pano3) {
-        hotspotsPano3.forEach(z => { if (z.material) z.material.visible = true; });
-    }
+    pano.add(group);
+
+    // Masquer si pas le pano actif
+    if (pano !== currentPano) group.visible = false;
+
+    // Boucle d'animation
+    let lastTime = performance.now();
+
+    (function loop() {
+        requestAnimationFrame(loop);
+        if (!group.visible) return;
+
+        const now = performance.now();
+        const dt = (now - lastTime) / 1000;
+        lastTime = now;
+
+        drops.forEach(drop => {
+
+            // Avancer la phase
+            drop.userData.phase += dt * drop.userData.speed;
+
+            // Délai d'apparition : la goutte n'existe pas encore
+            if (drop.userData.phase < drop.userData.delay) {
+                drop.visible = false;
+                return;
+            }
+
+            // Phase normalisée entre 0 et 1 sur le cycle de chute
+            const t = (drop.userData.phase - drop.userData.delay) % 1;
+
+            // Apparition progressive en haut, disparition en bas
+            drop.visible = true;
+            drop.material.opacity = t < 0.1
+                ? t / 0.1 * 0.85           // fade in
+                : t > 0.85
+                    ? (1 - t) / 0.15 * 0.85  // fade out
+                    : 0.85;
+
+            // Chute sur Y (de 0 vers -height) avec légère accélération
+            drop.position.y = -(t * t) * height;
+            drop.position.x = drop.userData.offsetX;
+
+            // Légère ondulation horizontale
+            drop.position.x += Math.sin(t * Math.PI * 3) * (options.wobble ?? 8);
+        });
+    })();
+
+    // Retourner le group comme "icon" pour le masquage au clic
+    return group;
 }
 
 /* AJOUT COCHES */
@@ -48,246 +251,476 @@ function addCheckMark(position, panoIndex) {
     const texture = new THREE.TextureLoader().load("assets/picto-coche-verte.png");
     const material = new THREE.SpriteMaterial({ map: texture, transparent: true });
     const sprite = new THREE.Sprite(material);
-
     sprite.scale.set(500, 500, 1);
-
     const direction = position.clone().normalize();
     sprite.position.copy(position.clone().sub(direction.multiplyScalar(150)));
-
     viewer.scene.add(sprite);
-
     if (panoIndex === 1) checkmarksPano1.push(sprite);
     else if (panoIndex === 2) checkmarksPano2.push(sprite);
-    else checkmarksPano3.push(sprite);
+    else if (panoIndex === 3) checkmarksPano3.push(sprite);
+    else checkmarksPano4.push(sprite);
 }
 
-function hideCheckmarks(list) {
-    list.forEach(s => s.visible = false);
-}
-
-function showCheckmarks(list) {
-    list.forEach(s => s.visible = true);
-}
+function hideCheckmarks(list) { list.forEach(s => s.visible = false); }
+function showCheckmarks(list) { list.forEach(s => s.visible = true); }
 
 /* ACTIVER / DÉSACTIVER HOTSPOTS */
 function activateHotspots(list) {
-    list.forEach(h => h.userData.active = true);
+    list.forEach(h => {
+        h.userData.active = true;
+        h.raycast = THREE.Mesh.prototype.raycast;
+        if (h.userData.icon && !h.userData.found) h.userData.icon.visible = true;
+    });
 }
 
-function deactivateHotspots(list) {
-    list.forEach(h => h.userData.active = false);
+function deactivateHotspots(list) { list.forEach(h => { h.userData.active = false; h.raycast = () => { }; }); }
+
+/* ============================================================
+   CRÉATION DES HOTSPOTS
+   ============================================================ */
+
+/* PANORAMA 1 */
+
+// Fontaine
+createHotspot(pano1, hotspotsPano1, {
+    w: 600, h: 1930,
+    x: 3600, y: -1080, z: 2500,
+    panelId: "fontaine",
+
+
+    animation: {
+        type: "drip",
+        x: 3500, y: -1050, z: 2500,  // position du point de fuite (haut)
+
+        // Paramètres ajustables :
+        dropCount: 6,       // nombre de gouttes simultanées
+        height: 690,        // hauteur de chute en unités 3D
+        speed: 0.8,         // vitesse (cycles par seconde)
+        size: 18,           // rayon des gouttes
+        spreadX: 100,       // dispersion horizontale
+        wobble: 8,          // ondulation latérale pendant la chute
+        color: 0x4499ff     // couleur des gouttes
+    }
+
+
+});
+
+// Air comprimée — avec son et animation shader wind
+createHotspot(pano1, hotspotsPano1, {
+    w: 600, h: 1930,
+    x: 4501, y: -1600, z: -1200,
+    panelId: "air_comprimee",
+    sound: {
+        src: "assets/fuite_air_comprimee.m4a",
+        loop: true,
+        volume: 0.6,
+        refDistance: 200,
+        maxDistance: 1000,
+        rolloffFactor: 1.5,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+    animation: {
+        type: "wind",
+        src: "assets/vent2.png",
+        w: 2000, h: 1500,
+        scale: 0.15,
+        x: 5400, y: -1600, z: -1200,
+        // Paramètres ajustables :
+        speedX: 0.8,      // vitesse flux horizontal
+        speedY: 0.0,      // vitesse flux vertical
+        turbAmp: 0.05,    // amplitude des ondulations
+        turbFreq: 10.0,   // fréquence des ondulations
+        turbSpeed: 3.0,   // vitesse des ondulations
+        opacity: 1.0
+    }
+});
+
+// eclairage1
+createHotspot(pano1, hotspotsPano1, {
+    w: 1050, h: 60,
+    x: -250, y: 430, z: 5,
+    panelId: "eclairage",
+    groupId: "eclairage_pano1",
+    rotationX: 0, rotationY: 0, rotationZ: 6,
+    }
+);
+
+// eclairage2
+createHotspot(pano1, hotspotsPano1, {
+    w: 630, h: 40,
+    x: -350, y: 255, z: -70,
+    panelId: "eclairage",
+    groupId: "eclairage_pano1",
+    rotationX: 0, rotationY: 0, rotationZ: -6   ,
 }
+);
 
-/* HOTSPOTS PANORAMA 1 */
-setTimeout(() => {
 
-    const geo = new THREE.PlaneGeometry(600, 1930);
+/* PANORAMA 2 */
+
+// Déchets 1
+createHotspot(pano2, hotspotsPano2, {
+    w: 600, h: 1200,
+    x: 3400, y: -1360, z: -3000,
+    panelId: "dechets"
+});
+
+// Déchets 2
+createHotspot(pano2, hotspotsPano2, {
+    w: 1000, h: 1800,
+    x: -2100, y: -1800, z: -1600,
+    panelId: "dechets"
+});
+
+// Déchets 3
+createHotspot(pano2, hotspotsPano2, {
+    w: 1040, h: 500,
+    x: -4190, y: -2580, z: 400,
+    panelId: "dechets"
+});
+
+
+// Ventilateur
+createHotspot(pano2, hotspotsPano2, {
+    w: 600, h: 600,
+    x: -4150, y: 660, z: 1292,
+    panelId: "ventilateur"
+});
+
+// Ventilateur2
+createHotspot(pano2, hotspotsPano2, {
+    w: 730, h: 620,
+    x: -1375, y: 691, z: -4543,
+    panelId: "ventilateur"
+});
+
+// Air comprimée pano2
+createHotspot(pano2, hotspotsPano2, {
+    w: 800, h: 1200,
+    x: -1350, y: 1900, z: 3000,
+    panelId: "air_comprimee",
+
+
+    sound: {
+        src: "assets/fuite_air_comprimee.m4a",
+        loop: true,
+        volume: 0.6,
+        refDistance: 200,
+        maxDistance: 500,
+        rolloffFactor: 1.6,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+    animation: {
+        type: "wind",
+        src: "assets/vent2.png",
+        w: 2000, h: 1500,
+        scale: 0.15,
+        x: -2320, y: 2772, z: 3586,
+        // Paramètres ajustables :
+        speedX: 0.8,      // vitesse flux horizontal
+        speedY: 0.0,      // vitesse flux vertical
+        turbAmp: 0.05,    // amplitude des ondulations
+        turbFreq: 10.0,   // fréquence des ondulations
+        turbSpeed: 3.0,   // vitesse des ondulations
+        opacity: 1.0
+    }
+
+});
+
+// climatisation
+createHotspot(pano2, hotspotsPano2, {
+    w: 500, h: 500,
+    x: 4291, y: 1815, z: -508,
+    panelId: "climatisation"
+});
+
+// outil
+createHotspot(pano2, hotspotsPano2, {
+    w: 1900, h: 800,
+    x: -3705, y: 219, z: 3014,
+    panelId: "climatisation"
+});
+
+
+/* PANORAMA 3 */
+
+// Ventilateur1
+createHotspot(pano3, hotspotsPano3, {
+    w: 640, h: 600,
+    x: -4850, y: 890, z: -566,
+    panelId: "ventilateur"
+});
+
+// Ventilateur2
+createHotspot(pano3, hotspotsPano3, {
+    w: 640, h: 1200,
+    x: 900, y: 1650, z: -4000,
+    panelId: "ventilateur",
+    rotationX: 0, rotationY: 0, rotationZ: -9,
+});
+
+//Eclairage machine
+createHotspot(pano3, hotspotsPano3, {
+    w: 1200, h: 200,
+    x: -2500, y: 1150, z: 1090,
+    panelId: "eclairage",
+   // groupId: "ecl",
+    rotationX: -25, rotationY: 0, rotationZ: -10
+});
+
+// Air comprimée
+createHotspot(pano3, hotspotsPano3, {
+    w: 800, h: 800,
+    x: -800, y: 3700, z: 1200,
+    panelId: "air_comprimee",
+    rotationX: -30, rotationY: 0, rotationZ: -9,
+
+
+    sound: {
+        src: "assets/fuite_air_comprimee.m4a",
+        loop: true,
+        volume: 0.6,
+        refDistance: 200,
+        maxDistance: 500,
+        rolloffFactor: 1.6,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+    animation: {
+        type: "wind",
+        src: "assets/vent2.png",
+        w: 2000, h: 1500,
+        scale: 0.15,
+        x: -1096, y: 4077, z: 1200  ,
+        // Paramètres ajustables :
+        speedX: 0.8,      // vitesse flux horizontal
+        speedY: 0.0,      // vitesse flux vertical
+        turbAmp: 0.05,    // amplitude des ondulations
+        turbFreq: 10.0,   // fréquence des ondulations
+        turbSpeed: 3.0,   // vitesse des ondulations
+        opacity: 1.0
+    }
+
+});
+
+//fuite réseau incendie
+createHotspot(pano3, hotspotsPano3, {
+    w: 2000, h: 50,
+    x: -30, y: 410, z: 300,
+    panelId: "fuite",
+    // groupId: "ecl",
+    rotationX: 0, rotationY: 0, rotationZ: 2    
+});
+
+// Déchets 
+createHotspot(pano3, hotspotsPano3, {
+    w: 1400, h: 2200,
+    x: -1100, y: -2700, z: 2500,
+    panelId: "dechets",
+    rotationX: 0, rotationY: 0, rotationZ: 9,
+});
+
+//climatisation
+createHotspot(pano3, hotspotsPano3, {
+    w: 2000, h: 175,
+    x: 0, y: 500, z: 0,
+    panelId: "climatisation",
+    rotationX: 0, rotationY: -0, rotationZ: 6.2
+});
+
+
+/* PANORAMA 4 */
+
+// Radiant
+createHotspot(pano4, hotspotsPano4, {
+    w: 1300, h: 800,
+    x: 1350, y: -900, z: -3000,
+    panelId: "radiant"
+});
+
+// Éclairage
+createHotspot(pano4, hotspotsPano4, {
+    w: 3900, h: 2950,
+    x: 500, y: -1950, z: 3000,
+    panelId: "fontaine",
+    groupId: "ecl",
+    rotationX: -33, rotationY: 0, rotationZ: -6
+});
+
+// Fuite
+createHotspot(pano4, hotspotsPano4, {
+    w: 830, h: 600,
+    x: 2750, y: -850, z: 2000,
+    panelId: "fontaine"
+   // groupId: "fuite"
+});
+
+// Déchets pano4
+createHotspot(pano4, hotspotsPano4, {
+    w: 1200, h: 3100,
+    x: -3800, y: -2420, z: 1300,
+    panelId: "dechets",
+    groupId: "dechets",
+    rotationX: -5
+});
+
+// Réseau incendie
+createHotspot(pano4, hotspotsPano4, {
+    w: 7000, h: 200,
+    x: 760, y: 2760, z: -3500,
+    panelId: "fuite",
+    groupId: "incendie",
+    rotationX: 50
+});
+
+// Éclairage hauteur 1
+createHotspot(pano4, hotspotsPano4, {
+    w: 3500, h: 400,
+    x: 400, y: 1450, z: 1200,
+    panelId: "fontaine",
+    groupId: "eclairage_unique_peinture",
+    rotationX: 31, rotationY: 0, rotationZ: 17
+});
+
+// Éclairage hauteur 2
+createHotspot(pano4, hotspotsPano4, {
+    w: 1300, h: 150,
+    x: 1029, y: 529, z: -280,
+    panelId: "fontaine",
+    groupId: "eclairage_unique_peinture",
+    rotationX: -5, rotationY: 0, rotationZ: 0,
+
+});
+
+
+
+/* ============================================================
+   FONCTION createHotspot
+   =========
+   =================================================== */
+function createHotspot(pano, list, options) {
+
+    /* --- Mesh zone de détection --- */
+    const geo = new THREE.PlaneGeometry(options.w, options.h);
     const mat = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
+        color: options.color || 0xff0000,
         opacity: 0.5,
-        transparent: false,
+        transparent: true,
         side: THREE.DoubleSide,
         visible: debugMode
     });
 
-    const rect1 = new THREE.Mesh(geo, mat);
-    rect1.name = "Fontaine";
-    rect1.position.set(3600, -1080, 2500);
-    rect1.lookAt(new THREE.Vector3(0, 0, 0));
+    const mesh = new THREE.Mesh(geo, mat);
+    mesh.position.set(options.x, options.y, options.z);
+    mesh.lookAt(new THREE.Vector3(0, 0, 0));
 
-    rect1.userData = {
+    if (options.rotationX) mesh.rotation.x += options.rotationX * Math.PI / 180;
+    if (options.rotationY) mesh.rotation.y += options.rotationY * Math.PI / 180;
+    if (options.rotationZ) mesh.rotation.z += options.rotationZ * Math.PI / 180;
+
+    mesh.userData = {
         isClickable: true,
         active: true,
-        panelId: "fontaine",
-        found: false
+        panelId: options.panelId,
+        groupId: options.groupId || null,
+        found: false,
+        sound: null,
+        icon: null
     };
 
-    hotspotsPano1.push(rect1);
-    viewer.scene.add(rect1);
-
-    totalZones++;
-
-}, 500);
-
-
-     setTimeout(() => {  
-
-    const geo = new THREE.PlaneGeometry(600, 1930);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0x00ff00,
-        opacity: 0.5,
-        transparent: false,
-        side: THREE.DoubleSide
-    });
-
-    const rect5 = new THREE.Mesh(geo, mat);
-    rect5.name = "Air Comprimee";
-    rect5.position.set(4501, -1600, -1200);
-    rect5.lookAt(new THREE.Vector3(0, 0, 0));
-
-    rect5.userData = {
-        isClickable: true,
-        active: true,
-        panelId: "air_comprimee",
-        found: false
-    };
-
-    hotspotsPano1.push(rect5);
-    viewer.scene.add(rect5);
-
-    totalZones++;
-
-}, 500);   
-
-/* HOTSPOTS PANORAMA 2 */
-setTimeout(() => {
-
-    const geo = new THREE.PlaneGeometry(600, 1200);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-    });
-
-    const rect2 = new THREE.Mesh(geo, mat);
-    rect2.name = "Déchets";
-    rect2.position.set(3400, -1360, -3000);
-    rect2.lookAt(new THREE.Vector3(0, 0, 0));
-
-    rect2.userData = {
-        isClickable: true,
-        active: false,
-        panelId: "dechets",
-        found: false
-    };
-
-    hotspotsPano2.push(rect2);
-    viewer.scene.add(rect2);
-
-    totalZones++;
-
-}, 500);
-
-setTimeout(() => {
-
-    const geo = new THREE.PlaneGeometry(1000, 1800);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0xff0000,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-    });
-
-    const rect4 = new THREE.Mesh(geo, mat);
-    rect4.name = "Déchets2";
-    rect4.position.set(-2100, -1800, -1600);
-    rect4.lookAt(new THREE.Vector3(0, 0, 0));
-
-    rect4.userData = {
-        isClickable: true,
-        active: false,
-        panelId: "dechets",
-        found: false
-    };
-
-    hotspotsPano2.push(rect4);
-    viewer.scene.add(rect4);
-
-    totalZones++;
-
-}, 500);
-
-setTimeout(() => {
-
-    const geo = new THREE.PlaneGeometry(600, 600);
-    const mat = new THREE.MeshBasicMaterial({
-        color: 0x0000ff,
-        opacity: 0.5,
-        transparent: true,
-        side: THREE.DoubleSide
-    });
-
-    const rect3 = new THREE.Mesh(geo, mat);
-    rect3.name = "Ventilateur";
-    rect3.position.set(-4150, 650, 1292);
-    rect3.lookAt(new THREE.Vector3(0, 0, 0));
-
-    rect3.userData = {
-        isClickable: true,
-        active: false,
-        panelId: "ventilateur",
-        found: false
-    };
-
-    hotspotsPano2.push(rect3);
-    viewer.scene.add(rect3);
-
-    totalZones++;
-
-}, 500);
-
-
-
-
-
-/* SON*/
-// Création du son spatial
-const listener = new THREE.AudioListener();
-viewer.camera.add(listener);
-
-const sound = new THREE.PositionalAudio(listener);
-
-const audioLoader = new THREE.AudioLoader();
-
-
-audioLoader.load('assets/fuite_air_comprimee.m4a', function (buffer) {
-    sound.setBuffer(buffer);
-    sound.setLoop(true);
-    sound.setVolume(0.6);
-
-    sound.setRefDistance(800);
-    sound.setMaxDistance(8000);
-    sound.setRolloffFactor(1.2);
-    sound.setDistanceModel('inverse');
-
-    sound.setDirectionalCone(120, 240, 0.4);
-});
-
-// Objet 3D invisible qui porte le son
-const soundSource = new THREE.Mesh(
-    new THREE.SphereGeometry(50, 8, 8),
-    new THREE.MeshBasicMaterial({ visible: false })
-);
-
-soundSource.position.set(4579, -1496, -1038);
-soundSource.lookAt(viewer.camera.position);
-soundSource.add(sound);
-viewer.scene.add(soundSource);
-
-document.addEventListener("pointerdown", () => {
-    if (sound && !sound.isPlaying) {
-        sound.play();
+    // Enregistrer le groupe (compte pour 1 dans le compteur)
+    if (options.groupId) {
+        if (!groups[options.groupId]) {
+            groups[options.groupId] = { found: false, checkmarkAdded: false };
+            totalZones++; // le groupe ne compte que pour 1
+        }
+        // Cette zone individuelle ne compte pas dans totalZones
+    } else {
+        totalZones++;
     }
-}, { once: true });
 
-// Lier le son à l'image 1
-pano1.addEventListener('enter', () => {
-    if (!sound.isPlaying) sound.play();
-});
+    /* --- Son lié à la zone (optionnel) --- */
+    if (options.sound) {
+        const zoneSound = new THREE.PositionalAudio(listener);
+        const audioLoader = new THREE.AudioLoader();
 
-pano1.addEventListener('leave', () => {
-    if (sound.isPlaying) sound.stop();
-});
+        audioLoader.load(options.sound.src, (buffer) => {
+            zoneSound.setBuffer(buffer);
+            zoneSound.setLoop(options.sound.loop ?? true);
+            zoneSound.setVolume(options.sound.volume ?? 0.5);
+            zoneSound.setRefDistance(options.sound.refDistance ?? 800);
+            zoneSound.setMaxDistance(options.sound.maxDistance ?? 8000);
+            zoneSound.setRolloffFactor(options.sound.rolloffFactor ?? 1);
+            if (options.sound.distanceModel) zoneSound.setDistanceModel(options.sound.distanceModel);
+            if (options.sound.cone) zoneSound.setDirectionalCone(...options.sound.cone);
+
+            // Buffer prêt : jouer immédiatement si on est déjà sur ce panorama
+            if (currentPano === pano && !zoneSound.isPlaying && !mesh.userData.found) {
+                zoneSound.play();
+            }
+        });
+
+        const soundCarrier = new THREE.Mesh(
+            new THREE.SphereGeometry(1),
+            new THREE.MeshBasicMaterial({ visible: false })
+        );
+        soundCarrier.position.set(options.x, options.y, options.z);
+        soundCarrier.add(zoneSound);
+        pano.add(soundCarrier);
+
+        pano.addEventListener('enter', () => { if (!zoneSound.isPlaying && !mesh.userData.found) zoneSound.play(); });
+        pano.addEventListener('leave', () => { if (zoneSound.isPlaying) zoneSound.stop(); });
+
+        mesh.userData.sound = zoneSound;
+    }
+
+    /* --- Icône animée avec pulse (optionnelle) --- */
+    if (options.icon) {
+        const iconTex = new THREE.TextureLoader().load(options.icon.src);
+        const iconMat = new THREE.SpriteMaterial({ map: iconTex, transparent: true });
+        const sprite = new THREE.Sprite(iconMat);
+
+        const bx = options.icon.x ?? options.x;
+        const by = options.icon.y ?? options.y;
+        const bz = options.icon.z ?? options.z;
+        sprite.position.set(bx, by, bz);
+
+        const sw = options.icon.w ?? 400;
+        const sh = options.icon.h ?? 400;
+        sprite.scale.set(sw, sh, 1);
+        sprite.userData.baseScaleX = sw;
+        sprite.userData.baseScaleY = sh;
+
+        pano.add(sprite);
+        mesh.userData.icon = sprite;
+        animatedIcons.push(sprite);
+    }
+
+    /* --- Animation shader (optionnelle) --- */
+    if (options.animation) {
+        const animMesh = buildAnimation(options.animation, pano);
+        mesh.userData.icon = animMesh; // réutilise icon pour le masquage au clic
+    }
+
+    list.push(mesh);
+    if (pano !== currentPano) {
+        mesh.raycast = () => { };
+        mesh.userData.active = false;
+    }
+    pano.add(mesh);
+    return mesh;
+}
 
 
+/* ============================================================
+   RAYCASTER & GESTION DES CLICS
+   ============================================================ */
 
-
-/* RAYCASTER */
 let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 
-/* FONCTION PRINCIPALE DE CLIC */
 function handleSceneClick(event) {
 
     const rect = viewer.container.getBoundingClientRect();
@@ -297,41 +730,84 @@ function handleSceneClick(event) {
     raycaster.setFromCamera(mouse, viewer.camera);
 
     const intersects = raycaster.intersectObjects(viewer.scene.children, true);
-
     if (intersects.length === 0) return;
 
-    const obj = intersects[0].object;
+    const obj = intersects
+        .map(i => i.object)
+        .find(o => o.userData && o.userData.isClickable);
+
+    if (!obj) return;
 
     if (obj.userData.isClickable && obj.userData.active) {
 
         const panel = PANELS[obj.userData.panelId];
-
         if (!panel) {
             console.warn("Panel introuvable :", obj.userData.panelId);
             return;
         }
 
         if (obj.userData.found) {
-            showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
+            showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.media || null);
             return;
         }
 
         obj.userData.found = true;
-        foundZones++;
-        document.getElementById("counter").innerText =
-            `Zones trouvées : ${foundZones} / ${totalZones}`;
 
-        const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
-        if (hit) addCheckMark(hit,
-            currentPano === pano1 ? 1 :
-                currentPano === pano2 ? 2 : 3
-        );
+        const gId = obj.userData.groupId;
 
-        showInfoPanel(panel.title, panel.text, panel.image, panel.logos || []);
+        if (gId) {
+            // Zone appartenant à un groupe
+            const group = groups[gId];
+            const isFirstOfGroup = !group.found;
+            group.found = true;
+
+            if (isFirstOfGroup) {
+                // Première zone du groupe trouvée : on compte + on pose la coche
+                foundZones++;
+                document.getElementById("counter").innerText = `Zones trouvées : ${foundZones} / ${totalZones}`;
+
+                const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
+                if (hit) {
+                    addCheckMark(hit,
+                        currentPano === pano1 ? 1 :
+                        currentPano === pano2 ? 2 :
+                        currentPano === pano3 ? 3 : 4
+                    );
+                    group.checkmarkAdded = true;
+                }
+            }
+            // Si pas la première : pas de compteur, pas de coche
+
+        } else {
+            // Zone individuelle (pas de groupe)
+            foundZones++;
+            document.getElementById("counter").innerText = `Zones trouvées : ${foundZones} / ${totalZones}`;
+
+            const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
+            if (hit) {
+                addCheckMark(hit,
+                    currentPano === pano1 ? 1 :
+                    currentPano === pano2 ? 2 :
+                    currentPano === pano3 ? 3 : 4
+                );
+            }
+        }
+
+        // Couper le son lié à la zone
+        if (obj.userData.sound && obj.userData.sound.isPlaying) {
+            obj.userData.sound.stop();
+        }
+
+        // Masquer l'icône/animation
+        if (obj.userData.icon) {
+            obj.userData.icon.visible = false;
+        }
+
+        showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.media || null);
     }
 }
 
-/* GESTION DU DRAG VS CLIC */
+/* DRAG VS CLIC */
 viewer.container.addEventListener("pointerdown", (event) => {
     pointerMoved = false;
     pointerDownX = event.clientX;
@@ -345,20 +821,17 @@ viewer.container.addEventListener("pointermove", (event) => {
 });
 
 viewer.container.addEventListener("pointerup", (event) => {
-
     if (pointerMoved) return;
 
     const rect = viewer.container.getBoundingClientRect();
     const x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     const y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
 
-    const mouseVec = new THREE.Vector2(x, y);
     const ray = new THREE.Raycaster();
-    ray.setFromCamera(mouseVec, viewer.camera);
+    ray.setFromCamera(new THREE.Vector2(x, y), viewer.camera);
 
     const sphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000);
     const hit = ray.ray.intersectSphere(sphere);
-
     if (hit) {
         console.log("%cCoordonnées 3D :", "color:#00c853;font-weight:bold;");
         console.log("X :", Math.round(hit.x));
@@ -369,63 +842,49 @@ viewer.container.addEventListener("pointerup", (event) => {
     handleSceneClick(event);
 });
 
+/* BOUTON IMAGE PRÉCÉDENTE (dupliqué ici pour compatibilité) */
 document.getElementById("switchImagePrev").addEventListener("pointerdown", (event) => {
     event.preventDefault();
     event.stopImmediatePropagation();
 
-    /* --- IMAGE 3 → IMAGE 2 --- */
-    if (currentPano === pano3) {
-
-        currentPano = pano2;
-        viewer.setPanorama(pano2);
-
-        deactivateHotspots(hotspotsPano3);
-        activateHotspots(hotspotsPano2);
-
-        hideCheckmarks(checkmarksPano3);
-        showCheckmarks(checkmarksPano2);
-
-        // Sur l'image 2 : bouton suivant + précédent
+    if (currentPano === pano4) {
+        currentPano = pano3;
+        viewer.setPanorama(pano3);
+        deactivateHotspots(hotspotsPano4);
+        activateHotspots(hotspotsPano3);
+        hideCheckmarks(checkmarksPano4);
+        showCheckmarks(checkmarksPano3);
         switchImage.style.display = "block";
         switchImage.innerText = "➡️ Image suivante";
-
         switchImagePrev.innerText = "⬅️ Image précédente";
-
         return;
     }
 
-    /* --- IMAGE 2 → IMAGE 1 --- */
-    if (currentPano === pano2) {
+    if (currentPano === pano3) {
+        currentPano = pano2;
+        viewer.setPanorama(pano2);
+        deactivateHotspots(hotspotsPano3);
+        activateHotspots(hotspotsPano2);
+        hideCheckmarks(checkmarksPano3);
+        showCheckmarks(checkmarksPano2);
+        switchImage.style.display = "block";
+        return;
+    }
 
+    if (currentPano === pano2) {
         currentPano = pano1;
         viewer.setPanorama(pano1);
-
         deactivateHotspots(hotspotsPano2);
         activateHotspots(hotspotsPano1);
-
         hideCheckmarks(checkmarksPano2);
         showCheckmarks(checkmarksPano1);
-
-        // Sur l'image 1 : seulement bouton suivant
         switchImage.style.display = "block";
         switchImage.innerText = "➡️ Image suivante";
-
         switchImagePrev.style.display = "none";
-
         return;
     }
 });
 
-
-function handlePanelSound(panelId) {
-    if (panelId === "air_comprimee" && sound.isPlaying) {
-        sound.pause();
-    }
-}
-
-
-
-
-
-
-
+/* DEBUG */
+const axes = new THREE.AxesHelper(1000);
+viewer.scene.add(axes);
