@@ -279,6 +279,10 @@ function deactivateHotspots(list) { list.forEach(h => { h.userData.active = fals
    CRÉATION DES HOTSPOTS
    ============================================================ */
 
+/* ============================================================
+   CRÉATION DES HOTSPOTS
+   ============================================================ */
+
 /* PANORAMA 1 */
 
 // Fontaine
@@ -353,7 +357,7 @@ createHotspot(pano1, hotspotsPano1, {
     panelId: "eclairage",
     groupId: "eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: 6,
-    }
+}
 );
 
 // eclairage2
@@ -362,7 +366,7 @@ createHotspot(pano1, hotspotsPano1, {
     x: -350, y: 255, z: -70,
     panelId: "eclairage",
     groupId: "eclairage_pano1",
-    rotationX: 0, rotationY: 0, rotationZ: -6   ,
+    rotationX: 0, rotationY: 0, rotationZ: -6,
 }
 );
 
@@ -508,7 +512,7 @@ createHotspot(pano3, hotspotsPano3, {
     w: 1200, h: 200,
     x: -2500, y: 1150, z: 1090,
     panelId: "eclairage",
-   // groupId: "ecl",
+    // groupId: "ecl",
     rotationX: -25, rotationY: 0, rotationZ: -10
 });
 
@@ -535,7 +539,7 @@ createHotspot(pano3, hotspotsPano3, {
         src: "assets/vent2.png",
         w: 2000, h: 1500,
         scale: 0.15,
-        x: -1096, y: 4077, z: 1200  ,
+        x: -1096, y: 4077, z: 1200,
         // Paramètres ajustables :
         speedX: 0.8,      // vitesse flux horizontal
         speedY: 0.0,      // vitesse flux vertical
@@ -621,7 +625,7 @@ createHotspot(pano4, hotspotsPano4, {
     x: 2750, y: -850, z: 2000,
     panelId: "fontaine",
 
-    
+
 
     sound: {
         src: "assets/drip4.mp3",
@@ -712,6 +716,7 @@ createHotspot(pano4, hotspotsPano4, {
 
 
 
+
 /* ============================================================
    FONCTION createHotspot
    =========
@@ -741,6 +746,7 @@ function createHotspot(pano, list, options) {
         active: true,
         panelId: options.panelId,
         groupId: options.groupId || null,
+        pano: pano,
         found: false,
         sound: null,
         icon: null
@@ -749,10 +755,9 @@ function createHotspot(pano, list, options) {
     // Enregistrer le groupe (compte pour 1 dans le compteur)
     if (options.groupId) {
         if (!groups[options.groupId]) {
-            groups[options.groupId] = { found: false, checkmarkAdded: false };
-            totalZones++; // le groupe ne compte que pour 1
+            groups[options.groupId] = { found: false, checkmarkAdded: false, pano: pano };
+            totalZones++;
         }
-        // Cette zone individuelle ne compte pas dans totalZones
     } else {
         totalZones++;
     }
@@ -831,6 +836,29 @@ function createHotspot(pano, list, options) {
 
 
 /* ============================================================
+   COMPTEUR PAR PANORAMA
+   ============================================================ */
+
+function updateCounter() {
+    const allHotspots = [...hotspotsPano1, ...hotspotsPano2, ...hotspotsPano3, ...hotspotsPano4];
+
+    // Zones individuelles (sans groupe) du pano courant
+    const individualTotal = allHotspots.filter(h => !h.userData.groupId && h.userData.pano === currentPano).length;
+    const individualFound = allHotspots.filter(h => !h.userData.groupId && h.userData.pano === currentPano && h.userData.found).length;
+
+    // Groupes du pano courant
+    const currentGroups = Object.values(groups).filter(g => g.pano === currentPano);
+    const groupTotal = currentGroups.length;
+    const groupFound = currentGroups.filter(g => g.found).length;
+
+    const total = individualTotal + groupTotal;
+    const found = individualFound + groupFound;
+
+    document.getElementById("counter").innerText = `Zones trouvées : ${found} / ${total}`;
+}
+
+
+/* ============================================================
    RAYCASTER & GESTION DES CLICS
    ============================================================ */
 
@@ -880,7 +908,7 @@ function handleSceneClick(event) {
             if (isFirstOfGroup) {
                 // Première zone du groupe trouvée : on compte + on pose la coche
                 foundZones++;
-                document.getElementById("counter").innerText = `Zones trouvées : ${foundZones} / ${totalZones}`;
+                updateCounter();
 
                 const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
                 if (hit) {
@@ -897,7 +925,7 @@ function handleSceneClick(event) {
         } else {
             // Zone individuelle (pas de groupe)
             foundZones++;
-            document.getElementById("counter").innerText = `Zones trouvées : ${foundZones} / ${totalZones}`;
+            updateCounter();
 
             const hit = raycaster.ray.intersectSphere(new THREE.Sphere(new THREE.Vector3(0, 0, 0), 5000));
             if (hit) {
