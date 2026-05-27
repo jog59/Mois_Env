@@ -285,6 +285,8 @@
         viewer.add(pano4);
 
         let currentPano = pano1;
+        let panelJustClosed = false;
+
         // État initial : image 1
         switchImagePrev.disabled = true;   // pas de précédent
         switchImage.disabled = false;      // suivant actif
@@ -310,6 +312,7 @@
                 switchImagePrev.disabled = false;  // actif
                 switchImage.disabled = false;      // actif.
 
+                updateCounter();
                 return;
             }
 
@@ -327,6 +330,8 @@
 
                 switchImage.disabled = false;       // ➡️ actif
                 switchImagePrev.disabled = false;  // ⬅️ actif
+
+                updateCounter();
                 return;
             }
 
@@ -344,6 +349,8 @@
 
                 switchImage.disabled = true;       // ➡️ désactivé
                 switchImagePrev.disabled = false;  // ⬅️ actif
+
+                updateCounter();
                 return;
             }
 
@@ -367,6 +374,7 @@
 
                 switchImagePrev.disabled = false;
                 switchImage.disabled = false;
+                updateCounter();
                 return;
             }
 
@@ -383,6 +391,7 @@
 
                 switchImagePrev.disabled = false;
                 switchImage.disabled = false;
+                updateCounter();
                 return;
             }
 
@@ -398,6 +407,7 @@
 
                 switchImagePrev.disabled = true;  // ⬅️ désactivé
                 switchImage.disabled = false;     // ➡️ actif
+                updateCounter();
                 return;
             }
         });
@@ -546,6 +556,10 @@
             document.getElementById("infoPanel").style.display = "none";
             setAutoRotate(savedRotationState);
             enableViewerControls();
+
+            // Bloquer les clics sur la scène pendant 300ms après fermeture
+            panelJustClosed = true;
+            setTimeout(() => { panelJustClosed = false; }, 300);
         });
 
         document.getElementById("infoPanel").addEventListener("pointerdown", (event) => {

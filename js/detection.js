@@ -370,6 +370,16 @@ createHotspot(pano1, hotspotsPano1, {
 }
 );
 
+// eclairage3
+createHotspot(pano1, hotspotsPano1, {
+    w: 500, h: 25,
+    x: -460, y: 170, z: -100,
+    panelId: "eclairage",
+    groupId: "eclairage_pano1",
+    rotationX: 0, rotationY: 0, rotationZ: -3,
+}
+);
+
 
 // climatisation1
 createHotspot(pano1, hotspotsPano1, {
@@ -553,10 +563,12 @@ createHotspot(pano3, hotspotsPano3, {
 
 //fuite réseau incendie
 createHotspot(pano3, hotspotsPano3, {
-    w: 2000, h: 50,
-    x: -30, y: 410, z: 300,
+    w: 200, h: 30,
+    x: 280, y: 310, z: 270,
+    //x: -30, y: 410, z: 300,
     panelId: "fuite",
-    rotationX: 0, rotationY: 0, rotationZ: 2,
+    // rotationX: 0, rotationY: 0, rotationZ: 2,
+    rotationX: 10, rotationY: 10, rotationZ: 45,
 
     sound: {
         src: "assets/drip3.mp3",
@@ -601,11 +613,20 @@ createHotspot(pano3, hotspotsPano3, {
 });
 
 
+// Éclairage
+createHotspot(pano3, hotspotsPano3, {
+    w: 360, h: 90,
+    x: 420, y: 147, z: 33,
+    panelId: "eclairage",
+     rotationX: 0, rotationY: 0, rotationZ: 0
+});
+
+
 /* PANORAMA 4 */
 
 // Radiant
 createHotspot(pano4, hotspotsPano4, {
-    w: 1300, h: 800,
+    w: 1330, h: 800,
     x: 1350, y: -900, z: -3000,
     panelId: "radiant"
 });
@@ -614,7 +635,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 3900, h: 2950,
     x: 500, y: -1950, z: 3000,
-    panelId: "fontaine",
+    panelId: "eclairage",
     groupId: "ecl",
     rotationX: -33, rotationY: 0, rotationZ: -6
 });
@@ -699,7 +720,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 3500, h: 400,
     x: 400, y: 1450, z: 1200,
-    panelId: "fontaine",
+    panelId: "eclairage",
     groupId: "eclairage_unique_peinture",
     rotationX: 31, rotationY: 0, rotationZ: 17
 });
@@ -708,11 +729,22 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 1300, h: 150,
     x: 1029, y: 529, z: -280,
-    panelId: "fontaine",
+    panelId: "eclairage",
     groupId: "eclairage_unique_peinture",
     rotationX: -5, rotationY: 0, rotationZ: 0,
 
 });
+
+// Éclairage hauteur 3
+createHotspot(pano4, hotspotsPano4, {
+    w: 600, h: 50,
+    x: 60, y: 215, z: -447,
+    panelId: "eclairage",
+    groupId: "eclairage_unique_peinture",
+    rotationX: 0, rotationY: 0, rotationZ: -6,
+
+});
+
 
 
 
@@ -866,6 +898,10 @@ let raycaster = new THREE.Raycaster();
 let mouse = new THREE.Vector2();
 
 function handleSceneClick(event) {
+
+    // Ignorer le clic si le panneau vient d'être fermé
+    if (panelJustClosed) return;
+
 
     const rect = viewer.container.getBoundingClientRect();
     mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
