@@ -246,8 +246,8 @@
 
         <button id="debugBtn" style="
     position: absolute;
-    top: 100px;
-    right: 400px;
+    top: 80px;
+    right: 25px;
     z-index: 999999;
 ">
             DEBUG
@@ -276,13 +276,19 @@
             autoRotate: false,
             autoRotateSpeed: 0.3,
             controlBar: true,
-            output: 'console'
+            output: 'console',
+            renderer: new THREE.WebGLRenderer({ antialias: true })
         });
+
+
+        viewer.renderer.setPixelRatio(window.devicePixelRatio);
+        viewer.renderer.setSize(window.innerWidth, window.innerHeight);
 
         viewer.add(pano1);
         viewer.add(pano2);
         viewer.add(pano3);
         viewer.add(pano4);
+
 
         let currentPano = pano1;
         let panelJustClosed = false;

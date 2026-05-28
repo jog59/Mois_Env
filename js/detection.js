@@ -69,8 +69,8 @@ const animatedIcons = [];
    ============================================================ */
 
 function buildAnimation(options, pano) {
-    if (options.type === "wind")  return buildWindAnimation(options, pano);
-    if (options.type === "drip")  return buildDripAnimation(options, pano);
+    if (options.type === "wind") return buildWindAnimation(options, pano);
+    if (options.type === "drip") return buildDripAnimation(options, pano);
     console.warn("Type d'animation inconnu :", options.type);
     return null;
 
@@ -86,14 +86,14 @@ function buildWindAnimation(options, pano) {
 
     const material = new THREE.ShaderMaterial({
         uniforms: {
-            map:       { value: texture },
-            time:      { value: 0 },
-            speedX:    { value: options.speedX    ?? 0.5  },
-            speedY:    { value: options.speedY    ?? 0.0  },
-            turbAmp:   { value: options.turbAmp   ?? 0.05 },
-            turbFreq:  { value: options.turbFreq  ?? 10.0 },
-            turbSpeed: { value: options.turbSpeed ?? 3.0  },
-            opacity:   { value: options.opacity   ?? 1.0  }
+            map: { value: texture },
+            time: { value: 0 },
+            speedX: { value: options.speedX ?? 0.5 },
+            speedY: { value: options.speedY ?? 0.0 },
+            turbAmp: { value: options.turbAmp ?? 0.05 },
+            turbFreq: { value: options.turbFreq ?? 10.0 },
+            turbSpeed: { value: options.turbSpeed ?? 3.0 },
+            opacity: { value: options.opacity ?? 1.0 }
         },
         transparent: true,
         vertexShader: `
@@ -294,7 +294,7 @@ createHotspot(pano1, hotspotsPano1, {
     sound: {
         src: "assets/drip7.mp3",
         loop: true,
-        volume: 0.30,
+        volume: 1,
         refDistance: 1000,
         maxDistance: 2000,
         rolloffFactor: 3,
@@ -306,6 +306,7 @@ createHotspot(pano1, hotspotsPano1, {
         type: "drip",
         x: 3500, y: -1050, z: 2500,  // position du point de fuite (haut)
 
+
         // Paramètres ajustables :
         dropCount: 3,       // nombre de gouttes simultanées
         height: 690,        // hauteur de chute en unités 3D
@@ -315,8 +316,39 @@ createHotspot(pano1, hotspotsPano1, {
         wobble: 8,          // ondulation latérale pendant la chute
         color: 0x4499ff     // couleur des gouttes
     }
+});
 
+// Fuite
+createHotspot(pano1, hotspotsPano1, {
+    w: 600, h: 100,
+    x: 2405, y: 640, z: 250,
+    panelId: "fontaine",
 
+    sound: {
+        src: "assets/drip7.mp3",
+        loop: true,
+        volume: 1,
+        refDistance: 1000,
+        maxDistance: 2000,
+        rolloffFactor: 3,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+
+    animation: {
+        type: "drip",
+        //   x: 3500, y: -1050, z: 2500,  // position du point de fuite (haut)
+        x: 4810, y: 1272, z: 500,  // position du point de fuite (haut)
+
+        // Paramètres ajustables :
+        dropCount: 3,       // nombre de gouttes simultanées
+        height: 690,        // hauteur de chute en unités 3D
+        speed: 0.5,         // vitesse (cycles par seconde)
+        size: 18,           // rayon des gouttes
+        spreadX: 80,       // dispersion horizontale
+        wobble: 8,          // ondulation latérale pendant la chute
+        color: 0x4499ff     // couleur des gouttes
+    }
 });
 
 // Air comprimée — avec son et animation shader wind
@@ -617,7 +649,7 @@ createHotspot(pano3, hotspotsPano3, {
     w: 360, h: 90,
     x: 420, y: 147, z: 33,
     panelId: "eclairage",
-     rotationX: 0, rotationY: 0, rotationZ: 0
+    rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
 
@@ -980,8 +1012,8 @@ function handleSceneClick(event) {
                 if (hit) {
                     addCheckMark(hit,
                         currentPano === pano1 ? 1 :
-                        currentPano === pano2 ? 2 :
-                        currentPano === pano3 ? 3 : 4
+                            currentPano === pano2 ? 2 :
+                                currentPano === pano3 ? 3 : 4
                     );
                     group.checkmarkAdded = true;
                 }
@@ -997,8 +1029,8 @@ function handleSceneClick(event) {
             if (hit) {
                 addCheckMark(hit,
                     currentPano === pano1 ? 1 :
-                    currentPano === pano2 ? 2 :
-                    currentPano === pano3 ? 3 : 4
+                        currentPano === pano2 ? 2 :
+                            currentPano === pano3 ? 3 : 4
                 );
             }
         }
