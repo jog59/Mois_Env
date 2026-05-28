@@ -612,7 +612,6 @@ createHotspot(pano3, hotspotsPano3, {
     rotationX: 0, rotationY: -0, rotationZ: 6.2
 });
 
-
 // Éclairage
 createHotspot(pano3, hotspotsPano3, {
     w: 360, h: 90,
@@ -645,8 +644,6 @@ createHotspot(pano4, hotspotsPano4, {
     w: 830, h: 600,
     x: 2750, y: -850, z: 2000,
     panelId: "fontaine",
-
-
 
     sound: {
         src: "assets/drip4.mp3",
@@ -745,7 +742,40 @@ createHotspot(pano4, hotspotsPano4, {
 
 });
 
+// Air comprimée
+createHotspot(pano4, hotspotsPano4, {
+    w: 80, h: 65,
+    x: 85, y: 167, z: 459,
+    panelId: "air_comprimee",
+    rotationX: 0, rotationY: 0, rotationZ: 0,
 
+
+    sound: {
+        src: "assets/fuite_air_comprimee.m4a",
+        loop: true,
+        volume: 0.6,
+        refDistance: 200,
+        maxDistance: 500,
+        rolloffFactor: 1.6,
+        distanceModel: "inverse",
+        cone: [120, 240, 0.4]
+    },
+    animation: {
+        type: "wind",
+        src: "assets/vent2.png",
+        w: 2000, h: 1500,
+        scale: 0.15,
+        x: -1096, y: 4077, z: 1200,
+        // Paramètres ajustables :
+        speedX: 0.8,      // vitesse flux horizontal
+        speedY: 0.0,      // vitesse flux vertical
+        turbAmp: 0.05,    // amplitude des ondulations
+        turbFreq: 10.0,   // fréquence des ondulations
+        turbSpeed: 3.0,   // vitesse des ondulations
+        opacity: 1.0
+    }
+
+});
 
 
 
