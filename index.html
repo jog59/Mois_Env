@@ -216,13 +216,45 @@
             z-index: 999999;
             pointer-events: none;
         }
+
+
+        #pad {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 999999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+#pad button {
+  width: 60px;
+  height: 60px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: none;
+  background: rgba(0,0,0,0.6);
+  color: white;
+  cursor: pointer;
+}
     </style>
 </head>
 
 <body>
 
     <div id="viewer">
-
+        <!-- PAD DIRECTIONNEL -->
+        <div id="pad">
+          <button id="up">⬆️</button>
+            <div>
+            <button id="left">⬅️</button>
+            <button id="right">➡️</button>
+          </div>
+          <button id="down">⬇️</button>
+    </div>
+        
         <!-- PANEL D'INFO MEDIA -->
         <div id="infoPanel">
 
