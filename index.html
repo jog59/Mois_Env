@@ -281,11 +281,17 @@
         });
 
         
+// ✅ CONFIG SENSIBILITÉ
 if ('ontouchstart' in window) {
   viewer.OrbitControls.rotateSpeed = 2.5;
 } else {
   viewer.OrbitControls.rotateSpeed = 1.0;
-}
+};
+        
+// ✅ FLUIDITÉ
+viewer.OrbitControls.enableDamping = true;
+viewer.OrbitControls.dampingFactor = 0.1;
+
 
 
         viewer.renderer.setPixelRatio(window.devicePixelRatio);
