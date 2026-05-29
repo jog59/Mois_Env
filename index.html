@@ -387,7 +387,7 @@ bindButton("down", down);
 function animatePad() {
   requestAnimationFrame(animatePad);
 
-  const speed = 0.02;
+  const speed = 0.01;
 
   if (left.value) {
     viewer.OrbitControls.rotateLeft(-speed);
