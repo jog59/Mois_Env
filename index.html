@@ -391,19 +391,19 @@ function animatePad() {
   const speed = 0.02;
 
   if (left.value) {
-    viewer.OrbitControls.rotateLeft(speed);
-  }
-
-  if (right.value) {
     viewer.OrbitControls.rotateLeft(-speed);
   }
 
+  if (right.value) {
+    viewer.OrbitControls.rotateLeft(speed);
+  }
+
   if (up.value) {
-    viewer.OrbitControls.rotateUp(speed);
+    viewer.OrbitControls.rotateUp(-speed);
   }
 
   if (down.value) {
-    viewer.OrbitControls.rotateUp(-speed);
+    viewer.OrbitControls.rotateUp(speed);
   }
 }
 
