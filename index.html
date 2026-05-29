@@ -702,6 +702,39 @@ document.getElementById("pad").addEventListener("pointerdown", (e) => {
             updateDebugVisibility();
         });
 
+
+        document.addEventListener("keydown", (event) => {
+
+          if (event.key === "Escape") {
+        
+            const panel = document.getElementById("infoPanel");
+        
+            if (panel && panel.style.display !== "none") {
+        
+              // fermer panel
+              panel.style.display = "none";
+        
+              // reset vidéo
+              const video = document.getElementById("infoVideo");
+              if (video) {
+                video.pause();
+                video.currentTime = 0;
+              }
+        
+              // restaurer état
+              if (typeof setAutoRotate === "function") {
+                setAutoRotate(savedRotationState);
+              }
+        
+              if (typeof enableViewerControls === "function") {
+                enableViewerControls();
+              }
+            }
+          }
+        });
+
+        
+
     </script>
 
     <script src="./js/panels.js"></script>
