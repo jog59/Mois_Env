@@ -282,15 +282,22 @@
 
         
 // ✅ CONFIG SENSIBILITÉ
-if ('ontouchstart' in window) {
+
   viewer.OrbitControls.rotateSpeed = 2.5;
+
+  // ✅ tactile = pas d'inertie
+  viewer.OrbitControls.enableDamping = false;
+
 } else {
+
   viewer.OrbitControls.rotateSpeed = 1.0;
-};
-        
-// ✅ FLUIDITÉ
-viewer.OrbitControls.enableDamping = true;
-viewer.OrbitControls.dampingFactor = 0.1;
+
+  // ✅ PC = smooth agréable
+  viewer.OrbitControls.enableDamping = true;
+  viewer.OrbitControls.dampingFactor = 0.05;
+
+}
+
 
 
 
