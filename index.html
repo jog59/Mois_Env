@@ -280,6 +280,13 @@
             renderer: new THREE.WebGLRenderer({ antialias: true })
         });
 
+        
+if ('ontouchstart' in window) {
+  viewer.OrbitControls.rotateSpeed = 2.5;
+} else {
+  viewer.OrbitControls.rotateSpeed = 1.0;
+}
+
 
         viewer.renderer.setPixelRatio(window.devicePixelRatio);
         viewer.renderer.setSize(window.innerWidth, window.innerHeight);
