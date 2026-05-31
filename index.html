@@ -219,7 +219,6 @@
 
 
         #pad {
-<<<<<<< HEAD
             position: absolute;
             bottom: 20px;
             right: 20px;
@@ -240,35 +239,12 @@
                 color: white;
                 cursor: pointer;
             }
-=======
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999999;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-}
-
-#pad button {
-  width: 60px;
-  height: 60px;
-  font-size: 20px;
-  border-radius: 10px;
-  border: none;
-  background: rgba(0,0,0,0.6);
-  color: white;
-  cursor: pointer;
-}
->>>>>>> b5f1ce60c191070c9048935298fdd9729b743fcb
     </style>
 </head>
 
 <body>
 
     <div id="viewer">
-<<<<<<< HEAD
 
         <!-- PAD DIRECTIONNEL -->
         <div id="pad">
@@ -280,18 +256,6 @@
             <button id="down">⬇️</button>
         </div>
 
-=======
-        <!-- PAD DIRECTIONNEL -->
-        <div id="pad">
-          <button id="up">⬆️</button>
-            <div>
-            <button id="left">⬅️</button>
-            <button id="right">➡️</button>
-          </div>
-          <button id="down">⬇️</button>
-    </div>
-        
->>>>>>> b5f1ce60c191070c9048935298fdd9729b743fcb
         <!-- PANEL D'INFO MEDIA -->
         <div id="infoPanel">
 
@@ -322,26 +286,17 @@
             DEBUG
         </button>
 
-<<<<<<< HEAD
 
-=======
->>>>>>> b5f1ce60c191070c9048935298fdd9729b743fcb
         <!-- COMPTEUR -->
         <div id="counter">
             Zones trouvées : 0
         </div>
-<<<<<<< HEAD
 
     </div>
 
 
 
 
-=======
-        
-    </div>
-
->>>>>>> b5f1ce60c191070c9048935298fdd9729b743fcb
     <script>
         /* --- PANORAMAS --- */
         const pano1 = new PANOLENS.ImagePanorama('assets/image1.jpg');
@@ -361,30 +316,6 @@
             renderer: new THREE.WebGLRenderer({ antialias: true })
         });
 
-        
-// ✅ CONFIG SENSIBILITÉ
-
-/*
-if ('ontouchstart' in window) {
-
-  viewer.OrbitControls.rotateSpeed = 1.2;
-
-  viewer.OrbitControls.enableDamping = true;
-  viewer.OrbitControls.dampingFactor = 0.05;
-
-  viewer.OrbitControls.enablePan = false;
-  viewer.OrbitControls.enableZoom = false;
-
-} else {
-
-  viewer.OrbitControls.rotateSpeed = 1.0;
-
-  viewer.OrbitControls.enableDamping = true;
-  viewer.OrbitControls.dampingFactor = 0.05;
-}
-*/
-
-
 
         viewer.renderer.setPixelRatio(window.devicePixelRatio);
         viewer.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -394,7 +325,6 @@ if ('ontouchstart' in window) {
         viewer.add(pano3);
         viewer.add(pano4);
 
-<<<<<<< HEAD
         //------------------------------
         //--MOUVEMENT PAD DIRECTIONNEL--
         //------------------------------        
@@ -468,79 +398,7 @@ if ('ontouchstart' in window) {
         //-------------------------------------
 
 
-=======
-//------------------------------
-//--MOUVEMENT PAD DIRECTIONNEL--
-//------------------------------        
->>>>>>> b5f1ce60c191070c9048935298fdd9729b743fcb
 
-let moveLeft = false;
-let moveRight = false;
-let moveUp = false;
-let moveDown = false;
-
-// gestion appui continu
-function bindButton(id, direction) {
-  const btn = document.getElementById(id);
-
-  btn.addEventListener("pointerdown", () => {
-    direction.value = true;
-  });
-
-  btn.addEventListener("pointerup", () => {
-    direction.value = false;
-  });
-
-  btn.addEventListener("pointerleave", () => {
-    direction.value = false;
-  });
-}
-
-// variables objets pour passer par référence
-const left = { value: false };
-const right = { value: false };
-const up = { value: false };
-const down = { value: false };
-
-// bind boutons
-bindButton("left", left);
-bindButton("right", right);
-bindButton("up", up);
-bindButton("down", down);
-
-
-        
-function animatePad() {
-  requestAnimationFrame(animatePad);
-
-  const speed = 0.01;
-
-  if (left.value) {
-    viewer.OrbitControls.rotateLeft(-speed);
-  }
-
-  if (right.value) {
-    viewer.OrbitControls.rotateLeft(speed);
-  }
-
-  if (up.value) {
-    viewer.OrbitControls.rotateUp(-speed);
-  }
-
-  if (down.value) {
-    viewer.OrbitControls.rotateUp(speed);
-  }
-}
-
-animatePad();
-
-        
-document.getElementById("pad").addEventListener("pointerdown", (e) => {
-  e.stopPropagation();
-});
-
-        
-//-------------------------------------
         let currentPano = pano1;
         let panelJustClosed = false;
 
@@ -827,39 +685,6 @@ document.getElementById("pad").addEventListener("pointerdown", (e) => {
             debugMode = !debugMode;
             updateDebugVisibility();
         });
-
-
-        document.addEventListener("keydown", (event) => {
-
-          if (event.key === "Escape") {
-        
-            const panel = document.getElementById("infoPanel");
-        
-            if (panel && panel.style.display !== "none") {
-        
-              // fermer panel
-              panel.style.display = "none";
-        
-              // reset vidéo
-              const video = document.getElementById("infoVideo");
-              if (video) {
-                video.pause();
-                video.currentTime = 0;
-              }
-        
-              // restaurer état
-              if (typeof setAutoRotate === "function") {
-                setAutoRotate(savedRotationState);
-              }
-        
-              if (typeof enableViewerControls === "function") {
-                enableViewerControls();
-              }
-            }
-          }
-        });
-
-        
 
     </script>
 
