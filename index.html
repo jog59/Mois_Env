@@ -206,7 +206,7 @@
         /* COMPTEUR */
         #counter {
             position: absolute;
-            top: 20px;
+            top: 10px;
             right: 20px;
             background: rgba(0,0,0,0.6);
             color: white;
@@ -216,12 +216,45 @@
             z-index: 999999;
             pointer-events: none;
         }
+
+
+        #pad {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+
+            #pad button {
+                width: 60px;
+                height: 60px;
+                font-size: 20px;
+                border-radius: 10px;
+                border: none;
+                background: rgba(0,0,0,0.6);
+                color: white;
+                cursor: pointer;
+            }
     </style>
 </head>
 
 <body>
 
     <div id="viewer">
+
+        <!-- PAD DIRECTIONNEL -->
+        <div id="pad">
+            <button id="up">⬆️</button>
+            <div>
+                <button id="left">⬅️</button>
+                <button id="right">➡️</button>
+            </div>
+            <button id="down">⬇️</button>
+        </div>
 
         <!-- PANEL D'INFO MEDIA -->
         <div id="infoPanel">
@@ -253,12 +286,15 @@
             DEBUG
         </button>
 
+
+        <!-- COMPTEUR -->
+        <div id="counter">
+            Zones trouvées : 0
+        </div>
+
     </div>
 
-    <!-- COMPTEUR -->
-    <div id="counter">
-        Zones trouvées : 0
-    </div>
+
 
 
     <script>
@@ -288,6 +324,79 @@
         viewer.add(pano2);
         viewer.add(pano3);
         viewer.add(pano4);
+
+        //------------------------------
+        //--MOUVEMENT PAD DIRECTIONNEL--
+        //------------------------------        
+
+        let moveLeft = false;
+        let moveRight = false;
+        let moveUp = false;
+        let moveDown = false;
+
+        // gestion appui continu
+        function bindButton(id, direction) {
+            const btn = document.getElementById(id);
+
+            btn.addEventListener("pointerdown", () => {
+                direction.value = true;
+            });
+
+            btn.addEventListener("pointerup", () => {
+                direction.value = false;
+            });
+
+            btn.addEventListener("pointerleave", () => {
+                direction.value = false;
+            });
+        }
+
+        // variables objets pour passer par référence
+        const left = { value: false };
+        const right = { value: false };
+        const up = { value: false };
+        const down = { value: false };
+
+        // bind boutons
+        bindButton("left", left);
+        bindButton("right", right);
+        bindButton("up", up);
+        bindButton("down", down);
+
+
+
+        function animatePad() {
+            requestAnimationFrame(animatePad);
+
+            const speed = 0.01;
+
+            if (left.value) {
+                viewer.OrbitControls.rotateLeft(-speed);
+            }
+
+            if (right.value) {
+                viewer.OrbitControls.rotateLeft(speed);
+            }
+
+            if (up.value) {
+                viewer.OrbitControls.rotateUp(-speed);
+            }
+
+            if (down.value) {
+                viewer.OrbitControls.rotateUp(speed);
+            }
+        }
+
+        animatePad();
+
+
+        document.getElementById("pad").addEventListener("pointerdown", (e) => {
+            e.stopPropagation();
+        });
+
+
+        //-------------------------------------
+
 
 
         let currentPano = pano1;

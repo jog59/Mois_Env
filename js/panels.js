@@ -84,5 +84,271 @@ window.PANELS = {
             { type: "image", src: "assets/Image_Fontaine_Fuite.png", alt: "Fuite réseau" }
         ],
         found: false
+        },
+
+
+
+
+
+
+        /*--------------------
+        --------PANO1---------
+        --------------------*/
+
+        // FUITE EAU
+        fuite_pano1: {
+            title: "fuite",
+            media: [
+                { type: "image", src: "assets/fuite_pano1_1.png", alt: "Fuite fontaine" }
+                //{ type: "video", src: "assets/fuite_air.mp4" }
+            ],
+            found: false
+         },
+
+         // PANNEAU TRI DECHETS
+         dechets_pano1: {
+            title: "Déchets",
+            media: [
+                { type: "image", src: "assets/dechets_pano1_1.png", alt: "Tri des déchets" }
+             ],
+            found: false
+          },
+
+         // PANNEAU VENTILATEUR
+         ventilateur_pano1: {
+            title: "Ventilateur",
+            media: [
+                { type: "image", src: "assets/ventilateur_pano1_1.png", alt: "Ventilateur inutile" }
+             ],
+             found: false
+          },
+
+        // PANNEAU AIR COMPRIMEE
+        air_comprimee_pano1: {
+            title: "Air Comprimée",
+            media: [
+                { type: "image", src: "assets/air_comprimee_pano1_1.png", alt: "Air comprimée" },
+                { type: "image", src: "assets/air_comprimee_pano1_2.png", alt: "Air comprimée" },
+                { type: "video", src: "assets/video_air_comprimee.mp4", autoplay: false }
+            ],
+            found: false
+        },
+
+        //ECLAIRAGE
+        eclairage_pano1: {
+            title: "eclairage",
+            media: [
+                { type: "image", src: "assets/eclairage_pano1_1.png", alt: "eclairage" }
+            ],
+            found: false
+        },
+
+        //CLIMATISATION
+        climatisation_pano1: {
+            title: "Climatisation",
+            media: [
+                { type: "image", src: "assets/climatisation_pano1_1.png", alt: "Fuite réseau" }
+            ],
+            found: false
+        },
+
+
+       /*--------------------
+       --------PANO2---------
+       --------------------*/
+
+        // FUITE EAU
+        fuite_pano2: {
+        title: "fuite",
+        media: [
+            { type: "image", src: "assets/fuite_pano2_1.png", alt: "Fuite fontaine" }
+            //{ type: "video", src: "assets/fuite_air.mp4" }
+        ],
+        found: false
+    },
+
+    // PANNEAU TRI DECHETS
+    dechets_pano2: {
+        title: "Déchets",
+        media: [
+            { type: "image", src: "assets/dechets_pano2_1.png", alt: "Tri des déchets" }
+        ],
+        found: false
+    },
+
+    // PANNEAU VENTILATEUR
+    ventilateur_pano2: {
+        title: "Ventilateur",
+        media: [
+            { type: "image", src: "assets/ventilateur_pano2_1.png", alt: "Ventilateur inutile" }
+        ],
+        found: false
+    },
+
+    // PANNEAU AIR COMPRIMEE
+    air_comprimee_pano2: {
+        title: "Air Comprimée",
+        media: [
+            { type: "image", src: "assets/air_comprimee_pano2_1.png", alt: "Air comprimée" },
+            { type: "image", src: "assets/air_comprimee_pano2_2.png", alt: "Air comprimée" },
+            { type: "video", src: "assets/video_air_comprimee.mp4", autoplay: false }
+        ],
+        found: false
+    },
+
+    //ECLAIRAGE
+    eclairage_pano2: {
+        title: "eclairage",
+        media: [
+            { type: "image", src: "assets/eclairage_pano2_1.png", alt: "eclairage" }
+        ],
+        found: false
+    },
+
+    //CLIMATISATION
+    climatisation_pano2: {
+        title: "Climatisation",
+        media: [
+            { type: "image", src: "assets/climatisation_pano2_1.png", alt: "Fuite réseau" }
+        ],
+        found: false
+    },
+
+
+        /*--------------------
+        --------PANO3---------
+        --------------------*/
+
+
+        // FUITE EAU
+        fuite_pano3: {
+        title: "fuite",
+        media: [
+            { type: "image", src: "assets/fuite_pano3_1.png", alt: "Fuite fontaine" }
+            //{ type: "video", src: "assets/fuite_air.mp4" }
+        ],
+        found: false
+    },
+
+    // PANNEAU TRI DECHETS
+    dechets_pano3: {
+        title: "Déchets",
+        media: [
+            { type: "image", src: "assets/dechets_pano3_1.png", alt: "Tri des déchets" }
+        ],
+        found: false
+    },
+
+    // PANNEAU VENTILATEUR
+    ventilateur_pano3: {
+        title: "Ventilateur",
+        media: [
+            { type: "image", src: "assets/ventilateur_pano3_1.png", alt: "Ventilateur inutile" }
+        ],
+        found: false
+    },
+
+    // PANNEAU AIR COMPRIMEE
+    air_comprimee_pano3: {
+        title: "Air Comprimée",
+        media: [
+            { type: "image", src: "assets/air_comprimee_pano3_1.png", alt: "Air comprimée" },
+            { type: "image", src: "assets/air_comprimee_pano3_2.png", alt: "Air comprimée" },
+            { type: "video", src: "assets/video_air_comprimee.mp4", autoplay: false }
+        ],
+        found: false
+    },
+
+    //ECLAIRAGE
+    eclairage_pano3: {
+        title: "eclairage",
+        media: [
+            { type: "image", src: "assets/eclairage_pano3_1.png", alt: "eclairage" }
+        ],
+        found: false
+    },
+
+    //CLIMATISATION
+    climatisation_pano3: {
+        title: "Climatisation",
+        media: [
+            { type: "image", src: "assets/climatisation_pano3_1.png", alt: "Fuite réseau" }
+        ],
+        found: false
+    },
+
+
+        /*--------------------
+        --------PANO4---------
+        --------------------*/
+
+
+
+
+
+        // FUITE EAU
+        fuite_pano4: {
+        title: "fuite",
+        media: [
+            { type: "image", src: "assets/fuite_pano4_1.png", alt: "Fuite fontaine" }
+            //{ type: "video", src: "assets/fuite_air.mp4" }
+        ],
+        found: false
+    },
+
+    // PANNEAU TRI DECHETS
+    dechets_pano4: {
+        title: "Déchets",
+        media: [
+            { type: "image", src: "assets/dechets_pano4_1.png", alt: "Tri des déchets" }
+        ],
+        found: false
+    },
+
+    // PANNEAU VENTILATEUR
+    ventilateur_pano4: {
+        title: "Ventilateur",
+        media: [
+            { type: "image", src: "assets/ventilateur_pano4_1.png", alt: "Ventilateur inutile" }
+        ],
+        found: false
+    },
+
+    // PANNEAU AIR COMPRIMEE
+    air_comprimee_pano4: {
+        title: "Air Comprimée",
+        media: [
+            { type: "image", src: "assets/air_comprimee_pano4_1.png", alt: "Air comprimée" },
+            { type: "image", src: "assets/air_comprimee_pano4_2.png", alt: "Air comprimée" },
+            { type: "video", src: "assets/video_air_comprimee.mp4", autoplay: false }
+        ],
+        found: false
+    },
+
+    //ECLAIRAGE
+    eclairage_pano4: {
+        title: "eclairage",
+        media: [
+            { type: "image", src: "assets/eclairage_pano4_1.png", alt: "eclairage" }
+        ],
+        found: false
+    },
+
+    //CLIMATISATION
+    climatisation_pano4: {
+        title: "Climatisation",
+        media: [
+            { type: "image", src: "assets/climatisation_pano4_1.png", alt: "Fuite réseau" }
+        ],
+        found: false
     }
+
+
+
+
+
+
+
+
+
 };

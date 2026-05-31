@@ -652,6 +652,15 @@ createHotspot(pano3, hotspotsPano3, {
     rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
+// réglage pression
+createHotspot(pano3, hotspotsPano3, {
+    w: 160, h: 220,
+    x: 60, y: -290, z: 400,
+    panelId: "pression",
+    rotationX: 0, rotationY: 0, rotationZ: 0
+});
+
+
 
 /* PANORAMA 4 */
 
