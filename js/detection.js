@@ -487,7 +487,7 @@ createHotspot(pano2, hotspotsPano2, {
 createHotspot(pano2, hotspotsPano2, {
     w: 800, h: 1200,
     x: -1350, y: 1900, z: 3000,
-    panelId: "air_comprimee",
+    panelId: "pano2_air_comprimee",
 
 
     sound: {
