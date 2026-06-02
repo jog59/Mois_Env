@@ -8,7 +8,7 @@ window.PANELS = {
 
 
      // PANNEAU PAR DEFAUT
-    fontaine: {
+    EcoBaBoy: {
         title: "EcoBaBoy",
         media: [
             { type: "image", src: "assets/panneau_EcoBaBoy.png", alt: "EcoBaBoy" }
