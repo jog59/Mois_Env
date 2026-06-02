@@ -355,7 +355,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 1930,
     x: 4501, y: -1600, z: -1200,
-    panelId: "air_comprimee",
+    panelId: "pano1_air_comprimee",
     sound: {
         src: "assets/fuite_air_comprimee.m4a",
         loop: true,
@@ -386,8 +386,8 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 1050, h: 60,
     x: -250, y: 430, z: 5,
-    panelId: "eclairage",
-    groupId: "eclairage_pano1",
+    panelId: "pano1_eclairage",
+    groupId: "groupe_eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: 6,
 }
 );
@@ -396,8 +396,8 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 630, h: 40,
     x: -350, y: 255, z: -70,
-    panelId: "eclairage",
-    groupId: "eclairage_pano1",
+    panelId: "pano1_eclairage",
+    groupId: "groupe_eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: -6,
 }
 );
@@ -406,8 +406,8 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 500, h: 25,
     x: -460, y: 170, z: -100,
-    panelId: "eclairage",
-    groupId: "eclairage_pano1",
+    panelId: "pano1_eclairage",
+    groupId: "groupe_eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: -3,
 }
 );
@@ -451,21 +451,21 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano2, hotspotsPano2, {
     w: 600, h: 1200,
     x: 3400, y: -1360, z: -3000,
-    panelId: "dechets"
+    panelId: "pano2_dechets"
 });
 
 // Déchets 2
 createHotspot(pano2, hotspotsPano2, {
     w: 1000, h: 1800,
     x: -2100, y: -1800, z: -1600,
-    panelId: "dechets"
+    panelId: "pano2_dechets"
 });
 
 // Déchets 3
 createHotspot(pano2, hotspotsPano2, {
     w: 1040, h: 500,
     x: -4190, y: -2580, z: 400,
-    panelId: "dechets"
+    panelId: "pano2_dechets"
 });
 
 
@@ -473,17 +473,17 @@ createHotspot(pano2, hotspotsPano2, {
 createHotspot(pano2, hotspotsPano2, {
     w: 600, h: 600,
     x: -4150, y: 660, z: 1292,
-    panelId: "ventilateur"
+    panelId: "pano2_ventilateur"
 });
 
 // Ventilateur2
 createHotspot(pano2, hotspotsPano2, {
     w: 730, h: 620,
     x: -1375, y: 691, z: -4543,
-    panelId: "ventilateur"
+    panelId: "pano2_ventilateur"
 });
 
-// Air comprimée pano2
+// Air comprimée
 createHotspot(pano2, hotspotsPano2, {
     w: 800, h: 1200,
     x: -1350, y: 1900, z: 3000,
@@ -562,7 +562,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 800, h: 800,
     x: -800, y: 3700, z: 1200,
-    panelId: "air_comprimee",
+    panelId: "pano3_air_comprimee",
     rotationX: -30, rotationY: 0, rotationZ: -9,
 
 
