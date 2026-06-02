@@ -235,7 +235,7 @@ window.PANELS = {
     // PANNEAU TRI DECHETS
     pano3_dechets: {
         title: "Déchets",
-        media: Array.from({ length: 17 }, (_, i) => ({
+        media: Array.from({ length: 25 }, (_, i) => ({
             type: "image",
             src: `assets/pano3-dechets${i + 1}.png`,
             alt: "Tri des déchets"
