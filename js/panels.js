@@ -89,8 +89,6 @@ window.PANELS = {
 
 
 
-
-
         /*--------------------
         --------PANO1---------
         --------------------*/
@@ -237,9 +235,11 @@ window.PANELS = {
     // PANNEAU TRI DECHETS
     pano3_dechets: {
         title: "Déchets",
-        media: [
-            { type: "image", src: "assets/pano3-dechets1.png", alt: "Tri des déchets" }
-        ],
+        media: Array.from({ length: 17 }, (_, i) => ({
+            type: "image",
+            src: `assets/pano3-dechets${i + 1}.png`,
+            alt: "Tri des déchets"
+        })),
         found: false
     },
 
