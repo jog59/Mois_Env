@@ -298,14 +298,18 @@ window.PANELS = {
         found: false
     },
 
-    // PANNEAU TRI DECHETS
-    dechets_pano4: {
-        title: "Déchets",
-        media: [
-            { type: "image", src: "assets/pano4-dechets1.png", alt: "Tri des déchets" }
-        ],
-        found: false
-    },
+   
+// PANNEAU TRI DECHETS
+dechets_pano4: {
+    title: "Déchets",
+    media: Array.from({ length: 17 }, (_, i) => ({
+        type: "image",
+        src: `assets/pano4-dechets${i + 1}.png`,
+        alt: "Tri des déchets"
+    })),
+    found: false
+},
+
 
     // PANNEAU VENTILATEUR
     ventilateur_pano4: {
