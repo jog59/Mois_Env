@@ -289,7 +289,7 @@ function deactivateHotspots(list) { list.forEach(h => { h.userData.active = fals
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 1930,
     x: 3600, y: -1080, z: 2500,
-    panelId: "fontaine",
+    panelId: "EcoBaBoy",
 
     sound: {
         src: "assets/drip7.mp3",
@@ -322,7 +322,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 100,
     x: 2405, y: 640, z: 250,
-    panelId: "fontaine",
+    panelId: "EcoBaBoy",
 
     sound: {
         src: "assets/drip7.mp3",
@@ -417,7 +417,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 50, h: 50,
     x: 480, y: 95, z: -110,
-    panelId: "climatisation",
+    panelId: "EcoBaBoy",
     groupId: "climatisation_pano1"
 }
 );
@@ -426,7 +426,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 50, h: 50,
     x: 460, y: 110, z: 190,
-    panelId: "climatisation",
+    panelId: "EcoBaBoy",
     groupId: "climatisation_pano1"
 }
 );
@@ -435,14 +435,14 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 65, h: 85,
     x: 431, y: 125, z: -215,
-    panelId: "ventilateur"
+    panelId: "EcoBaBoy"
 });
 
 // déchets_sol
 createHotspot(pano1, hotspotsPano1, {
     w: 45, h: 40,
     x: -235, y: -155, z: -410,
-    panelId: "dechets"
+    panelId: "EcoBaBoy"
 });
 
 /* PANORAMA 2 */
@@ -521,14 +521,14 @@ createHotspot(pano2, hotspotsPano2, {
 createHotspot(pano2, hotspotsPano2, {
     w: 500, h: 500,
     x: 4291, y: 1815, z: -508,
-    panelId: "climatisation"
+    panelId: "EcoBaBoy"
 });
 
 // outil
 createHotspot(pano2, hotspotsPano2, {
     w: 1900, h: 800,
     x: -3705, y: 219, z: 3014,
-    panelId: "climatisation"
+    panelId: "EcoBaBoy"
 });
 
 
@@ -538,14 +538,14 @@ createHotspot(pano2, hotspotsPano2, {
 createHotspot(pano3, hotspotsPano3, {
     w: 640, h: 600,
     x: -4850, y: 890, z: -566,
-    panelId: "ventilateur"
+    panelId: "EcoBaBoy"
 });
 
 // Ventilateur2
 createHotspot(pano3, hotspotsPano3, {
     w: 640, h: 1200,
     x: 900, y: 1650, z: -4000,
-    panelId: "ventilateur",
+    panelId: "EcoBaBoy",
     rotationX: 0, rotationY: 0, rotationZ: -9,
 });
 
@@ -553,7 +553,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 1200, h: 200,
     x: -2500, y: 1150, z: 1090,
-    panelId: "eclairage",
+    panelId: "EcoBaBoy",
     // groupId: "ecl",
     rotationX: -25, rotationY: 0, rotationZ: -10
 });
@@ -598,7 +598,7 @@ createHotspot(pano3, hotspotsPano3, {
     w: 200, h: 30,
     x: 280, y: 310, z: 270,
     //x: -30, y: 410, z: 300,
-    panelId: "fuite",
+    panelId: "EcoBaBoy",
     // rotationX: 0, rotationY: 0, rotationZ: 2,
     rotationX: 10, rotationY: 10, rotationZ: 45,
 
@@ -640,7 +640,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 2000, h: 175,
     x: 0, y: 500, z: 0,
-    panelId: "climatisation",
+    panelId: "EcoBaBoy",
     rotationX: 0, rotationY: -0, rotationZ: 6.2
 });
 
@@ -648,7 +648,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 360, h: 90,
     x: 420, y: 147, z: 33,
-    panelId: "eclairage",
+    panelId: "EcoBaBoy",
     rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
@@ -656,7 +656,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 160, h: 220,
     x: 60, y: -290, z: 400,
-    panelId: "pression",
+    panelId: "EcoBaBoy",
     rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
@@ -668,14 +668,14 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano4, hotspotsPano4, {
     w: 1330, h: 800,
     x: 1350, y: -900, z: -3000,
-    panelId: "radiant"
+    panelId: "EcoBaBoy"
 });
 
 // Éclairage
 createHotspot(pano4, hotspotsPano4, {
     w: 3900, h: 2950,
     x: 500, y: -1950, z: 3000,
-    panelId: "eclairage",
+    panelId: "EcoBaBoy",
     groupId: "ecl",
     rotationX: -33, rotationY: 0, rotationZ: -6
 });
@@ -684,7 +684,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 830, h: 600,
     x: 2750, y: -850, z: 2000,
-    panelId: "fontaine",
+    panelId: "EcoBaBoy",
 
     sound: {
         src: "assets/drip4.mp3",
@@ -725,7 +725,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 7000, h: 200,
     x: 760, y: 2700, z: -3500,
-    panelId: "fuite",
+    panelId: "EcoBaBoy",
     groupId: "incendie",
     rotationX: 50,
     sound: {
@@ -758,7 +758,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 3500, h: 400,
     x: 400, y: 1450, z: 1200,
-    panelId: "eclairage",
+    panelId: "EcoBaBoy",
     groupId: "eclairage_unique_peinture",
     rotationX: 31, rotationY: 0, rotationZ: 17
 });
@@ -767,7 +767,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 1300, h: 150,
     x: 1029, y: 529, z: -280,
-    panelId: "eclairage",
+    panelId: "EcoBaBoy",
     groupId: "eclairage_unique_peinture",
     rotationX: -5, rotationY: 0, rotationZ: 0,
 
@@ -777,7 +777,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 600, h: 50,
     x: 60, y: 215, z: -447,
-    panelId: "eclairage",
+    panelId: "EcoBaBoy",
     groupId: "eclairage_unique_peinture",
     rotationX: 0, rotationY: 0, rotationZ: -6,
 
@@ -787,7 +787,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 80, h: 65,
     x: 85, y: 167, z: 459,
-    panelId: "air_comprimee",
+    panelId: "EcoBaBoy",
     rotationX: 0, rotationY: 0, rotationZ: 0,
 
 
