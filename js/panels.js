@@ -224,8 +224,9 @@ window.PANELS = {
         fuite_pano3: {
         title: "fuite",
         media: [
-            { type: "image", src: "assets/pano3-fuite1.png", alt: "Fuite fontaine" },
-            { type: "image", src: "assets/pano3-fuite2.png", alt: "Fuite fontaine" }
+            { type: "image", src: "assets/pano3-fuite1.png", alt: "Fuite" },
+            { type: "image", src: "assets/pano3-fuite2.png", alt: "Fuite" },
+            { type: "image", src: "assets/pano3-fuite3.png", alt: "Fuite" }
             //{ type: "video", src: "assets/fuite_air.mp4" }
         ],
         found: false
