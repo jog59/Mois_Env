@@ -96,7 +96,7 @@ window.PANELS = {
         --------------------*/
 
         // FUITE EAU
-        fuite_pano1: {
+        pano1_fuite: {
             title: "fuite",
             media: [
                 { type: "image", src: "assets/pano1-fuite1.png", alt: "Fuite fontaine" }
@@ -106,7 +106,7 @@ window.PANELS = {
          },
 
          // PANNEAU TRI DECHETS
-         dechets_pano1: {
+         pano1_dechets: {
             title: "Déchets",
             media: [
                 { type: "image", src: "assets/pano1-dechets1.png", alt: "Tri des déchets" }
@@ -115,7 +115,7 @@ window.PANELS = {
           },
 
          // PANNEAU VENTILATEUR
-         ventilateur_pano1: {
+         pano1_ventilateur: {
             title: "Ventilateur",
             media: [
                 { type: "image", src: "assets/pano1-ventilateur1.png", alt: "Ventilateur inutile" }
@@ -124,7 +124,7 @@ window.PANELS = {
           },
 
         // PANNEAU AIR COMPRIMEE
-        air_comprimee_pano1: {
+        pano1_air_comprimee: {
             title: "Air Comprimée",
             media: [
                 { type: "image", src: "assets/pano1-air_comprimee_pano1.png", alt: "Air comprimée" },
@@ -135,7 +135,7 @@ window.PANELS = {
         },
 
         //ECLAIRAGE
-        eclairage_pano1: {
+        pano1_eclairage: {
             title: "eclairage",
             media: [
                 { type: "image", src: "assets/pano1-eclairage1.png", alt: "eclairage" }
@@ -144,7 +144,7 @@ window.PANELS = {
         },
 
         //CLIMATISATION
-        climatisation_pano1: {
+        pano1_climatisation: {
             title: "Climatisation",
             media: [
                 { type: "image", src: "assets/pano1-climatisation1.png", alt: "Fuite réseau" }
@@ -158,7 +158,7 @@ window.PANELS = {
        --------------------*/
 
         // FUITE EAU
-        fuite_pano2: {
+        pano2_fuite: {
         title: "fuite",
         media: [
             { type: "image", src: "assets/pano2-fuite1.png", alt: "Fuite fontaine" }
@@ -168,7 +168,7 @@ window.PANELS = {
     },
 
     // PANNEAU TRI DECHETS
-    dechets_pano2: {
+    pano2_dechets: {
         title: "Déchets",
         media: [
             { type: "image", src: "assets/pano2-dechets1.png", alt: "Tri des déchets" }
@@ -177,7 +177,7 @@ window.PANELS = {
     },
 
     // PANNEAU VENTILATEUR
-    ventilateur_pano2: {
+    pano2_ventilateur: {
         title: "Ventilateur",
         media: [
             { type: "image", src: "assets/pano2-ventilateur1.png", alt: "Ventilateur inutile" }
@@ -186,7 +186,7 @@ window.PANELS = {
     },
 
     // PANNEAU AIR COMPRIMEE
-    air_comprimee_pano2: {
+    pano2_air_comprimee: {
         title: "Air Comprimée",
         media: [
             { type: "image", src: "assets/pano2-air_comprimee1.png", alt: "Air comprimée" },
@@ -199,7 +199,7 @@ window.PANELS = {
     },
 
     //ECLAIRAGE
-    eclairage_pano2: {
+    pano2_eclairage: {
         title: "eclairage",
         media: [
             { type: "image", src: "assets/pano2-eclairage1.png", alt: "eclairage" }
@@ -208,7 +208,7 @@ window.PANELS = {
     },
 
     //CLIMATISATION
-    climatisation_pano2: {
+    pano2_climatisation: {
         title: "Climatisation",
         media: [
             { type: "image", src: "assets/pano2-climatisation_pano1.png", alt: "Fuite réseau" }
@@ -223,7 +223,7 @@ window.PANELS = {
 
 
         // FUITE EAU
-        fuite_pano3: {
+        pano3_fuite: {
         title: "fuite",
         media: [
             { type: "image", src: "assets/pano3-fuite1.png", alt: "Fuite" },
@@ -235,7 +235,7 @@ window.PANELS = {
     },
 
     // PANNEAU TRI DECHETS
-    dechets_pano3: {
+    pano3_dechets: {
         title: "Déchets",
         media: [
             { type: "image", src: "assets/pano3-dechets1.png", alt: "Tri des déchets" }
@@ -244,7 +244,7 @@ window.PANELS = {
     },
 
     // PANNEAU VENTILATEUR
-    ventilateur_pano3: {
+    pano3_ventilateur: {
         title: "Ventilateur",
         media: [
             { type: "image", src: "assets/pano3-ventilateur1.png", alt: "Ventilateur inutile" }
@@ -253,7 +253,7 @@ window.PANELS = {
     },
 
     // PANNEAU AIR COMPRIMEE
-    air_comprimee_pano3: {
+    pano3_air_comprimee: {
         title: "Air Comprimée",
         media: [
             { type: "image", src: "assets/pano3-air_comprimee_pano1.png", alt: "Air comprimée" },
@@ -264,7 +264,7 @@ window.PANELS = {
     },
 
     //ECLAIRAGE
-    eclairage_pano3: {
+    pano3_eclairage: {
         title: "eclairage",
         media: [
             { type: "image", src: "assets/pano3-eclairage1.png", alt: "eclairage" }
@@ -273,7 +273,7 @@ window.PANELS = {
     },
 
     //CLIMATISATION
-    climatisation_pano3: {
+    pano3_climatisation: {
         title: "Climatisation",
         media: [
             { type: "image", src: "assets/pano3-climatisation1.png", alt: "Fuite réseau" }
@@ -291,7 +291,7 @@ window.PANELS = {
 
 
         // FUITE EAU
-        fuite_pano4: {
+        pano4_fuite: {
         title: "fuite",
         media: [
             { type: "image", src: "assets/pano4-fuite1.png", alt: "Fuite fontaine" }
@@ -302,7 +302,7 @@ window.PANELS = {
 
    
 // PANNEAU TRI DECHETS
-dechets_pano4: {
+pano4_dechets: {
     title: "Déchets",
     media: Array.from({ length: 17 }, (_, i) => ({
         type: "image",
@@ -314,7 +314,7 @@ dechets_pano4: {
 
 
     // PANNEAU VENTILATEUR
-    ventilateur_pano4: {
+    pano4_ventilateur: {
         title: "Ventilateur",
         media: [
             { type: "image", src: "assets/pano4-ventilateur1.png", alt: "Ventilateur inutile" }
@@ -323,7 +323,7 @@ dechets_pano4: {
     },
 
     // PANNEAU AIR COMPRIMEE
-    air_comprimee_pano4: {
+    pano4_air_comprimee: {
         title: "Air Comprimée",
         media: [
             { type: "image", src: "assets/pano4-air_comprimee1.png", alt: "Air comprimée" },
@@ -334,7 +334,7 @@ dechets_pano4: {
     },
 
     //ECLAIRAGE
-    eclairage_pano4: {
+    pano4_eclairage: {
         title: "eclairage",
         media: [
             { type: "image", src: "assets/pano4-eclairage1.png", alt: "eclairage" }
@@ -343,20 +343,12 @@ dechets_pano4: {
     },
 
     //CLIMATISATION
-    climatisation_pano4: {
+    pano4_climatisation: {
         title: "Climatisation",
         media: [
             { type: "image", src: "assets/pano4-climatisation1.png", alt: "Fuite réseau" }
         ],
         found: false
     }
-
-
-
-
-
-
-
-
 
 };
