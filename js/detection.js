@@ -632,7 +632,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 1400, h: 2200,
     x: -1100, y: -2700, z: 2500,
-    panelId: "dechets",
+    panelId: "pano3_dechets",
     rotationX: 0, rotationY: 0, rotationZ: 9,
 });
 
