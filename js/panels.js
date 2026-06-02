@@ -6,6 +6,16 @@
 
 window.PANELS = {
 
+
+     // PANNEAU PAR DEFAUT
+    fontaine: {
+        title: "EcoBaBoy",
+        media: [
+            { type: "image", src: "assets/panneau_EcoBaBoy.png", alt: "EcoBaBoy" }
+            ],
+        found: false
+    },
+
     // PANNEAU FONTAINE
     fontaine: {
         title: "Fontaine à eau",
