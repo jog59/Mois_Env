@@ -11,7 +11,7 @@ window.PANELS = {
     EcoBaBoy: {
         title: "EcoBaBoy",
         media: [
-            { type: "image", src: "assets/panneau_EcoBaBoy.png", alt: "EcoBaBoy" }
+            { type: "image", src: "assets/panneau_Ecobaboy.png", alt: "EcoBaBoy" }
             ],
         found: false
     },
