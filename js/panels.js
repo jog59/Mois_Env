@@ -136,8 +136,8 @@ window.PANELS = {
             title: "Air Comprimée",
             media: [
                 { type: "image", src: "assets/pano1-air_comprimee1.png", alt: "Air comprimée" },
-                { type: "image", src: "assets/pano1-air_comprimee2.png", alt: "Air comprimée" },
-                { type: "video", src: "assets/pano1-video_air_comprimee1.mp4", autoplay: false }
+                { type: "image", src: "assets/pano1-air_comprimee2.png", alt: "Air comprimée" }
+                
             ],
             found: false
         },
