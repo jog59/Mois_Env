@@ -716,7 +716,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 1200, h: 3100,
     x: -3800, y: -2420, z: 1300,
-    panelId: "dechets_pano4",
+    panelId: "pano4_dechets",
     groupId: "dechets",
     rotationX: -5
 });
