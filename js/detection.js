@@ -1064,7 +1064,8 @@ function handleSceneClick(event) {
         }
 
         if (obj.userData.found) {
-            showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.media || null);
+            // showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.media || null);
+            showInfoPanel(panel);
             return;
         }
 
@@ -1120,7 +1121,8 @@ function handleSceneClick(event) {
             obj.userData.icon.visible = false;
         }
 
-        showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.media || null);
+        //showInfoPanel(panel.title, panel.text, panel.image, panel.logos || [], panel.media || null);
+        showInfoPanel(panel);
     }
 }
 
