@@ -547,11 +547,11 @@ createHotspot(pano2, hotspotsPano2, {
 
 // éclairage3
 createHotspot(pano2, hotspotsPano2, {
-    w: 20, h: 120,
+    w: 25, h: 125,
     x: -384, y: 276, z: -162,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
-    rotationX: 0, rotationY: 0, rotationZ: -45
+    rotationX: 0, rotationY: 0, rotationZ: -48
 });
 
 // éclairage4
