@@ -670,7 +670,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano4, hotspotsPano4, {
     w: 1330, h: 800,
     x: 1350, y: -900, z: -3000,
-    panelId: " pano2_ventilateur"
+    panelId: "pano2_ventilateur"
 });
 
 // Éclairage
