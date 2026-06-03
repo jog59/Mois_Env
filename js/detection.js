@@ -598,6 +598,7 @@ createHotspot(pano2, hotspotsPano2, {
     groupId :"groupe_eclairage_pano2",
     rotationX: 0, rotationY: 0, rotationZ: 0
 });
+
 /* PANORAMA 3 */
 
 // Ventilateur1
@@ -630,7 +631,6 @@ createHotspot(pano3, hotspotsPano3, {
     x: -800, y: 3700, z: 1200,
     panelId: "EcoBaBoy",
     rotationX: -30, rotationY: 0, rotationZ: -9,
-
 
     sound: {
         src: "assets/fuite_air_comprimee.m4a",
@@ -870,10 +870,10 @@ createHotspot(pano4, hotspotsPano4, {
         src: "assets/vent2.png",
         w: 2000, h: 1500,
         scale: 0.15,
-        x: 1080, y: 1715, z: 4536,        
+        x: 980, y: 1715, z: 4536,        
         // ✅ inversion horizontale
         // Paramètres ajustables :
-        speedX: - 0.8,      // vitesse flux horizontal
+        speedX: 0.8,      // vitesse flux horizontal
         speedY: 0.0,      // vitesse flux vertical
         turbAmp: 0.05,    // amplitude des ondulations
         turbFreq: 10.0,   // fréquence des ondulations
