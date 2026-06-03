@@ -1,4 +1,4 @@
-console.log("detection.js chargé");
+console.log("detection.js chargé!");
 
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
