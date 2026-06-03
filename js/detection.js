@@ -286,6 +286,7 @@ function deactivateHotspots(list) { list.forEach(h => { h.userData.active = fals
 /* PANORAMA 1 */
 
 // Fontaine
+/*
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 1930,
     x: 3600, y: -1080, z: 2500,
@@ -317,9 +318,9 @@ createHotspot(pano1, hotspotsPano1, {
         color: 0x4499ff     // couleur des gouttes
     }
 });
+*/
 
 // Fuite
-/*
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 100,
     x: 2405, y: 640, z: 250,
@@ -350,7 +351,7 @@ createHotspot(pano1, hotspotsPano1, {
         wobble: 8,          // ondulation latérale pendant la chute
         color: 0x4499ff     // couleur des gouttes
     }
-});*/
+});
 
 // Air comprimée — avec son et animation shader wind
 createHotspot(pano1, hotspotsPano1, {
