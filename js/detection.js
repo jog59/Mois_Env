@@ -393,7 +393,7 @@ createHotspot(pano1, hotspotsPano1, {
 
 // eclairage2
 createHotspot(pano1, hotspotsPano1, {
-    w: 600, h: 25,
+    w: 620, h: 25,
     x: -350, y: 255, z: -70,
     panelId: "EcoBaBoy",
     groupId: "groupe_eclairage_pano1",
