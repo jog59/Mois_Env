@@ -1,4 +1,4 @@
-console.log("detection.js chargé");
+console.log("detection.js chargé!");
 
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
@@ -727,7 +727,6 @@ createHotspot(pano3, hotspotsPano3, {
 });
 
 
-
 /* PANORAMA 4 */
 
 // Radiant
@@ -856,7 +855,6 @@ createHotspot(pano4, hotspotsPano4, {
     panelId: "EcoBaBoy",
     rotationX: 0, rotationY: 0, rotationZ: 0,
 
-
     sound: {
         src: "assets/fuite_air_comprimee.m4a",
         loop: true,
@@ -882,15 +880,14 @@ createHotspot(pano4, hotspotsPano4, {
         turbSpeed: 3.0,   // vitesse des ondulations
         opacity: 1.0
     }
-
 });
 
 
 
 /* ============================================================
    FONCTION createHotspot
-   =========
-   =================================================== */
+
+============================================================ */
 function createHotspot(pano, list, options) {
 
     /* --- Mesh zone de détection --- */
@@ -965,9 +962,7 @@ function createHotspot(pano, list, options) {
         pano.addEventListener('leave', () => { if (zoneSound.isPlaying) zoneSound.stop(); });
 
         mesh.userData.sound = zoneSound;
-
        
-      
     }
 
     /* --- Icône animée avec pulse (optionnelle) --- */
