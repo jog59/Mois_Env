@@ -874,9 +874,8 @@ createHotspot(pano4, hotspotsPano4, {
         scale: 0.15,
         x: 1080, y: 1715, z: 4536,        
         // ✅ inversion horizontale
-        flipX: true,
         // Paramètres ajustables :
-        speedX: 0.8,      // vitesse flux horizontal
+        speedX: - 0.8,      // vitesse flux horizontal
         speedY: 0.0,      // vitesse flux vertical
         turbAmp: 0.05,    // amplitude des ondulations
         turbFreq: 10.0,   // fréquence des ondulations
@@ -967,11 +966,8 @@ function createHotspot(pano, list, options) {
 
         mesh.userData.sound = zoneSound;
 
-        
-        if (options.animation.flipX) {
-            sprite.scale.x *= -1;
-        };
-
+       
+      
     }
 
     /* --- Icône animée avec pulse (optionnelle) --- */
