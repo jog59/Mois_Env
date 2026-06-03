@@ -543,7 +543,8 @@ createHotspot(pano2, hotspotsPano2, {
     w: 200, h: 10,
     x: -144, y: 389, z: -278,
     panelId: "pano2_eclairage",
-    groupId :"groupe_eclairage_pano2"
+    groupId :"groupe_eclairage_pano2",
+    rotationX: 0, rotationY: 0, rotationZ: -9
 });
 
 /* PANORAMA 3 */
