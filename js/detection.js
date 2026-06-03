@@ -542,16 +542,16 @@ createHotspot(pano2, hotspotsPano2, {
     x: -156, y: 413, z: -235,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
-    rotationX: 5, rotationY: 0, rotationZ: -58
+    rotationX: 5, rotationY: 0, rotationZ: -52
 });
 
 // éclairage3
 createHotspot(pano2, hotspotsPano2, {
-    w: 25, h: 130,
+    w: 28, h: 130,
     x: -384, y: 276, z: -162,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
-    rotationX: 0, rotationY: 0, rotationZ: -36
+    rotationX: 0, rotationY: 0, rotationZ: -35
 });
 
 // éclairage4
@@ -560,7 +560,7 @@ createHotspot(pano2, hotspotsPano2, {
     x: -296, y: 172, z: -365,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
-    rotationX: 0, rotationY: 0, rotationZ: -28
+    rotationX: 0, rotationY: 0, rotationZ: -22
 });
 
 // éclairage5
@@ -569,7 +569,7 @@ createHotspot(pano2, hotspotsPano2, {
     x: -183, y: 201, z: -419,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
-    rotationX: 0, rotationY: 0, rotationZ: -28
+    rotationX: 0, rotationY: 0, rotationZ: -22
 });
 
 // éclairage6
