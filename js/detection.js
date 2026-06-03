@@ -874,7 +874,7 @@ createHotspot(pano4, hotspotsPano4, {
         scale: 0.15,
         x: 1080, y: 1715, z: 4536,        
         // ✅ inversion horizontale
-        sprite.scale.x *= -1;
+        sprite.scale.x *= -1,
         // Paramètres ajustables :
         speedX: 0.8,      // vitesse flux horizontal
         speedY: 0.0,      // vitesse flux vertical
