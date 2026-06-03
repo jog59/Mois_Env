@@ -968,7 +968,7 @@ function createHotspot(pano, list, options) {
         mesh.userData.sound = zoneSound;
 
         
-        if (anim.flipX) {
+        if (options.animation.flipX) {
             sprite.scale.x *= -1;
         };
 
