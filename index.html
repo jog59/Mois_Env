@@ -316,6 +316,26 @@
             renderer: new THREE.WebGLRenderer({ antialias: true })
         });
 
+
+
+
+
+// ✅ CONFIG SENSIBILITÉ TOUCH
+if ('ontouchstart' in window) {
+
+    // ✅ vitesse de rotation au drag
+    viewer.OrbitControls.rotateSpeed = 2.5;
+
+
+} else {
+
+    // ✅ PC souris
+    viewer.OrbitControls.rotateSpeed = 1.0;
+
+}
+
+        
+
         viewer.renderer.setPixelRatio(window.devicePixelRatio);
         viewer.renderer.setSize(window.innerWidth, window.innerHeight);
 
