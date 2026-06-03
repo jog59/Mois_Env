@@ -393,7 +393,7 @@ createHotspot(pano1, hotspotsPano1, {
 
 // eclairage2
 createHotspot(pano1, hotspotsPano1, {
-    w: 50, h: 10,
+    w: 500, h: 25,
     x: -350, y: 255, z: -70,
     panelId: "EcoBaBoy",
     groupId: "groupe_eclairage_pano1",
@@ -403,7 +403,7 @@ createHotspot(pano1, hotspotsPano1, {
 
 // eclairage3
 createHotspot(pano1, hotspotsPano1, {
-    w: 80, h: 10,
+    w: 800, h: 25,
     x: -460, y: 170, z: -100,
     panelId: "EcoBaBoy",
     groupId: "groupe_eclairage_pano1",
@@ -532,7 +532,7 @@ createHotspot(pano2, hotspotsPano2, {
 
 // éclairage1
 createHotspot(pano2, hotspotsPano2, {
-    w: 1900, h: 800,
+    w: 190, h: 30,
     x: -464, y: 176, z: 57,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2"
@@ -540,7 +540,7 @@ createHotspot(pano2, hotspotsPano2, {
 
 // éclairage2
 createHotspot(pano2, hotspotsPano2, {
-    w: 1900, h: 800,
+    w: 200, h: 10,
     x: -144, y: 389, z: -278,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2"
