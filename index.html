@@ -320,31 +320,6 @@
 
 
 
-// ✅ CONFIG SENSIBILITÉ TOUCH
-
-// ✅ CONFIG SENSIBILITÉ TOUCH
-if ('ontouchstart' in window) {
-
-    // ✅ vitesse de rotation au drag
-    viewer.OrbitControls.rotateSpeed = 2.5;
-
-    // ✅ inertie fluide (sans rebond)
-    viewer.OrbitControls.enableDamping = true;
-    viewer.OrbitControls.dampingFactor = 0.05;
-
-    // ✅ désactive conflits parasites
-    viewer.OrbitControls.enablePan = false;
-    viewer.OrbitControls.enableZoom = false;
-
-} else {
-
-    // ✅ PC souris
-    viewer.OrbitControls.rotateSpeed = 1.0;
-
-    viewer.OrbitControls.enableDamping = true;
-    viewer.OrbitControls.dampingFactor = 0.05;
-};
-
 
         
 
