@@ -131,16 +131,6 @@ window.PANELS = {
              found: false
           },
 
-        // PANNEAU AIR COMPRIMEE
-        pano1_air_comprimee: {
-            title: "Air Comprimée",
-            media: [
-                { type: "image", src: "assets/pano1-air_comprimee1.png", alt: "Air comprimée" },
-                { type: "image", src: "assets/pano1-air_comprimee2.png", alt: "Air comprimée" }
-                
-            ],
-            found: false
-        },
 
         //ECLAIRAGE
         pano1_eclairage: {
@@ -193,14 +183,25 @@ window.PANELS = {
         found: false
     },
 
-    // PANNEAU AIR COMPRIMEE
-    pano2_air_comprimee: {
+        // PANNEAU AIR COMPRIMEE1
+        pano2_air_comprimee1: {
+            title: "Air Comprimée",
+            media: [
+                { type: "image", src: "assets/pano1-air_comprimee1_1.png", alt: "Air comprimée" },
+                { type: "image", src: "assets/pano1-air_comprimee1_2.png", alt: "Air comprimée" }
+                
+            ],
+            found: false
+        },
+     
+    // PANNEAU AIR COMPRIMEE2
+    pano2_air_comprimee2: {
         title: "Air Comprimée",
         media: [
-            { type: "image", src: "assets/pano2-air_comprimee1.png", alt: "Air comprimée" },
+            { type: "image", src: "assets/pano2-air_comprimee2_1.png", alt: "Air comprimée" },
             { type: "video", src: "assets/pano2-video_air_comprimee1.mp4", autoplay: true },
             { type: "video", src: "assets/pano2-video_air_comprimee2.mp4", autoplay: true },
-            { type: "image", src: "assets/pano2-air_comprimee2.png", alt: "Air comprimée" },
+            { type: "image", src: "assets/pano2-air_comprimee2_2.png", alt: "Air comprimée" },
             { type: "video", src: "assets/pano2-video_air_comprimee3.mp4", autoplay: true }
         ],
         found: false
@@ -234,10 +235,7 @@ window.PANELS = {
         pano3_fuite: {
         title: "fuite",
         media: [
-            { type: "image", src: "assets/pano3-fuite1.png", alt: "Fuite" },
-            { type: "image", src: "assets/pano3-fuite2.png", alt: "Fuite" },
-            { type: "image", src: "assets/pano3-fuite3.png", alt: "Fuite" }
-            //{ type: "video", src: "assets/fuite_air.mp4" }
+            { type: "image", src: "assets/pano3-fuite1.png", alt: "Fuite" }
         ],
         found: false
     },
@@ -266,9 +264,7 @@ window.PANELS = {
     pano3_air_comprimee: {
         title: "Air Comprimée",
         media: [
-            { type: "image", src: "assets/pano3-air_comprimee_pano1.png", alt: "Air comprimée" },
-            { type: "image", src: "assets/pano3-air_comprimee_pano2.png", alt: "Air comprimée" },
-            { type: "video", src: "assets/pano3-video_air_comprimee1.mp4", autoplay: false }
+            { type: "image", src: "assets/pano3-air_comprimee_pano1.png", alt: "Air comprimée" }
         ],
         found: false
     },
@@ -304,8 +300,10 @@ window.PANELS = {
         pano4_fuite: {
         title: "fuite",
         media: [
-            { type: "image", src: "assets/pano4-fuite1.png", alt: "Fuite fontaine" }
-            //{ type: "video", src: "assets/fuite_air.mp4" }
+               { type: "image", src: "assets/pano4-fuite1.png", alt: "Fuite fontaine" },
+               { type: "image", src: "assets/pano4-fuite2.png", alt: "Fuite fontaine" },
+               { type: "image", src: "assets/pano4-fuite3.png", alt: "Fuite fontaine" }
+            
         ],
         found: false
     },
