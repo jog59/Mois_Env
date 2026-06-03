@@ -306,6 +306,15 @@
 
         /* --- SON SUCCES --- */
         const successSound = new Audio("assets/bien_joue.m4a");
+                
+        // ✅ Débloque audio (important navigateur)
+        document.addEventListener("pointerdown", () => {
+            successSound.play().then(() => {
+                successSound.pause();
+                successSound.currentTime = 0;
+            });
+        }, { once: true });
+
 
         /* --- VIEWER --- */
         const viewer = new PANOLENS.Viewer({
@@ -316,7 +325,6 @@
             output: 'console',
             renderer: new THREE.WebGLRenderer({ antialias: true })
         });
-
 
         viewer.renderer.setPixelRatio(window.devicePixelRatio);
         viewer.renderer.setSize(window.innerWidth, window.innerHeight);
@@ -374,22 +382,17 @@
             if (left.value) {
                 viewer.OrbitControls.rotateLeft(-speed);
             }
-
             if (right.value) {
                 viewer.OrbitControls.rotateLeft(speed);
             }
-
             if (up.value) {
                 viewer.OrbitControls.rotateUp(-speed);
             }
-
             if (down.value) {
                 viewer.OrbitControls.rotateUp(speed);
             }
         }
-
         animatePad();
-
 
         document.getElementById("pad").addEventListener("pointerdown", (e) => {
             e.stopPropagation();
@@ -642,7 +645,8 @@
             if (panelMediaIndex < panelMediaList.length - 1) goToMedia(panelMediaIndex + 1);
         });
 
-        window.showInfoPanel = function (title, text, imageUrl, logos = [], media = null) {
+        /*window.showInfoPanel = function (title, text, imageUrl, logos = [], media = null) {
+
             
             // Construire la liste média : priorité au tableau `media`, sinon fallback image simple
             const mediaList = media && media.length > 0
@@ -654,7 +658,34 @@
             setAutoRotate(false);
             disableViewerControls();
         };
+*/
 
+
+        // ✅ PANEL
+        window.showInfoPanel = function (panel) {
+        
+            // ✅ titre
+            document.getElementById("infoTitle").innerText = panel.title;
+        
+            // ✅ média (plus de fallback inutile, tu as toujours media maintenant)
+            renderPanelMedia(panel.media || []);
+        
+            // ✅ SON
+            if (panel.playSound) {
+                if (!successSound.paused) successSound.pause();
+                successSound.currentTime = 0;
+                successSound.play().catch(() => {});
+            }
+        
+            // ✅ afficher panel
+            document.getElementById("infoPanel").style.display = "block";
+        
+            savedRotationState = isAutoRotateOn;
+            setAutoRotate(false);
+            disableViewerControls();
+        };
+
+        
         window.disableViewerControls = function () {
             if (viewer.OrbitControls) viewer.OrbitControls.enabled = false;
         };
