@@ -651,21 +651,6 @@
             if (panelMediaIndex < panelMediaList.length - 1) goToMedia(panelMediaIndex + 1);
         });
 
-        /*window.showInfoPanel = function (title, text, imageUrl, logos = [], media = null) {
-
-            
-            // Construire la liste média : priorité au tableau `media`, sinon fallback image simple
-            const mediaList = media && media.length > 0
-                ? media
-                : [{ type: "image", src: imageUrl }];
-            renderPanelMedia(mediaList);
-            document.getElementById("infoPanel").style.display = "block";
-            savedRotationState = isAutoRotateOn;
-            setAutoRotate(false);
-            disableViewerControls();
-        };
-*/
-
 
         // ✅ PANEL
         window.showInfoPanel = function (panel) {
@@ -690,6 +675,37 @@
             setAutoRotate(false);
             disableViewerControls();
         };
+
+        // fermeture panneau d'info avec la touche esc
+        document.addEventListener("keydown", (event) => {
+
+            if (event.key === "Escape") {
+        
+                const panel = document.getElementById("infoPanel");
+        
+                // ✅ vérifier si le panel est ouvert
+                if (panel && panel.style.display === "block") {
+        
+                    // ✅ arrêter vidéo si présente
+                    if (panelCurrentVideo) {
+                        panelCurrentVideo.pause();
+                        panelCurrentVideo.currentTime = 0;
+                        panelCurrentVideo = null;
+                    }
+        
+                    // ✅ fermer panel
+                    panel.style.display = "none";
+        
+                    // ✅ restaurer rotation / contrôles
+                    setAutoRotate(savedRotationState);
+                    enableViewerControls();
+        
+                    // ✅ éviter clic parasite juste après
+                    panelJustClosed = true;
+                    setTimeout(() => panelJustClosed = false, 300);
+                }
+            }
+});
 
         
         window.disableViewerControls = function () {
