@@ -820,7 +820,7 @@ createHotspot(pano4, hotspotsPano4, {
         src: "assets/vent2.png",
         w: 2000, h: 1500,
         scale: 0.15,
-        x: 1218, y: 1715, z: 4536,
+        x: 1180, y: 1715, z: 4536,
         // Paramètres ajustables :
         speedX: 0.8,      // vitesse flux horizontal
         speedY: 0.0,      // vitesse flux vertical
