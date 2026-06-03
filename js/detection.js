@@ -530,6 +530,21 @@ createHotspot(pano2, hotspotsPano2, {
     panelId: "pano2_air_comprimee2"
 });
 
+// éclairage1
+createHotspot(pano2, hotspotsPano2, {
+    w: 1900, h: 800,
+    x: -464, y: 176, z: 57,
+    panelId: "pano2_eclairage",
+    groupId :"groupe_eclairage_pano2"
+});
+
+// éclairage2
+createHotspot(pano2, hotspotsPano2, {
+    w: 1900, h: 800,
+    x: -144, y: 389, z: -278,
+    panelId: "pano2_eclairage",
+    groupId :"groupe_eclairage_pano2"
+});
 
 /* PANORAMA 3 */
 
