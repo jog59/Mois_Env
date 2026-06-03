@@ -13,7 +13,8 @@ window.PANELS = {
         media: [
             { type: "image", src: "assets/panneau_Ecobaboy.png", alt: "EcoBaBoy" }
             ],
-        found: false
+          playSound: true, // ✅ AJOUT
+        found: false,
     },
 
     // PANNEAU FONTAINE
