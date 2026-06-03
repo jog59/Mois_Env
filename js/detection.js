@@ -411,7 +411,6 @@ createHotspot(pano1, hotspotsPano1, {
 }
 );
 
-
 // climatisation1
 createHotspot(pano1, hotspotsPano1, {
     w: 50, h: 50,
@@ -513,7 +512,6 @@ createHotspot(pano2, hotspotsPano2, {
         turbSpeed: 3.0,   // vitesse des ondulations
         opacity: 1.0
     }
-
 });
 
 // climatisation
@@ -554,6 +552,42 @@ createHotspot(pano2, hotspotsPano2, {
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
     rotationX: 0, rotationY: 0, rotationZ: -45
+});
+
+// éclairage4
+createHotspot(pano2, hotspotsPano2, {
+    w: 200, h: 20,
+    x: -296, y: 172, z: -365,
+    panelId: "pano2_eclairage",
+    groupId :"groupe_eclairage_pano2",
+    rotationX: 0, rotationY: 0, rotationZ: 0
+});
+
+// éclairage5
+createHotspot(pano2, hotspotsPano2, {
+    w: 200, h: 20,
+    x: -183, y: 201, z: -419,
+    panelId: "pano2_eclairage",
+    groupId :"groupe_eclairage_pano2",
+    rotationX: 0, rotationY: 0, rotationZ: 0
+});
+
+// éclairage6
+createHotspot(pano2, hotspotsPano2, {
+    w: 200, h: 20,
+    x: -311, y: 232, z: 316,
+    panelId: "pano2_eclairage",
+    groupId :"groupe_eclairage_pano2",
+    rotationX: 0, rotationY: 0, rotationZ: 0
+});
+
+// éclairage7
+createHotspot(pano2, hotspotsPano2, {
+    w: 200, h: 20,
+    x: 486, y: 94, z: 73,
+    panelId: "pano2_eclairage",
+    groupId :"groupe_eclairage_pano2",
+    rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
 /* PANORAMA 3 */
