@@ -1151,5 +1151,5 @@ document.getElementById("switchImagePrev").addEventListener("pointerdown", (even
 });
 
 /* DEBUG */
-const axes = new THREE.AxesHelper(1000);
-viewer.scene.add(axes);
+//const axes = new THREE.AxesHelper(1000);
+//viewer.scene.add(axes);
