@@ -319,6 +319,7 @@ createHotspot(pano1, hotspotsPano1, {
 });
 
 // Fuite
+/*
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 100,
     x: 2405, y: 640, z: 250,
@@ -349,13 +350,13 @@ createHotspot(pano1, hotspotsPano1, {
         wobble: 8,          // ondulation latérale pendant la chute
         color: 0x4499ff     // couleur des gouttes
     }
-});
+});*/
 
 // Air comprimée — avec son et animation shader wind
 createHotspot(pano1, hotspotsPano1, {
     w: 600, h: 1930,
     x: 4501, y: -1600, z: -1200,
-    panelId: "pano1_air_comprimee",
+    panelId: "EcoBaBoy",
     sound: {
         src: "assets/fuite_air_comprimee.m4a",
         loop: true,
@@ -386,7 +387,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 1050, h: 60,
     x: -250, y: 430, z: 5,
-    panelId: "pano1_eclairage",
+    panelId: "EcoBaBoy",
     groupId: "groupe_eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: 6,
 }
@@ -396,7 +397,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 630, h: 40,
     x: -350, y: 255, z: -70,
-    panelId: "pano1_eclairage",
+    panelId: "EcoBaBoy",
     groupId: "groupe_eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: -6,
 }
@@ -406,7 +407,7 @@ createHotspot(pano1, hotspotsPano1, {
 createHotspot(pano1, hotspotsPano1, {
     w: 500, h: 25,
     x: -460, y: 170, z: -100,
-    panelId: "pano1_eclairage",
+    panelId: "EcoBaBoy",
     groupId: "groupe_eclairage_pano1",
     rotationX: 0, rotationY: 0, rotationZ: -3,
 }
@@ -487,7 +488,7 @@ createHotspot(pano2, hotspotsPano2, {
 createHotspot(pano2, hotspotsPano2, {
     w: 800, h: 1200,
     x: -1350, y: 1900, z: 3000,
-    panelId: "pano2_air_comprimee",
+    panelId: "pano2_air_comprimee1",
 
 
     sound: {
@@ -528,7 +529,7 @@ createHotspot(pano2, hotspotsPano2, {
 createHotspot(pano2, hotspotsPano2, {
     w: 1900, h: 800,
     x: -3705, y: 219, z: 3014,
-    panelId: "EcoBaBoy"
+    panelId: "pano2_air_comprimee2"
 });
 
 
@@ -562,7 +563,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 800, h: 800,
     x: -800, y: 3700, z: 1200,
-    panelId: "pano3_air_comprimee",
+    panelId: "EcoBaBoy",
     rotationX: -30, rotationY: 0, rotationZ: -9,
 
 
@@ -598,7 +599,7 @@ createHotspot(pano3, hotspotsPano3, {
     w: 200, h: 30,
     x: 280, y: 310, z: 270,
     //x: -30, y: 410, z: 300,
-    panelId: "EcoBaBoy",
+    panelId: "pano3_fuite",
     // rotationX: 0, rotationY: 0, rotationZ: 2,
     rotationX: 10, rotationY: 10, rotationZ: 45,
 
@@ -656,7 +657,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 160, h: 220,
     x: 60, y: -290, z: 400,
-    panelId: "EcoBaBoy",
+    panelId: " pano3_air_comprimee",
     rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
@@ -668,7 +669,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano4, hotspotsPano4, {
     w: 1330, h: 800,
     x: 1350, y: -900, z: -3000,
-    panelId: "EcoBaBoy"
+    panelId: " pano2_ventilateur"
 });
 
 // Éclairage
@@ -684,7 +685,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 830, h: 600,
     x: 2750, y: -850, z: 2000,
-    panelId: "EcoBaBoy",
+    panelId: "pano4_fuite",
 
     sound: {
         src: "assets/drip4.mp3",
@@ -725,7 +726,7 @@ createHotspot(pano4, hotspotsPano4, {
 createHotspot(pano4, hotspotsPano4, {
     w: 7000, h: 200,
     x: 760, y: 2700, z: -3500,
-    panelId: "EcoBaBoy",
+    panelId: "pano4_fuite",
     groupId: "incendie",
     rotationX: 50,
     sound: {
