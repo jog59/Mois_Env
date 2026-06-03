@@ -681,11 +681,12 @@
         
                     // ✅ fermer panel
                     panel.style.display = "none";
-        
-                    setAutoRotate(savedRotationState);
-                    enableViewerControls();
                     
-        document.dispatchEvent(new PointerEvent("pointerup"));
+                    document.dispatchEvent(new PointerEvent("pointerup"));
+                    
+                    setAutoRotate(savedRotationState);
+                    enableViewerControls();                   
+
         
                     // ✅ anti clic parasite
                     panelJustClosed = true;
@@ -722,7 +723,6 @@
             debugMode = !debugMode;
             updateDebugVisibility();
         });
-
 
        
     </script>
