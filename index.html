@@ -318,9 +318,6 @@
 
 
 
-
-
-
         
 
         viewer.renderer.setPixelRatio(window.devicePixelRatio);
@@ -592,7 +589,7 @@
                         vid.controls = true;
                         vid.preload = "metadata";
                         // ✅ OBLIGATOIRE pour autoplay
-                        vid.muted = true;
+                        vid.muted = false;
                         vid.playsInline = true;
                         if (item.autoplay && i === 0) {
                             vid.autoplay = true;
