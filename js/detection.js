@@ -275,9 +275,6 @@ function activateHotspots(list) {
 
 function deactivateHotspots(list) { list.forEach(h => { h.userData.active = false; h.raycast = () => { }; }); }
 
-/* ============================================================
-   CRÉATION DES HOTSPOTS
-   ============================================================ */
 
 /* ============================================================
    CRÉATION DES HOTSPOTS
@@ -658,7 +655,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 160, h: 220,
     x: 60, y: -290, z: 400,
-    panelId: " pano3_air_comprimee",
+    panelId: "pano3_air_comprimee",
     rotationX: 0, rotationY: 0, rotationZ: 0
 });
 
