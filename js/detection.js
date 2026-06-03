@@ -593,7 +593,7 @@ createHotspot(pano2, hotspotsPano2, {
 // éclairage8
 createHotspot(pano2, hotspotsPano2, {
     w: 500, h: 20,
-    x: 488, y: 56, z: 92,
+    x: 496, y: 58, z: 12,
     panelId: "pano2_eclairage",
     groupId :"groupe_eclairage_pano2",
     rotationX: 0, rotationY: 0, rotationZ: 0
