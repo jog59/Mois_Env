@@ -24,7 +24,6 @@
             cursor: not-allowed;
         }
 
-
         /* Bouton Play/Pause flottant */
         #toggleRotate {
             position: absolute;
@@ -57,7 +56,6 @@
             /*display: none;*/ /* caché par défaut */
         }
 
-
         /* Bouton changement image */
         #switchImage {
             position: absolute;
@@ -73,8 +71,6 @@
             z-index: 999999;
             pointer-events: auto;
         }
-
-
 
         /* PANEL MEDIA CAROUSEL */
         #infoPanel {
@@ -217,7 +213,6 @@
             pointer-events: none;
         }
 
-
         #pad {
             position: absolute;
             bottom: 20px;
@@ -269,9 +264,8 @@
 
         </div>
 
+        
         <!-- BOUTONS -->
-
-
 
         <button id="toggleRotate">▶️ Rotation</button>
         <button id="switchImage">Image suivante ➡️</button>
@@ -286,16 +280,12 @@
             Aide
         </button>
 
-
         <!-- COMPTEUR -->
         <div id="counter">
             Zones trouvées : 0
         </div>
 
     </div>
-
-
-
 
     <script>
         /* --- PANORAMAS --- */
@@ -379,7 +369,6 @@
         bindButton("down", down);
 
 
-
         function animatePad() {
             requestAnimationFrame(animatePad);
 
@@ -406,7 +395,6 @@
 
 
         //-------------------------------------
-
 
 
         let currentPano = pano1;
@@ -678,15 +666,13 @@
 
         // fermeture panneau d'info avec la touche esc
         document.addEventListener("keydown", (event) => {
-
             if (event.key === "Escape") {
         
                 const panel = document.getElementById("infoPanel");
         
-                // ✅ vérifier si le panel est ouvert
                 if (panel && panel.style.display === "block") {
         
-                    // ✅ arrêter vidéo si présente
+                    // ✅ stop vidéo
                     if (panelCurrentVideo) {
                         panelCurrentVideo.pause();
                         panelCurrentVideo.currentTime = 0;
@@ -696,16 +682,24 @@
                     // ✅ fermer panel
                     panel.style.display = "none";
         
-                    // ✅ restaurer rotation / contrôles
                     setAutoRotate(savedRotationState);
                     enableViewerControls();
         
-                    // ✅ éviter clic parasite juste après
+                    // ✅ fix bug drag souris
+                    if (viewer.OrbitControls) {
+                        viewer.OrbitControls.enabled = false;
+        
+                        setTimeout(() => {
+                            viewer.OrbitControls.enabled = true;
+                        }, 10);
+                    }
+        
+                    // ✅ anti clic parasite
                     panelJustClosed = true;
                     setTimeout(() => panelJustClosed = false, 300);
                 }
             }
-});
+    });
 
         
         window.disableViewerControls = function () {
