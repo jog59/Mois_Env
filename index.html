@@ -644,16 +644,6 @@
         window.showInfoPanel = function (title, text, imageUrl, logos = [], media = null) {
 
 
-// ✅ lecture son si demandé
-if (panel.playSound) {
-
-  // reset (important pour rejouer)
-  successSound.currentTime = 0;
-
-  successSound.play().catch(() => {
-    console.log("Lecture audio bloquée (interaction requise)");
-  });
-}
 
             
             // Construire la liste média : priorité au tableau `media`, sinon fallback image simple
