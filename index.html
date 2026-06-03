@@ -358,7 +358,13 @@
             btn.addEventListener("pointerleave", () => {
                 direction.value = false;
             });
-        }
+        };
+
+        
+        document.getElementById("pad").addEventListener("pointerdown", (e) => {
+          e.stopPropagation();
+        });
+
 
         // variables objets pour passer par référence
         const left = { value: false };
