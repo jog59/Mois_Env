@@ -264,7 +264,7 @@ window.PANELS = {
     pano3_air_comprimee: {
         title: "Air Comprimée",
         media: [
-            { type: "image", src: "assets/pano3-air_comprimee_pano1.png", alt: "Air comprimée" }
+            { type: "image", src: "assets/pano3-air_comprimee1.png", alt: "Air comprimée" }
         ],
         found: false
     },
