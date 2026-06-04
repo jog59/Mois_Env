@@ -264,20 +264,40 @@
 
         </div>
 
-        
+
         <!-- BOUTONS -->
 
         <button id="toggleRotate">▶️ Rotation</button>
         <button id="switchImage">Image suivante ➡️</button>
         <button id="switchImagePrev">⬅️ Image précédente</button>
 
-        <button id="debugBtn" style="
-    position: absolute;
-    top: 20px;
-    left: 25px;
-    z-index: 999999;
-">
+        <button id="debugBtn" style=" position: absolute;
+         top: 5px; 
+         left: 20px; 
+         padding: 8px 14px; 
+         background: rgba(0,0,0,0.5); 
+         color: white; border: none; 
+         border-radius: 8px; 
+         font-size: 14px; 
+         cursor: pointer; 
+         z-index: 999999; ">
             Aide
+        </button>
+
+        <button id="langBtn" style="
+             position: absolute;
+             top: 40px;
+             left: 20px;
+             padding: 8px 14px;
+             background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            z-index: 999999;
+        ">
+            🌐 EN
         </button>
 
         <!-- COMPTEUR -->
@@ -328,6 +348,10 @@
         viewer.add(pano3);
         viewer.add(pano4);
 
+
+        // définir la langue
+        let currentLang = 'fr'; // 'fr' ou 'eng'
+
         //------------------------------
         //--MOUVEMENT PAD DIRECTIONNEL--
         //------------------------------        
@@ -344,15 +368,19 @@
             btn.addEventListener("pointerdown", () => {
                 direction.value = true;
             });
-
             btn.addEventListener("pointerup", () => {
                 direction.value = false;
             });
-
             btn.addEventListener("pointerleave", () => {
                 direction.value = false;
             });
         };
+
+        //Listener du bouton pr change langue
+        document.getElementById("langBtn").addEventListener("pointerdown", () => {
+            currentLang = currentLang === 'fr' ? 'eng' : 'fr';
+            document.getElementById("langBtn").innerText = currentLang === 'fr' ? '🌐 EN' : '🌐 FR';
+        });
 
         
         document.getElementById("pad").addEventListener("pointerdown", (e) => {
@@ -556,6 +584,12 @@
         function renderPanelMedia(media) {
             const wrapper = document.getElementById("panelMediaWrapper");
 
+            // Traduire les src image si langue anglaise
+            const translatedMedia = media.map(item => {
+                if (item.type !== "image" || currentLang === 'fr') return item;
+                return { ...item, src: item.src.replace(/^assets\/(?!eng\/)/, 'assets/eng/') };
+            });
+
             // Supprimer anciens items (sauf boutons fixes)
             wrapper.querySelectorAll(".panel-media-item").forEach(el => el.remove());
 
@@ -563,12 +597,12 @@
             const dotsEl = document.getElementById("panelDots");
             dotsEl.innerHTML = "";
 
-            panelMediaList = media;
+            panelMediaList = translatedMedia;
             panelMediaIndex = 0;
             panelCurrentVideo = null;
 
             // Créer les items
-            media.forEach((item, i) => {
+            translatedMedia.forEach((item, i) => {
                 const div = document.createElement("div");
                 div.className = "panel-media-item" + (i === 0 ? " active" : "");
 
@@ -580,38 +614,18 @@
                     if (item.autoplay && i === 0) { vid.autoplay = true; vid.muted = !!item.muted; }
                     div.appendChild(vid);
                     if (i === 0) panelCurrentVideo = vid;
-                    
-                
-    /*                if (item.type === "video") {
-                    
-                        const vid = document.createElement("video");
-                        vid.src = item.src;
-                        vid.controls = true;
-                        vid.preload = "metadata";
-                        // ✅ OBLIGATOIRE pour autoplay
-                        vid.muted = false;
-                        vid.playsInline = true;
-                        vid.autoplay = true; // test
-                        if (item.autoplay && i === 0) {
-                            vid.autoplay = true;
-                            // ✅ FORCER lancement
-                            vid.play().catch(() => {});
-                        }
-                        div.appendChild(vid);
-                        if (i === 0) panelCurrentVideo = vid;
-     */                                  
                 } else {
                     const img = document.createElement("img");
                     img.src = item.src;
                     img.alt = item.alt || "";
                     div.appendChild(img);
-                } 
+                }
 
                 // Insérer avant les boutons (avant closePanelBtn)
                 wrapper.insertBefore(div, wrapper.querySelector("#closePanelBtn"));
 
                 // Dot
-                if (media.length > 1) {
+                if (translatedMedia.length > 1) {
                     const dot = document.createElement("div");
                     dot.className = "panel-dot" + (i === 0 ? " active" : "");
                     dot.addEventListener("pointerdown", (e) => { e.stopPropagation(); goToMedia(i); });
@@ -666,23 +680,20 @@
 
         // ✅ PANEL
         window.showInfoPanel = function (panel) {
-        
-            // ✅ titre
-      //      document.getElementById("infoTitle").innerText = panel.title;
-        
-            // ✅ média (plus de fallback inutile, tu as toujours media maintenant)
+
+            // ✅ média
             renderPanelMedia(panel.media || []);
-        
+
             // ✅ SON
             if (panel.playSound) {
                 if (!successSound.paused) successSound.pause();
                 successSound.currentTime = 0;
                 successSound.play().catch(() => {});
             }
-        
+
             // ✅ afficher panel
             document.getElementById("infoPanel").style.display = "block";
-        
+
             savedRotationState = isAutoRotateOn;
             setAutoRotate(false);
             disableViewerControls();
