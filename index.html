@@ -572,7 +572,7 @@
                 const div = document.createElement("div");
                 div.className = "panel-media-item" + (i === 0 ? " active" : "");
 
-             /*   if (item.type === "video") {
+                if (item.type === "video") {
                     const vid = document.createElement("video");
                     vid.src = item.src;
                     vid.controls = true;
@@ -580,9 +580,9 @@
                     if (item.autoplay && i === 0) { vid.autoplay = true; vid.muted = !!item.muted; }
                     div.appendChild(vid);
                     if (i === 0) panelCurrentVideo = vid;
-                    */
+                    
                 
-                    if (item.type === "video") {
+    /*                if (item.type === "video") {
                     
                         const vid = document.createElement("video");
                         vid.src = item.src;
@@ -599,7 +599,7 @@
                         }
                         div.appendChild(vid);
                         if (i === 0) panelCurrentVideo = vid;
-                                       
+     */                                  
                 } else {
                     const img = document.createElement("img");
                     img.src = item.src;
