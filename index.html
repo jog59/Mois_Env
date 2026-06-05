@@ -379,7 +379,7 @@
         //Listener du bouton pr change langue
         document.getElementById("langBtn").addEventListener("pointerdown", () => {
             currentLang = currentLang === 'fr' ? 'eng' : 'fr';
-            document.getElementById("langBtn").innerText = currentLang === 'fr' ? '🌐 EN' : '🌐 FR';
+            document.getElementById("langBtn").innerText = currentLang === 'fr' ? '🌐 FR => EN' : '🌐 EN => FR';
         });
 
         
@@ -498,8 +498,6 @@
                 updateCounter();
                 return;
             }
-
-
         });
 
         switchImagePrev.addEventListener("pointerdown", (event) => {
