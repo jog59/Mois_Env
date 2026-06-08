@@ -671,7 +671,7 @@ createHotspot(pano3, hotspotsPano3, {
     sound: {
         src: "assets/drip3.mp3",
         loop: true,
-        volume: 0.15,
+        volume: 0.7,
         refDistance: 20,
         maxDistance: 50,
         rolloffFactor: 1.5,
@@ -685,7 +685,7 @@ createHotspot(pano3, hotspotsPano3, {
 
         // Paramètres ajustables :
         dropCount: 1,       // nombre de gouttes simultanées
-        height: 1000,        // hauteur de chute en unités 3D
+        height: 1300,        // hauteur de chute en unités 3D
         speed: 0.75,         // vitesse (cycles par seconde)
         size: 18,           // rayon des gouttes
         spreadX: 75,       // dispersion horizontale
