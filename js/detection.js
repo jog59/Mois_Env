@@ -810,7 +810,7 @@ createHotspot(pano4, hotspotsPano4, {
 
         // Paramètres ajustables :
         dropCount: 2,       // nombre de gouttes simultanées
-        height: 2000,        // hauteur de chute en unités 3D
+        height: 4000,        // hauteur de chute en unités 3D
         speed: 0.6,         // vitesse (cycles par seconde)
         size: 18,           // rayon des gouttes
         spreadX: 60,       // dispersion horizontale
