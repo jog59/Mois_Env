@@ -1,4 +1,4 @@
-console.log("detection.js chargé!");
+console.log("detection.js chargé");
 
 /* LISTES DE HOTSPOTS */
 let hotspotsPano1 = [];
@@ -780,7 +780,7 @@ createHotspot(pano4, hotspotsPano4, {
 // Déchets pano4
 createHotspot(pano4, hotspotsPano4, {
     w: 1200, h: 3100,
-    x: -3800, y: -2420, z: 1300,
+    x: -380, y: -242, z: 130,
     panelId: "pano4_dechets",
     groupId: "dechets",
     rotationX: -5
@@ -796,7 +796,7 @@ createHotspot(pano4, hotspotsPano4, {
     sound: {
         src: "assets/drip5.mp3",
         loop: true,
-        volume: 1.9,
+        volume: 1,
         refDistance: 200,
         maxDistance: 900,
         rolloffFactor: 1.5,
@@ -859,8 +859,8 @@ createHotspot(pano4, hotspotsPano4, {
         src: "assets/fuite_air_comprimee.m4a",
         loop: true,
         volume: 0.2,
-        refDistance: 400,
-        maxDistance: 600,
+        refDistance: 800,
+        maxDistance: 1000,
         rolloffFactor: 1.6,
         distanceModel: "inverse",
         cone: [120, 240, 0.4]
