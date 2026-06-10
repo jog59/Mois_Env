@@ -796,9 +796,9 @@ createHotspot(pano4, hotspotsPano4, {
     sound: {
         src: "assets/drip5.mp3",
         loop: true,
-        volume: 1.8,
-        refDistance: 300,
-        maxDistance: 3000,
+        volume: 1.9,
+        refDistance: 200,
+        maxDistance: 900,
         rolloffFactor: 1.5,
         distanceModel: "inverse",
         cone: [120, 240, 0.4]
@@ -858,9 +858,9 @@ createHotspot(pano4, hotspotsPano4, {
     sound: {
         src: "assets/fuite_air_comprimee.m4a",
         loop: true,
-        volume: 0.3,
-        refDistance: 200,
-        maxDistance: 500,
+        volume: 0.2,
+        refDistance: 400,
+        maxDistance: 600,
         rolloffFactor: 1.6,
         distanceModel: "inverse",
         cone: [120, 240, 0.4]
