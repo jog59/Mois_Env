@@ -796,8 +796,8 @@ createHotspot(pano4, hotspotsPano4, {
     sound: {
         src: "assets/drip5.mp3",
         loop: true,
-        volume: 1.5,
-        refDistance: 600,
+        volume: 1.8,
+        refDistance: 300,
         maxDistance: 3000,
         rolloffFactor: 1.5,
         distanceModel: "inverse",
