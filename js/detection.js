@@ -706,7 +706,7 @@ createHotspot(pano3, hotspotsPano3, {
 createHotspot(pano3, hotspotsPano3, {
     w: 2000, h: 175,
     x: 0, y: 500, z: 0,
-    panelId: "EcoBaBoy",
+    panelId: "pano3_climatisation",
     rotationX: 0, rotationY: -0, rotationZ: 6.2
 });
 
